@@ -1,0 +1,287 @@
+{
+  "common": {
+    "copy": {
+      "success": "地址已复制到剪贴板",
+      "error": "复制失败，请手动复制"
+    },
+    "buttons": {
+      "nextTime": "下次一定",
+      "copyAddress": "复制地址",
+      "start": "开始",
+      "pause": "暂停",
+      "resume": "继续"
+    },
+    "qubicTools": "QubicTools",
+    "qubicLogo": "LOGO",
+    "buildBy": "Build by {{author}}",
+    "toggle": "切换",
+    "userName": "XARKUR",
+    "userEmail": "https://x.com/iXARKUR",
+    "authorName": "XARKUR",
+    "language": {
+      "toggle": "切换语言",
+      "switched": "已切换到{{lang}}",
+      "switchFailed": "切换语言失败"
+    },
+    "theme": {
+      "toggle": "切换主题"
+    }
+  },
+  "nav": {
+    "home": "首页",
+    "dashboard": "收益计算器",
+    "vanityAddress": "靓号地址生成",
+    "batchWallet": "批量地址生成",
+    "batchBalance": "批量余额查询"
+  },
+  "sponsor": {
+    "dialog": {
+      "title": "支持项目",
+      "description": "感谢使用网站！这是一个完全免费的个人维护项目。如果您觉得有帮助，请考虑支持项目，帮助维护和改进网站。",
+      "scanQRCode": "Qubic 地址二维码",
+      "supportMessage": "您的支持是项目持续改进的动力"
+    },
+    "success": {
+      "title": "🎉恭喜！生成成功！🎉",
+      "description": "如果您觉得这个工具有帮助，请考虑支持项目，帮助维护和改进网站。",
+      "vanityAddress": {
+        "title": "🎉恭喜！靓号地址生成成功🎉",
+        "description": "如果您喜欢生成的靓号地址，请考虑支持项目，帮助维护和改进网站。"
+      },
+      "batchWallet": {
+        "title": "🎉恭喜！批量地址生成成功🎉",
+        "description": "如果您觉得这个批量地址生成器有帮助，请考虑支持项目，帮助维护和改进网站。"
+      }
+    },
+    "level": {
+      "spark": "火花赞助",
+      "starlight": "星光赞助",
+      "meteor": "流星赞助",
+      "star": "恒星赞助",
+      "supernova": "超新星赞助"
+    }
+  },
+  "vanityAddress": {
+    "title": "靓号地址生成",
+    "pattern": {
+      "title": "生成设置",
+      "type": {
+        "prefix": "前缀",
+        "suffix": "后缀"
+      },
+      "input": {
+        "label": "输入你要生成的自定义大写字母 比如: QUBIC",
+        "placeholder": "输入要生成的地址前缀或后缀"
+      },
+      "example": "示例地址",
+      "cpuUsage": {
+        "label": "性能",
+        "tooltip": "调整性能以平衡生成速度和系统响应"
+      },
+      "forceStart": {
+        "label": "强制开始",
+        "tooltip": "强制开始模式下将忽略网络连接状态，但可能存在安全风险"
+      },
+      "offlineNotice": "离线生成仅确保生成过程安全，请妥善保管您的种子",
+      "networkAlert": "为了安全起见，建议离线使用此工具"
+    },
+    "status": {
+      "ready": "就绪",
+      "waiting": "等待开始",
+      "generating": "生成中...",
+      "paused": "已暂停",
+      "completed": "生成完成",
+      "error": "生成失败"
+    },
+    "info": {
+      "title": "生成信息",
+      "difficulty": "难度",
+      "difficultyValue": "预计生成难度: {{value}}",
+      "attempts": "尝试次数",
+      "speed": "速度",
+      "time": "用时",
+      "status": "状态",
+      "progress": "进度",
+      "recommendedLength": "建议填写的字母不超过 5 个，生成时间会根据生成难度呈指数级增长"
+    },
+    "result": {
+      "title": "生成结果",
+      "publicId": "公开地址",
+      "privateKey": "种子",
+      "copyPublic": "复制公钥",
+      "warning": "种子信息不会进行保存，请及时导入移动钱包",
+      "warningClipboard": "为防止种子从剪切板泄漏，请使用 Qubic 官方移动钱包扫描二维码导入",
+      "scanQRCode": "扫描二维码获取种子",
+      "googlePlay": "Google Play",
+      "appStore": "App Store"
+    }
+  },
+  "batchWallet": {
+    "title": "批量地址生成",
+    "settings": {
+      "title": "批量地址生成",
+      "offlineNotice": "离线生成仅确保生成过程安全，请妥善保管您的种子",
+      "forceStart": {
+        "label": "强制开始",
+        "tooltip": "强制开始模式下将忽略网络连接状态，但可能存在安全风险"
+      },
+      "count": {
+        "label": "生成数量",
+        "placeholder": "请输入要生成的钱包数量"
+      },
+      "generating": "正在生成... {{progress}}%",
+      "start": "开始生成"
+    },
+    "mobile": {
+      "description": "为防止种子从剪切板泄漏，推荐使用 Qubic 官方移动钱包扫描二维码导入"
+    },
+    "store": {
+      "googlePlay": "Google Play",
+      "appStore": "App Store"
+    },
+    "results": {
+      "title": "生成结果",
+      "notice": "种子信息不会进行保存，请及时导入 Qubic 官方移动钱包或导出表格",
+      "wallet": "地址",
+      "scan": "使用 Qubic 官方移动钱包扫描二维码导入种子"
+    },
+    "export": {
+      "button": "导出为 CSV",
+      "headers": {
+        "index": "序号",
+        "address": "地址",
+        "privateKey": "种子"
+      }
+    },
+    "toast": {
+      "invalidCount": "请输入有效的地址数量",
+      "networkError": "为了安全起见，请在离线环境下生成地址",
+      "generateError": "生成地址时发生错误",
+      "generateSuccess": "成功生成 {{count}} 个地址"
+    }
+  },
+  "batchBalance": {
+    "title": "批量余额查询",
+    "settings": {
+      "title": "查询设置",
+      "addressList": {
+        "label": "地址列表（每行一个）",
+        "placeholder": "输入要查询的地址，每行一个",
+        "import": "导入地址列表"
+      },
+      "search": {
+        "button": "开始查询",
+        "loading": "查询中..."
+      }
+    },
+    "results": {
+      "title": "查询结果",
+      "totalBalance": "总余额: {{amount}} QUBIC",
+      "table": {
+        "index": "序号",
+        "address": "地址",
+        "balance": "余额",
+        "status": "状态",
+        "actions": "操作"
+      },
+      "status": {
+        "success": "成功",
+        "error": "失败"
+      },
+      "actions": {
+        "copyAddress": "复制完整地址",
+        "delete": "删除记录"
+      }
+    },
+    "toast": {
+      "error": {
+        "emptyAddresses": "请输入要查询的地址",
+        "queryFailed": "查询失败，请重试",
+        "copyFailed": "复制地址失败",
+        "deleteFailed": "删除记录失败"
+      },
+      "success": {
+        "copySuccess": "地址已复制到剪贴板",
+        "deleteSuccess": "记录已删除"
+      }
+    }
+  },
+  "home": {
+    "title": "收益计算器",
+    "proposals": {
+      "title": "当前纪元提案",
+      "empty": "暂无提案",
+      "viewDetails": "查看详情",
+      "votes": "票",
+      "totalVotes": "总投票数",
+      "noVotes": "暂无投票",
+      "noProposal": {
+        "title": "当前无提案",
+        "description": "暂时没有需要投票的提案"
+      }
+    },
+    "calculator": {
+      "title": "收益计算器",
+      "tip": "为了数据准确，请在非 idle 时间进行查询",
+      "pool": "矿池",
+      "pool_qli": "QLi (Reward 85%)",
+      "pool_apool": "Apool (PPS)",
+      "hashRate": "算力",
+      "hashRateUnit": "it/s",
+      "blocks": "已出块数 (Solutions/Shares)",
+      "powerConsumption": "功耗",
+      "powerConsumptionUnit": "W",
+      "electricityRate": "电价",
+      "electricityRateUnit": "￥/kWh",
+      "calculate": "计算",
+      "basicInfo": "基础信息",
+      "expectedDailyBlocks": "每日预计出块数",
+      "luck": "幸运值",
+      "profitAnalysis": "收益分析",
+      "currentProfit": "当前总收益",
+      "dailyProfit": "每日预期收益",
+      "weeklyProfit": "每周预期收益",
+      "monthlyProfit": "每月预期收益",
+      "costAnalysis": "成本分析",
+      "dailyPowerCost": "每日电费支出",
+      "monthlyPowerCost": "每月电费支出",
+      "dailyNetIncome": "预计每日净收入",
+      "monthlyNetIncome": "预计每月净收入"
+    },
+    "sponsor": {
+      "title": "赞助者",
+      "empty": "暂无赞助者"
+    },
+    "stats": {
+      "currentEpoch": {
+        "title": "当前纪元",
+        "description": "当前纪元编号"
+      },
+      "price": {
+        "title": "Qubic 价格",
+        "description": "Qubic 当前价格"
+      },
+      "networkHashRate": {
+        "title": "全网总算力",
+        "description": "预计全网总算力"
+      },
+      "solutionsPerHour": {
+        "title": "每小时出块数",
+        "description": "纪元每小时平均出块数"
+      },
+      "coinsPerSolution": {
+        "title": "块币数",
+        "description": "预计单个 Solution 币数"
+      },
+      "blockValue": {
+        "title": "块价值",
+        "description": "预计单个 Solution 价值"
+      },
+      "loading": "加载中..."
+    }
+  },
+  "networkStatus": {
+    "offline": "已断开网络，请使用无痕模式",
+    "online": "请断开网络并使用无痕模式"
+  }
+}
