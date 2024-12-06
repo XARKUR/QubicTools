@@ -66,7 +66,7 @@ export function SponsorDialog({ wallets }: SponsorDialogProps) {
                     includeMargin
                     className="rounded"
                   />
-                  <div className="text-center text-sm text-muted-foreground -mt-1">
+                  <div className="text-center text-sm text-muted-foreground mt-1">
                     {t('sponsor.dialog.scanQRCode')}
                   </div>
                 </div>

@@ -34,16 +34,16 @@ export default function BatchBalance() {
   const handleDeleteResult = (id: number) => {
     try {
       setResults(prev => prev.filter(result => result.id !== id))
-      toast.success(t('batchBalance.toast.deleteSuccess'))
+      toast.success(t('batchBalance.toast.success.deleteSuccess'))
     } catch (error) {
-      toast.error(t('batchBalance.toast.deleteFailed'))
+      toast.error(t('batchBalance.toast.error.deleteFailed'))
       console.error("Delete result error:", error)
     }
   }
 
   const handleSearch = async () => {
     if (addresses.length === 0) {
-      toast.error(t('batchBalance.toast.emptyAddresses'))
+      toast.error(t('batchBalance.toast.error.emptyAddresses'))
       return
     }
 
@@ -130,9 +130,9 @@ export default function BatchBalance() {
 
       await Promise.all(promises)
       
-      toast.success(t('batchBalance.toast.searchSuccess'))
+      toast.success(t('batchBalance.toast.success.searchSuccess'))
     } catch (error) {
-      toast.error(t('batchBalance.toast.searchFailed'))
+      toast.error(t('batchBalance.toast.error.searchFailed'))
       console.error("Search error:", error)
     } finally {
       setIsLoading(false)

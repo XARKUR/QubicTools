@@ -2,57 +2,51 @@
 
 import { memo, useMemo, useEffect, useState, useCallback } from "react"
 import { useTranslation } from 'react-i18next'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Input } from "@/components/ui/input"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Calculator,
-  Zap,
   Timer,
+  Zap,
+  Cpu,
+  Box,
+  Settings,
+  Heart,
   DollarSign,
   TrendingUp,
   Calendar,
-  Settings,
 } from "lucide-react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator"
+import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import QubicAPI from "@/services/api"
 import { useExchangeRate } from '@/hooks/useExchangeRate'
 
-/**
- * 默认表单值
- * @constant
- */
-const DEFAULT_VALUES = {
-  hashRate: "",
-  blocks: "",
-  powerConsumption: "",
-  electricityRate: "",
-  pool: "qli" as const,
-}
+// 定义矿池选项类型
+export type PoolOption = "placeholder" | "qli" | "apool";
 
-/**
- * 表单验证模式
- * @constant
- */
-const formSchema = z.object({
+// 表单数据模式定义
+export const profitCalculatorFormSchema = z.object({
   hashRate: z.string(),
+  power: z.string(),
+  electricityPrice: z.string(),
   blocks: z.string(),
-  powerConsumption: z.string(),
-  electricityRate: z.string(),
-  pool: z.enum(["qli", "apool"]).default("qli"),
-})
+  pool: z.enum(["placeholder", "qli", "apool"]),
+});
+
+// 导出表单数据类型
+export type ProfitCalculatorFormData = z.infer<typeof profitCalculatorFormSchema>;
 
 /**
  * 统计项属性接口
@@ -93,7 +87,7 @@ const StatItem = memo<StatItemProps>(({ label, value, icon, className, valueColo
 StatItem.displayName = "StatItem"
 
 interface NetworkStats {
-  solutionsPerHour: number;
+  solutionsPerHourCalculated: number;
   networkHashRate: number;
   blockValueUSD: number;
 }
@@ -102,15 +96,15 @@ interface NetworkStats {
  * 计算每日预计出块数
  * @param {number} hashRate - 用户算力
  * @param {number} networkHashRate - 网络总算力
- * @param {number} solutionsPerHour - 每小时出块数
+ * @param {number} solutionsPerHourCalculated - 每小时出块数
  * @returns {number} 每日预计出块数
  */
 const calculateDailyBlocks = (
   hashRate: number,
   networkHashRate: number,
-  solutionsPerHour: number
+  solutionsPerHourCalculated: number
 ): number => {
-  const blocksPerDay = solutionsPerHour * 24;
+  const blocksPerDay = solutionsPerHourCalculated * 24;
   return (hashRate / networkHashRate) * blocksPerDay;
 }
 
@@ -136,15 +130,55 @@ const calculateCosts = (powerConsumption: number, electricityRate: number): numb
 }
 
 /**
+ * 计算当前纪元的预计出块数
+ * @param {number} dailyBlocks - 每日预计出块数
+ * @returns {number} 当前预计出块数
+ */
+const calculateCurrentEpochBlocks = (dailyBlocks: number) => {
+  const now = new Date();
+  const currentDay = now.getUTCDay(); // 0 是周日，3 是周三
+  const currentHour = now.getUTCHours();
+  const currentMinute = now.getUTCMinutes();
+
+  // 计算从周三 12:00 UTC 到现在的天数
+  let daysSinceEpochStart;
+  if (currentDay < 3 || (currentDay === 3 && currentHour < 12)) {
+    // 如果当前时间在周三12:00之前，需要往回算到上周三
+    daysSinceEpochStart = currentDay + 7 - 3;
+  } else {
+    daysSinceEpochStart = currentDay - 3;
+  }
+
+  // 添加小时部分
+  let hoursSinceEpochStart = daysSinceEpochStart * 24;
+  if (currentDay === 3) {
+    // 周三特殊处理
+    if (currentHour >= 12) {
+      hoursSinceEpochStart += (currentHour - 12);
+    } else {
+      hoursSinceEpochStart += (currentHour + 12);
+    }
+  } else {
+    hoursSinceEpochStart += currentHour;
+  }
+
+  // 添加分钟部分
+  const totalHours = hoursSinceEpochStart + (currentMinute / 60);
+  
+  // 计算当前预计出块数
+  return (dailyBlocks * totalHours) / 24;
+};
+
+/**
  * 利润计算器 Hook
  * 根据输入的参数计算挖矿收益和成本
  * 
- * @param {z.infer<typeof formSchema>} formData - 表单数据
+ * @param {z.infer<typeof profitCalculatorFormSchema>} formData - 表单数据
  * @returns {Object} 计算结果，包括日收益、月收益、年收益和投资回报率
  */
-const useProfitCalculator = (formData: z.infer<typeof formSchema>) => {
-  const powerConsumption = parseFloat(formData.powerConsumption) || 0
-  const electricityRate = parseFloat(formData.electricityRate) || 0
+const useProfitCalculator = (formData: z.infer<typeof profitCalculatorFormSchema>) => {
+  const powerConsumption = parseFloat(formData.power) || 0
+  const electricityRate = parseFloat(formData.electricityPrice) || 0
   const blocks = parseFloat(formData.blocks) || 0
 
   const dailyReward = blocks * 1000 // 临时固定值
@@ -155,6 +189,8 @@ const useProfitCalculator = (formData: z.infer<typeof formSchema>) => {
     monthlyProfit: (dailyReward - dailyCost) * 30,
     yearlyProfit: (dailyReward - dailyCost) * 365,
     roi: dailyCost > 0 ? (dailyReward / dailyCost) * 100 : 0,
+    dailyReward: dailyReward,
+    dailyCost: dailyCost
   }
 }
 
@@ -179,16 +215,16 @@ const useProfitCalculator = (formData: z.infer<typeof formSchema>) => {
  * <ProfitCalculator />
  * ```
  */
-export const ProfitCalculator = memo(function ProfitCalculator() {
+export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
   const { t } = useTranslation()
   const [networkStats, setNetworkStats] = useState<NetworkStats>({
-    solutionsPerHour: 0,
+    solutionsPerHourCalculated: 0,
     networkHashRate: 0,
     blockValueUSD: 0
   });
 
   const [blockValue, setBlockValue] = useState(0)
-  const [apoolRatio, setApoolRatio] = useState(0)
+  const [apoolRatio, setApoolRatio] = useState<number>(0);
 
   // 获取网络状态数据
   useEffect(() => {
@@ -205,7 +241,7 @@ export const ProfitCalculator = memo(function ProfitCalculator() {
 
         setNetworkStats({
           networkHashRate: blockValueData.networkHashRate,
-          solutionsPerHour: blockValueData.solutionsPerHour,
+          solutionsPerHourCalculated: blockValueData.solutionsPerHourCalculated,
           blockValueUSD: blockValueData.blockValueUSD
         });
 
@@ -215,7 +251,7 @@ export const ProfitCalculator = memo(function ProfitCalculator() {
         setBlockValue(blockValueData.blockValueUSD);
       } catch {
         if (!isMounted) return;
-        setNetworkStats({ networkHashRate: 0, solutionsPerHour: 0, blockValueUSD: 0 });
+        setNetworkStats({ networkHashRate: 0, solutionsPerHourCalculated: 0, blockValueUSD: 0 });
         setApoolRatio(0);
         setBlockValue(0);
       }
@@ -230,38 +266,53 @@ export const ProfitCalculator = memo(function ProfitCalculator() {
     };
   }, []);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: DEFAULT_VALUES,
+  const form = useForm<ProfitCalculatorFormData>({
+    resolver: zodResolver(profitCalculatorFormSchema),
+    defaultValues: {
+      hashRate: '',
+      power: '',
+      electricityPrice: '',
+      blocks: '',
+      pool: 'placeholder'
+    }
   })
 
   const formData = form.watch();
-  const hashRate = parseFloat(formData.hashRate) || 0;
-  const blocks = parseFloat(formData.blocks) || 0;
-  const powerConsumption = parseFloat(formData.powerConsumption) || 0;
-  const electricityRate = parseFloat(formData.electricityRate) || 0;
+  const [hashRate, setHashRate] = useState(formData.hashRate || 0);
+  const [blocks, setBlocks] = useState(formData.blocks || 0);
+  const [power, setPower] = useState(formData.power || 0);
+  const [electricityPrice, setElectricityPrice] = useState(formData.electricityPrice || 0);
+
+  // 获取 Apool 数据
+  useEffect(() => {
+    if (formData.pool === "apool") {
+      QubicAPI.getApoolStats().then((data) => {
+        if (data.status === "success" && data.data.result) {
+          const ratio = data.data.result.total_share / data.data.result.accepted_solution;
+          setApoolRatio(ratio || 0);
+        }
+      });
+    }
+  }, [formData.pool]);
 
   // 计算每日预计出块数
   const expectedDailyBlocks = useMemo(() => {
-    if (!hashRate || !networkStats.networkHashRate || !networkStats.solutionsPerHour) return 0;
-
-    const rawExpectedBlocks = calculateDailyBlocks(
-      hashRate,
+    if (!hashRate || !networkStats.networkHashRate || !networkStats.solutionsPerHourCalculated) return 0;
+    
+    const blocks = calculateDailyBlocks(
+      Number(hashRate),
       networkStats.networkHashRate,
-      networkStats.solutionsPerHour
+      networkStats.solutionsPerHourCalculated
     );
 
-    // 如果是 Apool，预计出块数需要除以 solutions/shares 比例
-    if (formData.pool === "apool" && apoolRatio > 0) {
-      return rawExpectedBlocks / apoolRatio;
-    }
-    return rawExpectedBlocks;
-  }, [hashRate, networkStats.networkHashRate, networkStats.solutionsPerHour, formData.pool, apoolRatio]);
+    return formData.pool === "apool" && apoolRatio > 0 ? blocks * apoolRatio : blocks;
+  }, [hashRate, networkStats, formData.pool, apoolRatio]);
 
   // 计算幸运度
-  const luck = calculateLuck(blocks, expectedDailyBlocks);
+  const luck = calculateLuck(Number(blocks), expectedDailyBlocks);
 
-  const baseStats = useProfitCalculator(formData)
+  // 直接使用 formData，因为属性名已经匹配
+  const baseStats = useProfitCalculator(formData);
 
   // 格式化金额显示
   const { formatCurrency } = useExchangeRate()
@@ -275,20 +326,20 @@ export const ProfitCalculator = memo(function ProfitCalculator() {
     const calculateBaseProfit = (blocks: number) => {
       let profit = 0;
       if (formData.pool === "qli") {
-        // QLi pool: 85% of block value
-        profit = blocks * blockValue * 0.85;
-      } else {
-        // Apool: Convert shares to solutions using the ratio, then multiply by block value
-        const estimatedSolutions = blocks * apoolRatio;
-        profit = estimatedSolutions * blockValue * 0.9; // Apool takes 10% fee
+        // QLi pool: 80% of block value
+        profit = blocks * blockValue * 0.8;
+      } else if (formData.pool === "apool" && apoolRatio > 0) {
+        // Apool: 一个 Share 的价值 = 块价值 / apoolRatio * 0.9 (90% 收益)
+        const shareValue = blockValue / apoolRatio * 0.9;
+        profit = blocks * shareValue;
       }
       return profit;
     };
 
-    // 1. 当前总收益 = 用户输入块数转换后 * 单个块价值
-    const currentProfit = calculateBaseProfit(blocks);
+    // 1. 当前总收益 = 用户输入块数 * 每块收益
+    const currentProfit = calculateBaseProfit(Number(blocks));
 
-    // 2. 每日预期收益 = 每日预计出块数转换后 * 单个块价值
+    // 2. 每日预期收益 = 每日预计出块数 * 每块收益
     const dailyExpectedProfit = calculateBaseProfit(expectedDailyBlocks);
 
     // 3. 每周和每月预期收益
@@ -311,11 +362,11 @@ export const ProfitCalculator = memo(function ProfitCalculator() {
   // 成本分析计算
   const costStats = useMemo(() => {
     // 1. 更新功耗和电费单价显示
-    const powerDisplay = `${powerConsumption}W`;
-    const rateDisplay = formatUSD(electricityRate);
+    const powerDisplay = `${power}W`;
+    const rateDisplay = formatUSD(Number(electricityPrice));
 
     // 2. 计算每日和每月电费支出（使用USD进行计算）
-    const dailyPowerCost = (powerConsumption * 24) / 1000 * electricityRate;
+    const dailyPowerCost = (Number(power) * 24) / 1000 * Number(electricityPrice);
     const monthlyPowerCost = dailyPowerCost * 30;
 
     // 3. 计算预计每日和每月净收入（使用USD进行计算）
@@ -330,8 +381,15 @@ export const ProfitCalculator = memo(function ProfitCalculator() {
       dailyNetIncome: formatUSD(dailyNetIncome),
       monthlyNetIncome: formatUSD(monthlyNetIncome)
     };
-  }, [powerConsumption, electricityRate, profitStats.rawDailyProfit, profitStats.rawMonthlyProfit, formatUSD]);
+  }, [power, electricityPrice, profitStats.rawDailyProfit, profitStats.rawMonthlyProfit, formatUSD]);
 
+  // 计算当前预计出块数
+  const currentEpochBlocks = useMemo(() => {
+    const blocks = calculateCurrentEpochBlocks(expectedDailyBlocks);
+    return blocks;
+  }, [expectedDailyBlocks]);
+
+  // 渲染组件
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="border-b py-4">
@@ -340,149 +398,27 @@ export const ProfitCalculator = memo(function ProfitCalculator() {
             <Calculator className="h-4 w-4" />
             {t('home.calculator.title')}
           </CardTitle>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <Settings className="h-4 w-4" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-80">
-              <div className="mb-4 text-sm text-muted-foreground">
-                {t('home.calculator.tip')}
-              </div>
-              <Form {...form}>
-                <form className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="pool"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t('home.calculator.pool')}</FormLabel>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex flex-row space-x-4"
-                          >
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="qli" />
-                              </FormControl>
-                              <FormLabel className="font-normal">
-                                {t('home.calculator.pool_qli')}
-                              </FormLabel>
-                            </FormItem>
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="apool" />
-                              </FormControl>
-                              <FormLabel className="font-normal">
-                                {t('home.calculator.pool_apool')}
-                              </FormLabel>
-                            </FormItem>
-                          </RadioGroup>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="hashRate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center gap-2">
-                          <Zap className="h-4 w-4" />
-                          {t('home.calculator.hashRate')}
-                        </FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Input
-                              type="number"
-                              placeholder="0"
-                              {...field}
-                              className="pr-12"
-                            />
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-muted-foreground text-sm">
-                              {t('home.calculator.hashRateUnit')}
-                            </div>
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="blocks"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center gap-2">
-                          <Timer className="h-4 w-4" />
-                          {t('home.calculator.blocks')}
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            placeholder="0"
-                            {...field}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="powerConsumption"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center gap-2">
-                          <Zap className="h-4 w-4" />
-                          {t('home.calculator.powerConsumption')}
-                        </FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Input
-                              type="number"
-                              placeholder="0"
-                              {...field}
-                              className="pr-12"
-                            />
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-muted-foreground text-sm">
-                              {t('home.calculator.powerConsumptionUnit')}
-                            </div>
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="electricityRate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center gap-2">
-                          <DollarSign className="h-4 w-4" />
-                          {t('home.calculator.electricityRate')}
-                        </FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Input
-                              type="number"
-                              placeholder="0"
-                              {...field}
-                              className="pr-12"
-                            />
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-muted-foreground text-sm">
-                              {t('home.calculator.electricityRateUnit')}
-                            </div>
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                </form>
-              </Form>
-            </PopoverContent>
-          </Popover>
+          <div className="flex items-center gap-2">
+            <Select
+              value={formData.pool}
+              onValueChange={(value: PoolOption) => form.setValue('pool', value)}
+            >
+              <SelectTrigger className="w-[180px] h-8">
+                <SelectValue placeholder={t('home.calculator.pool_placeholder')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="placeholder" disabled>
+                  {t('home.calculator.pool_placeholder')}
+                </SelectItem>
+                <SelectItem value="qli">
+                  {t('home.calculator.pool_qli')}
+                </SelectItem>
+                <SelectItem value="apool">
+                  {t('home.calculator.pool_apool')}
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="flex-1 p-0 overflow-hidden">
@@ -490,30 +426,104 @@ export const ProfitCalculator = memo(function ProfitCalculator() {
           <div className="p-6 space-y-6">
             <div className="space-y-4">
               <h4 className="text-sm font-medium flex items-center gap-2">
+                <Settings className="h-4 w-4" />
+                {t('home.calculator.baseData')}
+              </h4>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Cpu className="h-4 w-4" />
+                    <Label>{t('home.calculator.hashRate')}</Label>
+                  </div>
+                  <div className="relative w-32">
+                    <Input
+                      type="number"
+                      value={hashRate}
+                      onChange={(e) => setHashRate(Number(e.target.value))}
+                      className="pr-12 h-8"
+                    />
+                    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                      <span className="text-sm text-muted-foreground">it/s</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Box className="h-4 w-4" />
+                    <Label htmlFor="blocks">
+                      {t('home.calculator.blocks')}
+                      {formData.pool === "qli" ? " (Solutions)" : " (Shares)"}
+                    </Label>
+                  </div>
+                  <Input
+                    id="blocks"
+                    type="number"
+                    value={blocks}
+                    onChange={(e) => setBlocks(Number(e.target.value))}
+                    className="w-32 h-8"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Zap className="h-4 w-4" />
+                    <Label>{t('home.calculator.power')}</Label>
+                  </div>
+                  <div className="relative w-32">
+                    <Input
+                      type="number"
+                      value={power}
+                      onChange={(e) => setPower(Number(e.target.value))}
+                      className="pr-8 h-8"
+                    />
+                    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                      <span className="text-sm text-muted-foreground">{t('home.calculator.powerUnit')}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="h-4 w-4" />
+                    <Label>{t('home.calculator.electricityPrice')}</Label>
+                  </div>
+                  <div className="relative w-32">
+                    <Input
+                      type="number"
+                      value={electricityPrice}
+                      onChange={(e) => setElectricityPrice(Number(e.target.value))}
+                      className="pr-14 h-8"
+                    />
+                    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                      <span className="text-sm text-muted-foreground">{t('home.calculator.electricityPriceUnit')}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Separator />
+            <div className="space-y-4">
+              <h4 className="text-sm font-medium flex items-center gap-2">
                 <Timer className="h-4 w-4" />
-                {t('home.calculator.basicInfo')}
+                {t('home.calculator.miningInfo')}
               </h4>
               <div className="space-y-2">
                 <StatItem
-                  icon={<Timer className="h-4 w-4" />}
-                  label={t('home.calculator.hashRate')}
-                  value={`${hashRate.toLocaleString()} ${t('home.calculator.hashRateUnit')}`}
-                />
-                <StatItem
-                  icon={<Timer className="h-4 w-4" />}
-                  label={t('home.calculator.blocks')}
-                  value={blocks.toString()}
-                />
-                <StatItem
-                  icon={<Timer className="h-4 w-4" />}
-                  label={t('home.calculator.expectedDailyBlocks')}
-                  value={expectedDailyBlocks.toFixed(2)}
-                />
-                <StatItem
-                  icon={<Timer className="h-4 w-4" />}
+                  icon={<Heart className="h-4 w-4" />}
                   label={t('home.calculator.luck')}
                   value={`${luck.toFixed(2)}%`}
                   valueColor={luck < 100 ? "text-red-500" : "text-green-500"}
+                />
+                <StatItem
+                  icon={<Box className="h-4 w-4" />}
+                  label={t('home.calculator.expectedCurrentBlocks')}
+                  value={currentEpochBlocks.toFixed(2)}
+                />
+                <StatItem
+                  icon={<Box className="h-4 w-4" />}
+                  label={t('home.calculator.expectedDailyBlocks')}
+                  value={expectedDailyBlocks.toFixed(2)}
                 />
               </div>
             </div>
@@ -554,16 +564,6 @@ export const ProfitCalculator = memo(function ProfitCalculator() {
               </h4>
               <div className="space-y-2">
                 <StatItem
-                  icon={<Zap className="h-4 w-4" />}
-                  label={t('home.calculator.powerConsumption')}
-                  value={costStats.powerConsumptionDisplay}
-                />
-                <StatItem
-                  icon={<DollarSign className="h-4 w-4" />}
-                  label={t('home.calculator.electricityRate')}
-                  value={costStats.electricityRateDisplay}
-                />
-                <StatItem
                   icon={<DollarSign className="h-4 w-4" />}
                   label={t('home.calculator.dailyPowerCost')}
                   value={costStats.dailyPowerCost}
@@ -577,13 +577,13 @@ export const ProfitCalculator = memo(function ProfitCalculator() {
                   icon={<DollarSign className="h-4 w-4" />}
                   label={t('home.calculator.dailyNetIncome')}
                   value={costStats.dailyNetIncome}
-                  valueColor={profitStats.rawDailyProfit - (powerConsumption * 24) / 1000 * electricityRate < 0 ? "text-red-500" : "text-green-500"}
+                  valueColor={profitStats.rawDailyProfit - (Number(power) * 24) / 1000 * Number(electricityPrice) < 0 ? "text-red-500" : "text-green-500"}
                 />
                 <StatItem
                   icon={<DollarSign className="h-4 w-4" />}
                   label={t('home.calculator.monthlyNetIncome')}
                   value={costStats.monthlyNetIncome}
-                  valueColor={profitStats.rawMonthlyProfit - (powerConsumption * 24 * 30) / 1000 * electricityRate < 0 ? "text-red-500" : "text-green-500"}
+                  valueColor={profitStats.rawMonthlyProfit - (Number(power) * 24 * 30) / 1000 * Number(electricityPrice) < 0 ? "text-red-500" : "text-green-500"}
                 />
               </div>
             </div>

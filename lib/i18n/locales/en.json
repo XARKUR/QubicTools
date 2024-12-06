@@ -32,7 +32,7 @@
     "dashboard": "Profit Calculator",
     "vanityAddress": "Vanity Address Generator",
     "batchWallet": "Batch Address Generate",
-    "batchBalance": "Batch Check Balance"
+    "batchBalance": "Batch Balance Query"
   },
   "sponsor": {
     "dialog": {
@@ -109,8 +109,8 @@
       "publicId": "Public Address",
       "privateKey": "Seed",
       "copyPublic": "Copy Public Address",
-      "warning": "Seed information will not be saved, please import to mobile wallet promptly",
-      "warningClipboard": "To prevent seed leakage from clipboard, please use Qubic official mobile wallet to scan QR code for import",
+      "warning": "Disclaimer: This tool is for learning and entertainment purposes only, please do not store large assets! For generation security, please check the project code yourself.",
+      "warningClipboard": "The seed information will not be saved. To prevent the seed from leaking through the clipboard, please promptly scan the QR code with the official Qubic mobile wallet for import.",
       "scanQRCode": "Scan QR Code for Seed",
       "googlePlay": "Google Play",
       "appStore": "App Store"
@@ -133,7 +133,7 @@
       "start": "Start Generation"
     },
     "mobile": {
-      "description": "To prevent seed leakage from clipboard, it is recommended to use Qubic official mobile wallet to scan QR code for import"
+      "description": "The seed information will not be saved. Please promptly scan the QR code with the official Qubic mobile wallet for import."
     },
     "store": {
       "googlePlay": "Google Play",
@@ -141,7 +141,7 @@
     },
     "results": {
       "title": "Generation Results",
-      "notice": "Seed information will not be saved, please import to Qubic official mobile wallet or export table in time",
+      "notice": "Disclaimer: This tool is for learning and entertainment purposes only, please do not store large assets! For generation security, please check the project code yourself.",
       "wallet": "Address",
       "scan": "Use Qubic official mobile wallet to scan QR code to import seed"
     },
@@ -163,7 +163,8 @@
   "batchBalance": {
     "title": "Batch Balance Query",
     "settings": {
-      "title": "Query Settings",
+      "title": "Batch Balance Query",
+      "description": "Query balances for multiple addresses",
       "addressList": {
         "label": "Address List (One per line)",
         "placeholder": "Enter addresses to query, one per line",
@@ -198,11 +199,13 @@
         "emptyAddresses": "Please enter addresses to query",
         "queryFailed": "Query failed, please try again",
         "copyFailed": "Failed to copy address",
+        "searchFailed": "Search failed",
         "deleteFailed": "Failed to delete record"
       },
       "success": {
         "copySuccess": "Address copied to clipboard",
-        "deleteSuccess": "Record deleted successfully"
+        "searchSuccess": "Query successful",
+        "deleteSuccess": "Record deleted"
       }
     }
   },
@@ -222,19 +225,22 @@
     },
     "calculator": {
       "title": "Profit Calculator",
+      "baseData": "Base Data",
       "tip": "For data accuracy, please query during non-idle time",
       "pool": "Mining Pool",
+      "pool_placeholder": "Select Pool",
       "pool_qli": "QLi (Reward 85%)",
       "pool_apool": "Apool (PPS)",
       "hashRate": "Hash Rate",
       "hashRateUnit": "it/s",
-      "blocks": "Blocks Mined (Solutions/Shares)",
-      "powerConsumption": "Power Consumption",
-      "powerConsumptionUnit": "W",
-      "electricityRate": "Electricity Rate",
-      "electricityRateUnit": "$/kWh",
+      "blocks": "Blocks Mined",
+      "expectedCurrentBlocks": "Current Estimated Blocks",
+      "power": "Power Consumption",
+      "powerUnit": "W",
+      "electricityPrice": "Electricity Rate",
+      "electricityPriceUnit": "$/kWh",
       "calculate": "Calculate",
-      "basicInfo": "Basic Information",
+      "miningInfo": "Mining Information",
       "expectedDailyBlocks": "Expected Daily Blocks",
       "luck": "Luck Value",
       "profitAnalysis": "Profit Analysis",
@@ -267,15 +273,15 @@
       },
       "solutionsPerHour": {
         "title": "Solutions Per Hour",
-        "description": "Average Solutions/Hour in Epoch"
+        "description": "Current Solutions Per Hour"
       },
-      "coinsPerSolution": {
-        "title": "Coins Per Solution",
-        "description": "Estimated Coins Per Solution"
+      "totalBlocks": {
+        "title": "Total Network Solutions",
+        "description": "Current Total Network Solutions"
       },
-      "blockValue": {
-        "title": "Solution Value",
-        "description": "Estimated Value Per Solution"
+      "solutionsPerHourCalculated": {
+        "title": "Average Solutions Per Hour",
+        "description": "Current Average Solutions Per Hour"
       },
       "loading": "Loading..."
     }

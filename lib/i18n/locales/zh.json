@@ -50,7 +50,7 @@
       },
       "batchWallet": {
         "title": "🎉恭喜！批量地址生成成功🎉",
-        "description": "如果您觉得这个批量地址生成器有帮助，请考虑支持项目，帮助维护和改进网站。"
+        "description": "如果您觉得这个批量地址生成有帮助，请考虑支持项目，帮助维护和改进网站。"
       }
     },
     "level": {
@@ -106,11 +106,11 @@
     },
     "result": {
       "title": "生成结果",
-      "publicId": "公开地址",
+      "publicId": "生成地址",
       "privateKey": "种子",
       "copyPublic": "复制公钥",
-      "warning": "种子信息不会进行保存，请及时导入移动钱包",
-      "warningClipboard": "为防止种子从剪切板泄漏，请使用 Qubic 官方移动钱包扫描二维码导入",
+      "warning": "免责声明：本工具仅供学习娱乐使用，请勿存放大额资产！关于生成安全性请自行查看项目代码。",
+      "warningClipboard": "种子信息不会进行保存，为防止种子从剪切板泄漏，请及时 Qubic 官方移动钱包扫描二维码导入",
       "scanQRCode": "扫描二维码获取种子",
       "googlePlay": "Google Play",
       "appStore": "App Store"
@@ -133,7 +133,7 @@
       "start": "开始生成"
     },
     "mobile": {
-      "description": "为防止种子从剪切板泄漏，推荐使用 Qubic 官方移动钱包扫描二维码导入"
+      "description": "种子信息不会进行保存，请及时使用 Qubic 官方移动钱包扫描二维码导入或导出文档"
     },
     "store": {
       "googlePlay": "Google Play",
@@ -141,7 +141,7 @@
     },
     "results": {
       "title": "生成结果",
-      "notice": "种子信息不会进行保存，请及时导入 Qubic 官方移动钱包或导出表格",
+      "notice": "免责声明：本工具仅供学习娱乐使用，请勿存放大额资产！关于生成安全性请自行查看项目代码。",
       "wallet": "地址",
       "scan": "使用 Qubic 官方移动钱包扫描二维码导入种子"
     },
@@ -198,10 +198,12 @@
         "emptyAddresses": "请输入要查询的地址",
         "queryFailed": "查询失败，请重试",
         "copyFailed": "复制地址失败",
+        "searchFailed": "搜索失败",
         "deleteFailed": "删除记录失败"
       },
       "success": {
         "copySuccess": "地址已复制到剪贴板",
+        "searchSuccess": "查询成功",
         "deleteSuccess": "记录已删除"
       }
     }
@@ -222,19 +224,23 @@
     },
     "calculator": {
       "title": "收益计算器",
+      "baseData": "基础数据",
       "tip": "为了数据准确，请在非 idle 时间进行查询",
       "pool": "矿池",
+      "pool_placeholder": "请选择矿池",
       "pool_qli": "QLi (Reward 85%)",
-      "pool_apool": "Apool (PPS)",
+      "pool_apool": "APool (PPS)",
+      "poolRequired": "请先选择矿池",
       "hashRate": "算力",
       "hashRateUnit": "it/s",
-      "blocks": "已出块数 (Solutions/Shares)",
-      "powerConsumption": "功耗",
-      "powerConsumptionUnit": "W",
-      "electricityRate": "电价",
-      "electricityRateUnit": "￥/kWh",
+      "blocks": "已出块数",
+      "expectedCurrentBlocks": "当前预计出块数",
+      "power": "功耗",
+      "powerUnit": "W",
+      "electricityPrice": "电价",
+      "electricityPriceUnit": "￥/kWh",
       "calculate": "计算",
-      "basicInfo": "基础信息",
+      "miningInfo": "挖矿信息",
       "expectedDailyBlocks": "每日预计出块数",
       "luck": "幸运值",
       "profitAnalysis": "收益分析",
@@ -267,15 +273,15 @@
       },
       "solutionsPerHour": {
         "title": "每小时出块数",
-        "description": "纪元每小时平均出块数"
+        "description": "当前每小时出块数"
       },
-      "coinsPerSolution": {
-        "title": "块币数",
-        "description": "预计单个 Solution 币数"
+      "totalBlocks": {
+        "title": "全网总块数",
+        "description": "当前全网总块数"
       },
-      "blockValue": {
-        "title": "块价值",
-        "description": "预计单个 Solution 价值"
+      "solutionsPerHourCalculated": {
+        "title": "纪元平均出块数",
+        "description": "当前平均出块数"
       },
       "loading": "加载中..."
     }
