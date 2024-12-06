@@ -79,9 +79,7 @@
     "typescript": "^5",
     "worker-loader": "^3.0.8"
   },
-  {
-    "resolutions": {
-      "ethereumjs-abi": "0.6.8"
-    }
+  "resolutions": {
+    "ethereumjs-abi": "0.6.8"
   }
 }
