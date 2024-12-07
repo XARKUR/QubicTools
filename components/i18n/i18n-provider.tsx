@@ -14,7 +14,6 @@ export function I18nProvider({ children }: PropsWithChildren) {
     }
     setMounted(true)
 
-    // 监听语言变化
     const handleLanguageChange = (lang: string) => {
       localStorage.setItem('preferred-language', lang)
     }

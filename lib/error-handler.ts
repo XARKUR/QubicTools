@@ -13,7 +13,6 @@ interface CustomError {
 
 export const handleError = (error: CustomError, context: string = ''): ErrorResponse => {
   console.error(`Error in ${context}:`, error);
-  // 这里可以集成toast通知或其他错误提示方式
   return {
     success: false,
     message: error.message || '操作失败，请重试'

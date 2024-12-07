@@ -50,10 +50,8 @@ export default function BatchBalance() {
     try {
       setIsLoading(true)
       
-      // 清空之前的结果
       setResults([])
       
-      // 创建查询队列
       const queue = [...addresses]
       const results: Array<{
         id: number;
@@ -62,7 +60,6 @@ export default function BatchBalance() {
         status: "success" | "error";
       }> = []
       
-      // 创建查询函数
       const queryBalance = async (address: string, index: number) => {
         try {
           const response = await fetch(`https://rpc.qubic.org/v1/balances/${address}`, {
@@ -75,12 +72,10 @@ export default function BatchBalance() {
           if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
           const data = await response.json()
           
-          // 处理新的响应格式
           if (data && data.balance && typeof data.balance.balance === 'string') {
             return {
               id: index + 1,
               address: data.balance.id,
-              // 将字符串余额转换为数字
               balance: parseInt(data.balance.balance, 10),
               status: "success" as const
             }
@@ -98,7 +93,6 @@ export default function BatchBalance() {
         }
       }
 
-      // 并发执行查询
       const promises = []
       for (let i = 0; i < 1; i++) {
         promises.push(
@@ -110,10 +104,9 @@ export default function BatchBalance() {
               try {
                 const result = await queryBalance(address, results.length)
                 results.push(result)
-                setResults([...results]) // 更新UI显示
+                setResults([...results]) 
               } catch (error) {
                 console.error(`Worker ${i} error:`, error)
-                // 添加错误结果
                 const errorResult = {
                   id: results.length + 1,
                   address,

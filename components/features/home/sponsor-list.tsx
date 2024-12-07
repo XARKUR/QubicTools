@@ -52,10 +52,8 @@ const SponsorList = React.memo(function SponsorListComponent() {
       try {
         const response = await QubicAPI.getTransfers();
         
-        // 获取所有交易
         const transactions = response.data?.transfers?.transactions || [];
         
-        // 处理交易数据
         const processedSponsors = transactions
           .flatMap((tick: { transactions: Array<{ transaction: { sourceId: string; amount: string } }> }) => 
             tick.transactions.map(trans => ({
@@ -65,18 +63,18 @@ const SponsorList = React.memo(function SponsorListComponent() {
             }))
           )
           .filter((sponsor: SponsorData) => sponsor.address && sponsor.amount > 0)
-          .sort((a: SponsorData, b: SponsorData) => b.amount - a.amount); // 按金额降序排序
+          .sort((a: SponsorData, b: SponsorData) => b.amount - a.amount); 
 
         setSponsors(processedSponsors);
       } catch (error) {
         handleAPIError(error);
         console.error('Error fetching sponsors:', error);
-        setSponsors([]); // 错误时设置空数组
+        setSponsors([]); 
       }
     };
 
     fetchSponsors();
-    const interval = setInterval(fetchSponsors, 300000); // 每5分钟更新一次
+    const interval = setInterval(fetchSponsors, 300000); 
     return () => clearInterval(interval);
   }, []);
 

@@ -25,7 +25,6 @@ export default function VanityAddressPage() {
   const [status, setStatus] = useState(t('vanityAddress.status.waiting'))
   const [showSponsorDialog, setShowSponsorDialog] = useState(false)
 
-  // 工作线程状态管理
   const workerStates = useRef<{
     [key: number]: {
       attempts: number;
@@ -36,7 +35,6 @@ export default function VanityAddressPage() {
     }
   }>({});
 
-  // 性能监控
   const performanceMonitor = useRef({
     startTime: 0,
     totalAttempts: 0,
@@ -58,14 +56,14 @@ export default function VanityAddressPage() {
       const now = Date.now();
       const duration = now - this.lastUpdate;
       
-      if (duration < 500) return; // 至少500ms更新一次
+      if (duration < 500) return; 
       
       let totalSpeed = 0;
       let totalAttempts = 0;
       let activeWorkers = 0;
       
       Object.values(workerUpdates).forEach(worker => {
-        if (now - worker.lastUpdate < 1000) { // 只计算最近活跃的worker
+        if (now - worker.lastUpdate < 1000) { 
           totalSpeed += worker.speed;
           totalAttempts += worker.attempts;
           activeWorkers++;
@@ -77,12 +75,10 @@ export default function VanityAddressPage() {
         this.totalAttempts = totalAttempts;
         this.speedHistory.push(this.currentSpeed);
         
-        // 保持历史记录在合理范围
         if (this.speedHistory.length > 10) {
           this.speedHistory.shift();
         }
         
-        // 计算平均速度
         this.averageSpeed = Math.round(
           this.speedHistory.reduce((a, b) => a + b, 0) / 
           this.speedHistory.length
@@ -98,7 +94,6 @@ export default function VanityAddressPage() {
     }
   });
 
-  // 动态调整 worker 数量
   const MAX_WORKERS = useMemo(() => {
     const cores = navigator.hardwareConcurrency || 4;
     return Math.max(1, Math.floor(cores * 0.8));
@@ -106,21 +101,17 @@ export default function VanityAddressPage() {
 
   const workersRef = useRef<Worker[]>([]);
 
-  // 计算难度（考虑大小写）
   const calculateDifficulty = useCallback((pattern: string): number => {
     if (!pattern) return 0;
     const length = pattern.length;
-    // 26个字母，每个位置可能大写或小写
     return Math.pow(26, length);
   }, []);
 
-  // 实时更新难度
   useEffect(() => {
     const newDifficulty = calculateDifficulty(pattern);
     setDifficulty(newDifficulty);
   }, [pattern, calculateDifficulty]);
 
-  // 更新工作线程状态
   const updateWorkerState = useCallback((workerId: number, data: any) => {
     const now = Date.now();
     
@@ -139,7 +130,6 @@ export default function VanityAddressPage() {
     }
   }, []);
 
-  // 定期更新UI
   useEffect(() => {
     if (!isPaused && startTime) {
       const intervalId = setInterval(() => {
@@ -154,7 +144,6 @@ export default function VanityAddressPage() {
     }
   }, [isPaused, startTime]);
 
-  // 清理函数
   const cleanup = useCallback(() => {
     workersRef.current.forEach(worker => {
       worker.postMessage({ action: 'stop' });
@@ -175,12 +164,10 @@ export default function VanityAddressPage() {
     setSpeed(0);
     setGeneratedAddress(null);
     
-    // 重置性能监控
     performanceMonitor.current.reset();
     workerStates.current = {};
     setDifficulty(calculateDifficulty(pattern));
 
-    // 创建工作线程
     for (let i = 0; i < MAX_WORKERS; i++) {
       const worker = new Worker(
         new URL('@/workers/vanity.worker.ts', import.meta.url)
@@ -273,14 +260,12 @@ export default function VanityAddressPage() {
     setPattern(newPattern);
   }, []);
 
-  // 监听地址生成成功
   useEffect(() => {
     if (generatedAddress) {
       setShowSponsorDialog(true)
     }
   }, [generatedAddress])
 
-  // 清理函数
   useEffect(() => {
     return cleanup;
   }, [cleanup]);

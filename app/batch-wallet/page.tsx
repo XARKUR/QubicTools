@@ -56,11 +56,9 @@ export default function BatchWallet() {
       setWallets([])
       completedRef.current = 0
 
-      // 清理现有workers
       workersRef.current.forEach(worker => worker.terminate())
       workersRef.current = []
 
-      // 创建新的worker
       const worker = new Worker(new URL('@/workers/wallet.worker.ts', import.meta.url))
       workersRef.current.push(worker)
 
@@ -71,7 +69,6 @@ export default function BatchWallet() {
         worker.terminate()
       }
 
-      // 生成随机种子并直接发送给worker
       const generateRandomSeed = () => {
         const characters = 'abcdefghijklmnopqrstuvwxyz';
         let result = '';
@@ -81,7 +78,6 @@ export default function BatchWallet() {
         return result;
       }
 
-      // 按需生成和处理，避免一次性存储大量数据
       for (let i = 0; i < count; i++) {
         worker.postMessage({ seed: generateRandomSeed() })
       }
@@ -99,7 +95,6 @@ export default function BatchWallet() {
           completedRef.current++
           setProgress(Math.round((completedRef.current / count) * 100))
           
-          // 直接添加到wallets数组，不保留额外副本
           setWallets(prev => [...prev, { publicId, seed }])
 
           if (completedRef.current === count) {
@@ -117,7 +112,6 @@ export default function BatchWallet() {
   }, [walletCount, forceStart, isOffline, t])
 
   const handleExport = useCallback(() => {
-    // 添加表头和序号
     const headers = [t('batchWallet.export.headers.index'), t('batchWallet.export.headers.address'), t('batchWallet.export.headers.privateKey')].join(',')
     const rows = wallets.map((wallet, index) => 
       [
@@ -127,25 +121,20 @@ export default function BatchWallet() {
       ].join(',')
     )
     
-    // 组合CSV内容，添加表头
     const csvContent = [headers, ...rows].join('\n')
     
-    // 创建带BOM的UTF-8编码，确保Excel正确显示中文
     const BOM = '\uFEFF'
     const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8' })
     
-    // 使用更有意义的文件名，包含日期
     const date = new Date().toISOString().split('T')[0]
     const link = document.createElement('a')
     link.href = URL.createObjectURL(blob)
     link.download = `qubic_wallets_${date}.csv`
     link.click()
     
-    // 清理URL对象
     setTimeout(() => URL.revokeObjectURL(link.href), 100)
   }, [wallets, t])
 
-  // 添加组件卸载时的清理
   useEffect(() => {
     return () => {
       setWallets([])

@@ -1,36 +1,203 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Qubic Tools
 
-## Getting Started
+A professional Qubic blockchain toolkit providing secure address generation, and mining analysis capabilities.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Profit Calculator
+- Real-time mining profit and cost analysis
+- Multiple pool support (QLI, APool)
+- Network status monitoring
+- Automatic market data updates
+- Key metrics:
+  - Expected block rewards
+  - Current epoch statistics
+  - Power cost analysis
+  - Network hashrate monitoring
+  - Profit trend analysis
+
+### Batch Wallet Generation
+- High-performance batch wallet generation
+- Offline operation support
+- CSV format export
+- Real-time progress tracking
+- Multiple security protection mechanisms
+
+### Vanity Address Generation
+- Custom prefix/suffix address generation
+- Multi-threaded parallel processing
+- Smart CPU load management
+- Real-time speed monitoring
+- Adaptive performance optimization
+
+### Batch Balance Query
+- Batch address balance queries
+- Responsive interface design
+- Query result visualization
+
+## Security Features
+
+### Encryption and Random Number Generation
+The project implements cryptographically secure random number generation:
+```typescript
+function generateRandomSeed(): string {
+  const characters = 'abcdefghijklmnopqrstuvwxyz';
+  const array = new Uint8Array(55);
+  
+  // Use cryptographically secure random number generator
+  crypto.getRandomValues(array);
+  
+  let result = '';
+  for (let i = 0; i < 55; i++) {
+    result += characters.charAt(array[i] % characters.length);
+  }
+  return result;
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Private Key Protection
+1. **Secure Memory Cleanup**
+```typescript
+function secureCleanup(obj: any) {
+  if (!obj) return;
+  
+  for (const key in obj) {
+    if (typeof obj[key] === 'string') {
+      // Multiple overwrites of string content
+      const len = obj[key].length;
+      for (let i = 0; i < 3; i++) {
+        obj[key] = crypto.getRandomValues(new Uint8Array(len * 2))
+          .reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
+      }
+      obj[key] = '';
+    } else if (typeof obj[key] === 'object') {
+      secureCleanup(obj[key]);
+    }
+  }
+  
+  for (const key in obj) {
+    obj[key] = null;
+  }
+}
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. **Worker Thread Isolation**
+```typescript
+self.addEventListener('unload', () => {
+  try {
+    // Terminate running operations
+    state.running = false;
+    
+    // Clear monitoring data
+    state.monitor.reset();
+    
+    // Secure state cleanup
+    secureCleanup(state.helper);
+    state.helper = null;
+    
+    // Reset state data
+    state.pattern = '';
+    state.type = 'prefix';
+    state.workerId = 0;
+    state.cpuUsage = 0;
+  } catch (error) {
+    console.error('Cleanup error:', error);
+  }
+});
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Exception Handling**
+```typescript
+try {
+  const result = await generateAndCheck();
+  // Process result
+} finally {
+  // Ensure sensitive data cleanup
+  if (seed) {
+    secureCleanup({ seed });
+  }
+  if (idPackage) {
+    secureCleanup(idPackage);
+  }
+}
+```
 
-## Learn More
+## Quick Start
 
-To learn more about Next.js, take a look at the following resources:
+### Requirements
+- Node.js >= 18
+- npm >= 9
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
+```bash
+# Install dependencies
+npm install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Start development server
+npm run dev
 
-## Deploy on Vercel
+# Build production version
+npm run build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Start production server
+npm start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Testing
+
+```bash
+# Unit tests
+npm test
+
+# Watch mode
+npm run test:watch
+
+# Coverage report
+npm run test:coverage
+
+# E2E tests
+npm run test:e2e
+```
+
+## Tech Stack
+
+- **Framework**: Next.js 14.2
+- **UI Components**: 
+  - Radix UI
+  - Tailwind CSS
+- **State Management**: React Hooks
+- **Internationalization**: i18next
+- **Development Tools**:
+  - TypeScript
+  - ESLint
+  - Jest
+  - Playwright
+
+## Security Recommendations
+
+1. **Usage Environment**
+   - Recommended for offline use
+   - Use trusted devices and browsers
+   - Regular browser data cleanup
+
+2. **Private Key Management**
+   - Immediate backup of generated private keys
+   - Secure storage methods
+   - Avoid online storage
+
+3. **Batch Operations**
+   - Recommended batch-wise operations
+   - Immediate validation of generated data
+   - System resource monitoring
+
+## Contributing
+
+Welcome to contribute! Please ensure:
+1. Follow existing code style
+2. Add necessary tests
+3. Update relevant documentation
+4. Complete full testing
+
+## License
+
+This project is licensed under [LICENSE].

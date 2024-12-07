@@ -15,15 +15,15 @@ import { handleAPIError } from '@/utils/error-handler';
 import { useTranslation } from 'react-i18next'
 
 /**
- * 卡片高度常量
- * 根据视口高度动态计算，确保卡片在不同屏幕尺寸下都能保持合适的高度
+ * 
+ * 
  * @constant
  */
 const CARD_HEIGHT = "min-h-[calc(100vh-13rem)] lg:h-[calc(100vh-13rem)]"
 
 /**
- * 滚动区域高度常量
- * 考虑了卡片头部的高度，确保内容区域可以正确滚动
+ * 
+ * 
  * @constant
  */
 const SCROLL_HEIGHT = "min-h-[calc(100vh-17rem)] lg:h-[calc(100vh-17rem)]"
@@ -41,22 +41,22 @@ interface ProposalData {
 }
 
 /**
- * 内容网格组件
  * 
- * 主页的核心布局组件，包含三个主要部分：
- * 1. 提案区域：展示当前纪元的提案列表
- * 2. 赞助区域：展示赞助商列表和赞助入口
- * 3. 收益计算器：提供挖矿收益计算工具
  * 
- * 特点：
- * - 响应式布局：在不同屏幕尺寸下自动调整列数
- * - 错误边界：每个区域都有独立的错误处理
- * - 滚动优化：长列表区域支持平滑滚动
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ * 
+ * 
  * 
  * @component
  * @example
  * ```tsx
- * // 在页面中使用
+ * 
  * import { ContentGrid } from '@/components/features/home/content-grid';
  * 
  * export default function HomePage() {
@@ -78,16 +78,15 @@ export const ContentGrid = React.memo(function ContentGrid() {
         const data = await QubicAPI.getProposals();
         setProposals(data);
       } catch (error) {
-        handleAPIError(error, '获取提案数据失败');
+        handleAPIError(error, 'Failed to fetch data');
       }
     };
 
     fetchProposals();
-    const interval = setInterval(fetchProposals, 300000); // 每5分钟更新一次
+    const interval = setInterval(fetchProposals, 300000); 
     return () => clearInterval(interval);
   }, []);
 
-  // 处理提案数据
   const processProposalOptions = (proposal: ProposalData) => {
     const options = [];
     const votes = [
@@ -98,11 +97,10 @@ export const ContentGrid = React.memo(function ContentGrid() {
       proposal.sumOption4
     ];
 
-    // 只添加有票数的选项
     for (let i = 0; i < votes.length; i++) {
       if (votes[i] > 0) {
         options.push({
-          label: `选项 ${i}`,
+          label: `Options ${i}`,
           votes: votes[i],
           percentage: Math.round((votes[i] / proposal.totalVotes) * 100)
         });
@@ -111,7 +109,7 @@ export const ContentGrid = React.memo(function ContentGrid() {
 
     return {
       title: proposal.title,
-      date: proposal.published.split('T')[0], // 格式化日期为 YYYY-MM-DD
+      date: proposal.published.split('T')[0], 
       link: proposal.url,
       options: options,
       totalVotes: proposal.totalVotes

@@ -20,9 +20,9 @@ export function SponsorCard({ wallets }: SponsorCardProps) {
   const copyToClipboard = async (address: string) => {
     try {
       await navigator.clipboard.writeText(address)
-      toast.success("地址已复制到剪贴板")
+      toast.success("Address copied to clipboard")
     } catch {
-      toast.error("复制失败，请手动复制")
+      toast.error("Unable to copy, please copy manually")
     }
   }
 

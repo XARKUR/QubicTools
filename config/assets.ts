@@ -9,12 +9,10 @@ export const ASSET_PATHS = {
   },
 } as const;
 
-// 预加载关键图片
 export const PRELOAD_IMAGES = [
   ASSET_PATHS.images.logo,
 ];
 
-// 定义图片尺寸配置
 export const IMAGE_SIZES = {
   logo: {
     width: 128,

@@ -18,13 +18,11 @@ function VanityAddressForm() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentDifficulty, setCurrentDifficulty] = useState(0);
   
-  // 计算难度
   useEffect(() => {
     const result = pattern ? Math.pow(26, pattern.length) : 0;
     setCurrentDifficulty(result);
   }, [pattern]);
 
-  // InfoCard 状态
   const status = useMemo(() => {
     if (!pattern) return t('vanityAddress.status.ready');
     if (isPaused && !isGenerating) return t('vanityAddress.status.ready');

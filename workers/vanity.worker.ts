@@ -1,6 +1,5 @@
 import QubicLib from '@qubic-lib/qubic-ts-library';
 
-// 性能监控类
 class PerformanceMonitor {
   private startTime = 0;
   private attempts = 0;
@@ -42,7 +41,6 @@ class PerformanceMonitor {
       this.speedHistory.reduce((a, b) => a + b, 0) / this.speedHistory.length
     );
     
-    // 动态调整批次大小
     this.adjustBatchSize(currentSpeed);
     
     this.attempts = newAttempts;
@@ -69,7 +67,6 @@ class PerformanceMonitor {
       return;
     }
     
-    // 根据性能表现动态调整批次大小
     if (recentAverage < this.targetSpeed * 0.8) {
       this.batchSize = Math.max(100, Math.floor(this.batchSize * 0.8));
     } else if (recentAverage > this.targetSpeed * 1.2) {
@@ -86,7 +83,6 @@ class PerformanceMonitor {
   }
 }
 
-// 工作线程状态
 interface WorkerState {
   running: boolean;
   pattern: string;
@@ -107,44 +103,87 @@ const state: WorkerState = {
   helper: null
 };
 
-// 初始化 QubicHelper
 const initHelper = async () => {
   if (state.helper) return;
   await QubicLib.crypto;
   state.helper = new QubicLib.QubicHelper();
 };
 
-// 生成地址并检查是否匹配模式
+// 安全清理函数
+function secureCleanup(obj: any) {
+  if (!obj) return;
+  
+  // 遍历对象的所有属性
+  for (const key in obj) {
+    if (typeof obj[key] === 'string') {
+      // 多次覆写字符串内容
+      const len = obj[key].length;
+      for (let i = 0; i < 3; i++) {
+        obj[key] = crypto.getRandomValues(new Uint8Array(len * 2))
+          .reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
+      }
+      obj[key] = '';
+    } else if (typeof obj[key] === 'object') {
+      secureCleanup(obj[key]);
+    }
+  }
+  
+  // 将对象的所有属性设置为 null
+  for (const key in obj) {
+    obj[key] = null;
+  }
+}
+
 async function generateAndCheck(): Promise<{ publicId: string; privateKey: string } | null> {
   if (!state.helper) throw new Error('Helper not initialized');
   
-  const seed = generateRandomSeed();
-  const idPackage = await state.helper.createIdPackage(seed);
+  let seed = null;
+  let idPackage = null;
   
-  const matches = state.type === 'prefix'
-    ? idPackage.publicId.startsWith(state.pattern)
-    : idPackage.publicId.endsWith(state.pattern);
-  
-  return matches ? { publicId: idPackage.publicId, privateKey: seed } : null;
+  try {
+    seed = generateRandomSeed();
+    idPackage = await state.helper.createIdPackage(seed);
+    
+    const matches = state.type === 'prefix'
+      ? idPackage.publicId.startsWith(state.pattern)
+      : idPackage.publicId.endsWith(state.pattern);
+    
+    if (matches) {
+      const result = { 
+        publicId: idPackage.publicId, 
+        privateKey: seed 
+      };
+      
+      // 立即清理原始数据
+      secureCleanup(idPackage);
+      return result;
+    }
+    
+    return null;
+  } finally {
+    // 确保清理所有敏感数据
+    if (seed) {
+      secureCleanup({ seed });
+    }
+    if (idPackage) {
+      secureCleanup(idPackage);
+    }
+  }
 }
 
-// 生成随机种子
 function generateRandomSeed(): string {
   const characters = 'abcdefghijklmnopqrstuvwxyz';
   const array = new Uint8Array(55);
   
-  // 使用加密安全的随机数生成器
   crypto.getRandomValues(array);
   
   let result = '';
   for (let i = 0; i < 55; i++) {
-    // 使用模运算确保均匀分布
     result += characters.charAt(array[i] % characters.length);
   }
   return result;
 }
 
-// 处理消息
 self.onmessage = async (event) => {
   const { action, pattern, type, id, cpuUsage } = event.data;
 
@@ -174,7 +213,6 @@ self.onmessage = async (event) => {
   }
 };
 
-// 主生成循环
 async function runGeneration() {
   let totalAttempts = 0;
   let lastMetricsUpdate = 0;
@@ -183,7 +221,6 @@ async function runGeneration() {
     const batchSize = state.monitor.getBatchSize();
     const batchStart = Date.now();
     
-    // 生成一批地址
     for (let i = 0; i < batchSize && state.running; i++) {
       try {
         const result = await generateAndCheck();
@@ -201,7 +238,6 @@ async function runGeneration() {
           return;
         }
         
-        // 定期更新性能指标
         const now = Date.now();
         if (now - lastMetricsUpdate >= 500) {
           const metrics = state.monitor.updateMetrics(totalAttempts);
@@ -222,7 +258,6 @@ async function runGeneration() {
       }
     }
     
-    // CPU使用控制
     const batchDuration = Date.now() - batchStart;
     const targetDuration = batchSize / (50000 * state.cpuUsage);
     if (batchDuration < targetDuration) {
@@ -232,3 +267,27 @@ async function runGeneration() {
     }
   }
 }
+
+// 增强 Worker 终止时的清理
+self.addEventListener('unload', () => {
+  try {
+    // 停止所有正在进行的操作
+    state.running = false;
+    
+    // 清理性能监控数据
+    state.monitor.reset();
+    
+    // 安全清理所有状态数据
+    secureCleanup(state.helper);
+    state.helper = null;
+    
+    // 清理其他状态数据
+    state.pattern = '';
+    state.type = 'prefix';
+    state.workerId = 0;
+    state.cpuUsage = 0;
+    
+  } catch (error) {
+    console.error('Cleanup error:', error);
+  }
+});

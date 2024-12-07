@@ -21,20 +21,20 @@ import { useTranslation } from 'react-i18next'
 import { ClientOnly } from '@/components/i18n/client-only'
 
 /**
- * 模式输入卡片的属性接口
+ * 
  * @interface PatternInputCardProps
- * @property {string} pattern - 用户输入的靓号模式
- * @property {function} setPattern - 设置靓号模式的回调函数
- * @property {'prefix' | 'suffix'} patternType - 靓号类型（前缀或后缀）
- * @property {function} setPatternType - 设置靓号类型的回调函数
- * @property {number} cpuUsage - CPU使用率（1-100）
- * @property {function} setCpuUsage - 设置CPU使用率的回调函数
- * @property {boolean} forceStart - 是否强制启动（即使有性能警告）
- * @property {function} setForceStart - 设置强制启动状态的回调函数
- * @property {function} onGenerate - 开始生成靓号的回调函数
- * @property {function} onResume - 恢复生成的回调函数
- * @property {function} onPause - 暂停生成的回调函数
- * @property {boolean} isPaused - 当前是否处于暂停状态
+ * @property {string} pattern 
+ * @property {function} setPattern 
+ * @property {'prefix' | 'suffix'} patternType 
+ * @property {function} setPatternType 
+ * @property {number} cpuUsage 
+ * @property {function} setCpuUsage 
+ * @property {boolean} forceStart 
+ * @property {function} setForceStart 
+ * @property {function} onGenerate 
+ * @property {function} onResume 
+ * @property {function} onPause 
+ * @property {boolean} isPaused 
  */
 interface PatternInputCardProps {
   pattern: string

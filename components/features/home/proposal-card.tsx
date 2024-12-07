@@ -10,14 +10,14 @@ import { cn } from "@/lib/utils"
 import { useTranslation } from 'react-i18next'
 
 /**
- * 提案卡片属性接口
+ * 
  * @interface ProposalCardProps
- * @property {string} title - 提案标题
- * @property {string} date - 提案日期
- * @property {string} link - 提案链接
- * @property {Array<{label: string, votes: number, percentage: number}>} options - 提案选项列表
- * @property {number} totalVotes - 总投票数
- * @property {string} [className] - 可选的样式类名
+ * @property {string} title 
+ * @property {string} date 
+ * @property {string} link 
+ * @property {Array<{label: string, votes: number, percentage: number}>} options 
+ * @property {number} totalVotes 
+ * @property {string} [className] 
  */
 interface ProposalCardProps {
   title?: string;
@@ -33,23 +33,23 @@ interface ProposalCardProps {
 }
 
 /**
- * 提案选项组件
- * 展示单个提案选项的详细信息，包括：
- * - 选项标签
- * - 投票数
- * - 投票百分比
- * - 进度条
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * @component
  * @example
  * ```tsx
  * <ProposalCard
- *   title="提案标题"
+ *   title="title"
  *   date="2024-01-01"
  *   link="https://example.com"
  *   options={[
- *     { label: "选项1", votes: 100, percentage: 66.67 },
- *     { label: "选项2", votes: 50, percentage: 33.33 }
+ *     { label: "options1", votes: 100, percentage: 66.67 },
+ *     { label: "options2", votes: 50, percentage: 33.33 }
  *   ]}
  *   totalVotes={150}
  * />

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Moon, Sun, Languages } from "lucide-react"
+import { Moon, Sun, Languages, Github } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { useTranslation } from 'react-i18next'
@@ -11,7 +11,6 @@ export function ActionButtons() {
   const { theme, setTheme } = useTheme()
   const { i18n, t } = useTranslation()
 
-  // 在组件加载时恢复用户的语言偏好
   React.useEffect(() => {
     const savedLang = localStorage.getItem('preferred-language')
     if (savedLang && savedLang !== i18n.language) {
@@ -22,7 +21,7 @@ export function ActionButtons() {
   const toggleLanguage = React.useCallback(() => {
     try {
       const currentLang = i18n.language
-      const nextLang = currentLang === 'zh' ? 'en' : 'zh'
+      const nextLang = currentLang === 'en' ? 'en' : 'zh'
       console.log('Switching language from', currentLang, 'to', nextLang)
       i18n.changeLanguage(nextLang)
       localStorage.setItem('preferred-language', nextLang)
@@ -39,6 +38,22 @@ export function ActionButtons() {
 
   return (
     <div className="flex items-center space-x-2">
+      <Button
+        variant="outline"
+        size="icon"
+        className="hover:bg-accent h-8 w-8"
+        asChild
+      >
+        <a
+          href="https://github.com/XARKUR/QubicTools"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Github className="h-4 w-4" />
+          <span className="sr-only">GitHub</span>
+        </a>
+      </Button>
+
       <Button
         variant="outline"
         size="icon"

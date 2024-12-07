@@ -8,7 +8,7 @@ interface ExchangeRates {
 
 export function useExchangeRate() {
   const { i18n } = useTranslation()
-  const [rates, setRates] = useState<ExchangeRates>({ usd: 1, cny: 7 })
+  const [rates, setRates] = useState<ExchangeRates>({ usd: 1, cny: 7.2 })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -29,7 +29,7 @@ export function useExchangeRate() {
         const cnyRate = parseFloat(data.cny)
 
         if (isNaN(usdRate) || isNaN(cnyRate) || usdRate <= 0 || cnyRate <= 0) {
-          return // 使用默认汇率
+          return 
         }
 
         setRates({
@@ -55,13 +55,11 @@ export function useExchangeRate() {
       return i18n.language.toLowerCase() === 'zh' ? '¥0.00' : '$0.00'
     }
 
-    // 只有中文才需要转换汇率
     if (i18n.language.toLowerCase() === 'zh') {
       const cnyAmount = value * rates.cny
       return `¥${cnyAmount.toFixed(decimals)}`
     }
     
-    // 其他语言直接显示 USD
     return `$${value.toFixed(decimals)}`
   }
 

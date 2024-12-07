@@ -2,15 +2,16 @@ import { APIError } from '@/types/api';
 
 interface NetworkStatsResponse {
   data: {
-    average_hashrate: number;
-    latest_stats: {
-      accepted_solution: number;
-      corrected_hashrate: number;
-      estimated_its: number;
-      pool_hash: number;
-      total_blocks: number;
-    };
+    average_qli_hashrate: number;
+    average_apool_hashrate: number;
+    accepted_solution: number;
+    corrected_hashrate: number;
+    estimated_its: number;
+    pool_hash: number;
+    total_blocks: number;
+    is_idle: boolean;
     period_start: string;
+    current_time: string;
     record_count: number;
   };
   status: string;
@@ -18,14 +19,17 @@ interface NetworkStatsResponse {
 
 interface NetworkStats {
   averageHashrate: number;
+  averageApoolHashrate: number;
   latestStats: {
     acceptedSolution: number;
     correctedHashrate: number;
     estimatedIts: number;
     poolHash: number;
     totalBlocks: number;
+    isIdle: boolean;
   };
   periodStart: string;
+  currentTime: string;
   recordCount: number;
 }
 
@@ -57,10 +61,10 @@ class QubicAPI {
   // ...
 
   /**
-   * 检查缓存是否有效
-   * @param timestamp 缓存时间戳
-   * @param duration 缓存时长
-   * @returns boolean 缓存是否有效
+   * 
+   * @param timestamp 
+   * @param duration 
+   * @returns 
    */
   private static isCacheValid(timestamp: number, duration: number): boolean {
     return Date.now() - timestamp < duration;
@@ -69,11 +73,11 @@ class QubicAPI {
   // ...
 
   /**
-   * 基础 API 请求方法
-   * @param url API 请求 URL
-   * @param options 请求选项
-   * @param timeout 超时时间（默认 10 秒）
-   * @returns Promise<Response> 返回请求响应
+   * 
+   * @param url 
+   * @param options 
+   * @param timeout 
+   * @returns Promise<Response> 
    */
   private static async fetchWithTimeout(url: string, options: RequestInit = {}, timeout = 10000): Promise<Response> {
     const controller = new AbortController();
@@ -92,15 +96,15 @@ class QubicAPI {
   }
 
   /**
-   * 带重试的 API 请求方法
-   * @param url API 请求 URL
-   * @param options 请求选项
-   * @param retries 重试次数（默认 2 次）
-   * @returns Promise<T> 返回请求响应数据
+   * 
+   * @param url 
+   * @param options 
+   * @param retries 
+   * @returns Promise<T> 
    */
   private static async fetchWithRetry<T>(url: string, options: RequestInit = {}, retries = 2): Promise<T> {
     let lastError: Error | null = null;
-    let delay = 1000; // 初始延迟1秒
+    let delay = 1000; 
 
     for (let i = 0; i <= retries; i++) {
       try {
@@ -111,7 +115,7 @@ class QubicAPI {
         lastError = error instanceof Error ? error : new Error(String(error));
         if (i < retries) {
           await new Promise(resolve => setTimeout(resolve, delay));
-          delay *= 2; // 指数退避
+          delay *= 2; 
         }
       }
     }
@@ -120,9 +124,9 @@ class QubicAPI {
   }
 
   /**
-   * API 请求方法
-   * @param endpoint API 端点
-   * @returns Promise<T> 返回请求响应数据
+   * 
+   * @param endpoint 
+   * @returns Promise<T> 
    */
   private static async fetchAPI<T>(endpoint: string): Promise<T> {
     const startTime = performance.now();
@@ -138,12 +142,10 @@ class QubicAPI {
         },
       });
       
-      // 验证响应数据
       if (!response || typeof response !== 'object') {
         throw new Error('Invalid API response');
       }
 
-      // 特殊处理 /tick 端点
       if (endpoint === '/tick') {
         if (typeof response.currentEpoch !== 'number' || typeof response.price !== 'number') {
           console.error('Invalid tick data:', response);
@@ -162,8 +164,8 @@ class QubicAPI {
   }
 
   /**
-   * 获取 Tick 数据（当前纪元和价格信息）
-   * @returns Promise<any> 返回 Tick 数据
+   * 
+   * @returns Promise<any> 
    */
   static async getTick(): Promise<any> {
     if (this.cache.tick.data && this.isCacheValid(this.cache.tick.timestamp, this.CACHE_DURATION.tick)) {
@@ -176,8 +178,8 @@ class QubicAPI {
   }
 
   /**
-   * 获取评分数据（包含算力和解决方案信息）
-   * @returns Promise<any> 返回评分数据
+   * 
+   * @returns Promise<any> 
    */
   static async getScore(): Promise<any> {
     if (this.cache.score.data && this.isCacheValid(this.cache.score.timestamp, this.CACHE_DURATION.score)) {
@@ -190,8 +192,8 @@ class QubicAPI {
   }
 
   /**
-   * 获取提案数据
-   * @returns Promise<any[]> 返回提案数据数组
+   * 
+   * @returns Promise<any[]> 
    */
   static async getProposals(): Promise<any[]> {
     if (this.cache.proposals.data && this.isCacheValid(this.cache.proposals.timestamp, this.CACHE_DURATION.proposals)) {
@@ -204,8 +206,8 @@ class QubicAPI {
   }
 
   /**
-   * 获取转账数据
-   * @returns Promise<any> 返回转账数据
+   * 
+   * @returns Promise<any> 
    */
   static async getTransfers(): Promise<any> {
     if (this.cache.transfers.data && this.isCacheValid(this.cache.transfers.timestamp, this.CACHE_DURATION.transfers)) {
@@ -218,8 +220,8 @@ class QubicAPI {
   }
 
   /**
-   * 获取本纪元产出数据
-   * @returns Promise<number> 返回本纪元产出
+   * 
+   * @returns Promise<number> 
    */
   private static async getCurrentEpochOutput(): Promise<number> {
     if (this.cache.revenue.data && this.isCacheValid(this.cache.revenue.timestamp, this.CACHE_DURATION.revenue)) {
@@ -229,7 +231,6 @@ class QubicAPI {
     try {
       const response = await this.fetchAPI<{ average: number }>('/revenue');
       const baseOutput = response.average;
-      // 计算当前纪元总产出：基础产出 * 676 * 0.85 * 0.92
       const totalOutput = baseOutput * 676 * 0.9 * 0.92 * 0.8775;
       this.cache.revenue = { data: totalOutput, timestamp: Date.now() };
       return totalOutput;
@@ -240,8 +241,8 @@ class QubicAPI {
   }
 
   /**
-   * 获取网络状态数据
-   * @returns Promise<NetworkStats> 返回网络状态数据
+   * 
+   * @returns Promise<NetworkStats> 
    */
   static async getNetworkStats(): Promise<NetworkStats> {
     if (this.cache.networkStats.data && this.isCacheValid(this.cache.networkStats.timestamp, this.CACHE_DURATION.networkStats)) {
@@ -251,18 +252,24 @@ class QubicAPI {
     try {
       const response = await this.fetchAPI<NetworkStatsResponse>('/network-stats');
       
-      return {
-        averageHashrate: response.data.average_hashrate,
+      const networkStats = {
+        averageHashrate: response.data.average_qli_hashrate,        
+        averageApoolHashrate: response.data.average_apool_hashrate, 
         latestStats: {
-          acceptedSolution: response.data.latest_stats.accepted_solution,
-          correctedHashrate: response.data.latest_stats.corrected_hashrate,
-          estimatedIts: response.data.latest_stats.estimated_its,
-          poolHash: response.data.latest_stats.pool_hash,
-          totalBlocks: response.data.latest_stats.total_blocks,
+          acceptedSolution: response.data.accepted_solution,
+          correctedHashrate: response.data.corrected_hashrate,
+          estimatedIts: response.data.estimated_its,
+          poolHash: response.data.pool_hash,
+          totalBlocks: response.data.total_blocks,
+          isIdle: response.data.is_idle                            
         },
         periodStart: response.data.period_start,
+        currentTime: response.data.current_time,                    
         recordCount: response.data.record_count,
       };
+
+      this.cache.networkStats = { data: networkStats, timestamp: Date.now() };
+      return networkStats;
     } catch (error) {
       console.error('Error in getNetworkStats:', error);
       throw error;
@@ -270,13 +277,12 @@ class QubicAPI {
   }
 
   /**
-   * 获取区块价值数据
-   * 整合 Tick 和 Score 数据来计算完整的区块价值信息
-   * @returns Promise<any> 返回区块价值数据
+   * 
+   * 
+   * @returns Promise<any> 
    */
   static async getBlockValue(): Promise<any> {
     try {
-      // 并行请求所有需要的数据
       const [tickData, scoreData, totalEpochOutput, networkStats] = await Promise.all([
         this.getTick(),
         this.getScore(),
@@ -284,13 +290,11 @@ class QubicAPI {
         this.getNetworkStats()
       ]);
 
-      // 验证价格数据
       if (!tickData || typeof tickData.price !== 'number' || tickData.price < 0) {
         console.error('Invalid price data:', tickData);
         throw new Error('Invalid price data');
       }
 
-      // 验证其他数据
       if (typeof tickData.currentEpoch !== 'number') {
         console.error('Invalid epoch data:', tickData);
         throw new Error('Invalid epoch data');
@@ -306,27 +310,25 @@ class QubicAPI {
         throw new Error('Invalid network stats');
       }
       
-      // 计算一周内的总 solutions 数（使用 solutionsPerHourCalculated）
       const solutionsPerWeek = scoreData.solutionsPerHourCalculated * 24 * 7;
       
-      // 计算每个 solution 可以获得的币数
       const coinsPerSolution = solutionsPerWeek > 0 ? totalEpochOutput / solutionsPerWeek : 0;
       
-      // 计算区块价值（美元）
       const blockValueUSD = coinsPerSolution * tickData.price;
 
       const result = {
-        blockValueUSD,                           // 区块价值（美元）
-        networkHashRate: networkStats.averageHashrate,  // 网络总算力，使用新的数据源
-        solutionsPerHour: scoreData.solutionsPerHour,   // 实际每小时解决方案数
-        solutionsPerHourCalculated: scoreData.solutionsPerHourCalculated, // 计算的每小时解决方案数
-        currentEpoch: tickData.currentEpoch,     // 当前纪元
-        price: tickData.price,                   // 当前价格
-        coinsPerSolution,                        // 每个解决方案的币数
-        totalBlocks: networkStats.latestStats.totalBlocks, // 总区块数
+        blockValueUSD,                           
+        networkHashRate: networkStats.averageHashrate,  
+        averageHashrate: networkStats.averageHashrate,  
+        averageApoolHashrate: networkStats.averageApoolHashrate, 
+        solutionsPerHour: scoreData.solutionsPerHour,  
+        solutionsPerHourCalculated: scoreData.solutionsPerHourCalculated, 
+        currentEpoch: tickData.currentEpoch,     
+        price: tickData.price,                   
+        coinsPerSolution,                        
+        totalBlocks: networkStats.latestStats.totalBlocks, 
       };
 
-      // 验证最终结果
       if (Object.values(result).some(value => typeof value !== 'number' || isNaN(value))) {
         console.error('Invalid calculated values:', result);
         throw new Error('Invalid calculated values');
@@ -340,7 +342,7 @@ class QubicAPI {
   }
 
   /**
-   * 批量获取首页需要的所有数据
+   * 
    * @returns Promise<{ blockValue: any, idleStatus: any, proposals: any[], transfers: any }> 
    */
   static async getHomePageData() {
@@ -366,8 +368,8 @@ class QubicAPI {
   }
 
   /**
-   * 获取 Apool 数据
-   * @returns Promise<any> 返回 Apool 数据
+   * 
+   * @returns Promise<any> 
    */
   static async getApoolStats(): Promise<any> {
     if (this.cache.apool.data && this.isCacheValid(this.cache.apool.timestamp, this.CACHE_DURATION.apool)) {
@@ -392,8 +394,8 @@ class QubicAPI {
   }
 
   /**
-   * 获取主网 idle 状态
-   * @returns Promise<any> 返回主网是否处于 idle 状态
+   * 
+   * @returns Promise<any> 
    */
   static async getIdleStatus(): Promise<any> {
     return this.fetchAPI<any>('/idle');

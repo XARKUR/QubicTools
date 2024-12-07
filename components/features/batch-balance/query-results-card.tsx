@@ -8,12 +8,12 @@ import React, { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 /**
- * 查询结果的数据结构
+ * 
  * @interface QueryResult
- * @property {number} id - 结果的唯一标识符
- * @property {string} address - Qubic 地址
- * @property {number} balance - 地址的余额
- * @property {'success' | 'error'} status - 查询状态，成功或失败
+ * @property {number} id 
+ * @property {string} address 
+ * @property {number} balance
+ * @property {'success' | 'error'} status
  */
 interface QueryResult {
   id: number
@@ -23,11 +23,11 @@ interface QueryResult {
 }
 
 /**
- * 查询结果卡片的属性
+ * 
  * @interface QueryResultsCardProps
- * @property {QueryResult[]} results - 查询结果数组
- * @property {function} onCopyAddress - 复制地址的回调函数
- * @property {function} onDeleteResult - 删除结果的回调函数
+ * @property {QueryResult[]} results 
+ * @property {function} onCopyAddress 
+ * @property {function} onDeleteResult 
  */
 interface QueryResultsCardProps {
   results: QueryResult[]
@@ -36,9 +36,9 @@ interface QueryResultsCardProps {
 }
 
 /**
- * 格式化数字为千分位格式
- * @param {number} balance - 需要格式化的数字
- * @returns {string} 格式化后的字符串
+ * 
+ * @param {number} balance - 
+ * @returns {string} 
  */
 const formatBalance = (balance: number) => {
   return new Intl.NumberFormat('en-US', {
@@ -48,12 +48,12 @@ const formatBalance = (balance: number) => {
 }
 
 /**
- * 查询结果展示卡片组件
  * 
- * 用于展示批量查询的结果，包括：
- * - 总余额统计
- * - 结果列表（地址、余额、状态）
- * - 复制地址和删除结果的操作
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * @component
  * @example
@@ -74,7 +74,6 @@ export const QueryResultsCard = React.memo(function QueryResultsCard({
 }: QueryResultsCardProps) {
   const { t } = useTranslation()
 
-  // 计算总余额
   const totalBalance = useMemo(() => {
     return results.reduce((sum, result) => sum + (result.status === 'success' ? result.balance : 0), 0)
   }, [results])

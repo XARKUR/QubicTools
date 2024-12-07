@@ -59,7 +59,7 @@ export interface ScoreData {
 
 export interface ExchangeRates {
   CNY: number;
-  [key: string]: number; // 支持其他可能的汇率
+  [key: string]: number; 
 }
 
 export interface EpochTime {
@@ -113,7 +113,6 @@ export interface IdleStatus {
   idle: boolean
 }
 
-// API 错误类型
 export class APIError extends Error {
   constructor(
     message: string,

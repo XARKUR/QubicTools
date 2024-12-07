@@ -10,12 +10,12 @@ import { useTranslation } from "react-i18next"
 import { QueryResult } from "@/types/query-result"
 
 /**
- * 查询设置卡片的属性
+ * 
  * @interface QuerySettingsCardProps
- * @property {function} onAddressesChange - 地址列表变化回调
- * @property {function} onSearch - 开始查询回调
- * @property {function} onResults - 查询结果回调
- * @property {boolean} [isLoading] - 是否正在查询中
+ * @property {function} onAddressesChange 
+ * @property {function} onSearch 
+ * @property {function} onResults 
+ * @property {boolean} [isLoading] 
  */
 interface QuerySettingsCardProps {
   onAddressesChange: (value: string) => void
@@ -25,10 +25,10 @@ interface QuerySettingsCardProps {
 }
 
 /**
- * 带行号的文本框属性
+ * 
  * @interface LineNumberedTextareaProps
- * @property {string} value - 文本框的值
- * @property {function} onChange - 值变化的回调函数
+ * @property {string} value 
+ * @property {function} onChange 
  */
 interface LineNumberedTextareaProps {
   value: string
@@ -36,8 +36,8 @@ interface LineNumberedTextareaProps {
 }
 
 /**
- * 带行号的文本框组件
- * 用于输入多行地址，左侧显示行号
+ * 
+ * 
  * 
  * @component
  */
@@ -46,10 +46,8 @@ const LineNumberedTextarea = React.memo(function LineNumberedTextarea({
   onChange
 }: LineNumberedTextareaProps) {
   const { t } = useTranslation()
-  // 跟踪当前行数
   const [lineCount, setLineCount] = React.useState(1)
 
-  // 当文本变化时更新行数
   useEffect(() => {
     const lines = (value || '').split('\n').length
     setLineCount(Math.max(1, lines))
@@ -59,7 +57,7 @@ const LineNumberedTextarea = React.memo(function LineNumberedTextarea({
     <div className="relative flex h-[600px] rounded-md border border-input bg-transparent text-sm shadow-sm focus-within:ring-ring">
       <ScrollArea className="flex w-full h-full">
         <div className="flex min-h-full">
-          {/* 行号区域 */}
+          {/* */}
           <div className="flex-none w-12 bg-muted/30 rounded-l-md border-r border-input">
             <div className="py-2">
               {Array.from({ length: lineCount }, (_, i) => (
@@ -69,7 +67,7 @@ const LineNumberedTextarea = React.memo(function LineNumberedTextarea({
               ))}
             </div>
           </div>
-          {/* 文本输入区域 */}
+          {/* */}
           <div className="flex-1">
             <textarea
               value={value}
@@ -88,12 +86,12 @@ const LineNumberedTextarea = React.memo(function LineNumberedTextarea({
 LineNumberedTextarea.displayName = 'LineNumberedTextarea'
 
 /**
- * 查询设置卡片组件
- * 用于配置批量查询的参数和输入要查询的地址
  * 
- * 功能包括：
- * - 输入或上传要查询的地址
- * - 开始查询
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * @component
  * @example
@@ -115,7 +113,7 @@ export const QuerySettingsCard = React.memo(function QuerySettingsCard({
   const [addresses, setAddresses] = React.useState("")
 
   /**
-   * 处理地址文本变化
+   * 
    */
   const handleAddressesChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value
@@ -124,8 +122,8 @@ export const QuerySettingsCard = React.memo(function QuerySettingsCard({
   }
 
   /**
-   * 处理文件上传
-   * 支持 .txt 文件，每行一个地址
+   * 
+   * 
    */
   const handleFileUpload = async (e: Event) => {
     try {
@@ -144,7 +142,6 @@ export const QuerySettingsCard = React.memo(function QuerySettingsCard({
 
   const handleSearch = () => {
     onSearch();
-    // 模拟查询结果
     if (onResults) {
       onResults([
         {

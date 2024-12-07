@@ -27,17 +27,14 @@ export const InfoCard = memo<InfoCardProps>(({
 }) => {
   const { t } = useTranslation()
 
-  // 使用翻译键显示难度值
   const difficultyDisplay = difficulty > 0 ? t('vanityAddress.info.difficultyValue', { value: difficulty.toLocaleString() }) : '-';
 
-  // 计算移动平均速度
   const avgSpeed = useMemo(() => {
     if (isPaused) return 0;
     if (!duration || duration < 1000) return speed;
     return Math.round(generatedCount / (duration / 1000));
   }, [generatedCount, duration, speed, isPaused]);
 
-  // 计算实际进度
   const actualProgress = useMemo(() => {
     if (difficulty === 0) return 0;
     return Math.min(100, Math.round((generatedCount / difficulty) * 100));

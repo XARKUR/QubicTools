@@ -33,10 +33,8 @@ import { cn } from "@/lib/utils"
 import QubicAPI from "@/services/api"
 import { useExchangeRate } from '@/hooks/useExchangeRate'
 
-// 定义矿池选项类型
 export type PoolOption = "placeholder" | "qli" | "apool";
 
-// 表单数据模式定义
 export const profitCalculatorFormSchema = z.object({
   hashRate: z.string(),
   power: z.string(),
@@ -45,17 +43,16 @@ export const profitCalculatorFormSchema = z.object({
   pool: z.enum(["placeholder", "qli", "apool"]),
 });
 
-// 导出表单数据类型
 export type ProfitCalculatorFormData = z.infer<typeof profitCalculatorFormSchema>;
 
 /**
- * 统计项属性接口
+ * 
  * @interface StatItemProps
- * @property {string} label - 统计项标签
- * @property {string} value - 统计项值
- * @property {React.ReactNode} [icon] - 可选的图标
- * @property {string} [className] - 可选的样式类名
- * @property {string} [valueColor] - 可选的值颜色
+ * @property {string} label 
+ * @property {string} value 
+ * @property {React.ReactNode} [icon] 
+ * @property {string} [className] 
+ * @property {string} [valueColor] 
  */
 interface StatItemProps {
   label: string
@@ -66,11 +63,11 @@ interface StatItemProps {
 }
 
 /**
- * 统计项组件
- * 用于展示单个统计指标，包括标签、值和可选的图标
+ * 
+ * 
  * 
  * @component
- * @param {StatItemProps} props - 组件属性
+ * @param {StatItemProps} props 
  */
 const StatItem = memo<StatItemProps>(({ label, value, icon, className, valueColor }) => {
   return (
@@ -88,16 +85,25 @@ StatItem.displayName = "StatItem"
 
 interface NetworkStats {
   solutionsPerHourCalculated: number;
-  networkHashRate: number;
+  networkHashRate: number;        
+  averageHashrate: number;        
+  averageApoolHashrate: number;   
   blockValueUSD: number;
 }
 
 /**
- * 计算每日预计出块数
- * @param {number} hashRate - 用户算力
- * @param {number} networkHashRate - 网络总算力
- * @param {number} solutionsPerHourCalculated - 每小时出块数
- * @returns {number} 每日预计出块数
+ * 
+ */
+const getNetworkHashRate = (networkStats: NetworkStats, pool: string): number => {
+  return pool === "apool" ? networkStats.averageApoolHashrate : networkStats.averageHashrate;
+};
+
+/**
+ * 
+ * @param {number} hashRate 
+ * @param {number} networkHashRate 
+ * @param {number} solutionsPerHourCalculated 
+ * @returns {number} 
  */
 const calculateDailyBlocks = (
   hashRate: number,
@@ -109,10 +115,10 @@ const calculateDailyBlocks = (
 }
 
 /**
- * 计算幸运度
- * @param {number} actualBlocks - 实际出块数
- * @param {number} expectedBlocks - 预期出块数
- * @returns {number} 幸运度百分比
+ * 
+ * @param {number} actualBlocks 
+ * @param {number} expectedBlocks 
+ * @returns {number} 
  */
 const calculateLuck = (actualBlocks: number, expectedBlocks: number): number => {
   if (expectedBlocks === 0) return 0;
@@ -120,39 +126,35 @@ const calculateLuck = (actualBlocks: number, expectedBlocks: number): number => 
 }
 
 /**
- * 计算电力成本
- * @param {number} powerConsumption - 功耗 (W)
- * @param {number} electricityRate - 电价 ($/kWh)
- * @returns {number} 电力成本 ($)
+ * 
+ * @param {number} powerConsumption 
+ * @param {number} electricityRate 
+ * @returns {number} 
  */
 const calculateCosts = (powerConsumption: number, electricityRate: number): number => {
   return (powerConsumption * 24) / 1000 * electricityRate
 }
 
 /**
- * 计算当前纪元的预计出块数
- * @param {number} dailyBlocks - 每日预计出块数
- * @returns {number} 当前预计出块数
+ * 
+ * @param {number} dailyBlocks 
+ * @returns {number} 
  */
 const calculateCurrentEpochBlocks = (dailyBlocks: number) => {
   const now = new Date();
-  const currentDay = now.getUTCDay(); // 0 是周日，3 是周三
+  const currentDay = now.getUTCDay(); 
   const currentHour = now.getUTCHours();
   const currentMinute = now.getUTCMinutes();
 
-  // 计算从周三 12:00 UTC 到现在的天数
   let daysSinceEpochStart;
   if (currentDay < 3 || (currentDay === 3 && currentHour < 12)) {
-    // 如果当前时间在周三12:00之前，需要往回算到上周三
     daysSinceEpochStart = currentDay + 7 - 3;
   } else {
     daysSinceEpochStart = currentDay - 3;
   }
 
-  // 添加小时部分
   let hoursSinceEpochStart = daysSinceEpochStart * 24;
   if (currentDay === 3) {
-    // 周三特殊处理
     if (currentHour >= 12) {
       hoursSinceEpochStart += (currentHour - 12);
     } else {
@@ -162,26 +164,24 @@ const calculateCurrentEpochBlocks = (dailyBlocks: number) => {
     hoursSinceEpochStart += currentHour;
   }
 
-  // 添加分钟部分
   const totalHours = hoursSinceEpochStart + (currentMinute / 60);
   
-  // 计算当前预计出块数
   return (dailyBlocks * totalHours) / 24;
 };
 
 /**
- * 利润计算器 Hook
- * 根据输入的参数计算挖矿收益和成本
  * 
- * @param {z.infer<typeof profitCalculatorFormSchema>} formData - 表单数据
- * @returns {Object} 计算结果，包括日收益、月收益、年收益和投资回报率
+ * 
+ * 
+ * @param {z.infer<typeof profitCalculatorFormSchema>} formData 
+ * @returns {Object} 
  */
 const useProfitCalculator = (formData: z.infer<typeof profitCalculatorFormSchema>) => {
   const powerConsumption = parseFloat(formData.power) || 0
   const electricityRate = parseFloat(formData.electricityPrice) || 0
   const blocks = parseFloat(formData.blocks) || 0
 
-  const dailyReward = blocks * 1000 // 临时固定值
+  const dailyReward = blocks * 1000 
   const dailyCost = calculateCosts(powerConsumption, electricityRate)
 
   return {
@@ -195,19 +195,19 @@ const useProfitCalculator = (formData: z.infer<typeof profitCalculatorFormSchema
 }
 
 /**
- * 挖矿利润计算器组件
  * 
- * 这是一个完整的挖矿利润计算工具，它可以：
- * - 计算预期的挖矿收益
- * - 估算电力成本
- * - 分析投资回报率
- * - 提供日/月/年收益预测
  * 
- * 用户可以输入：
- * - 哈希率
- * - 预期区块数
- * - 功耗
- * - 电价
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * @component
  * @example
@@ -220,13 +220,14 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
   const [networkStats, setNetworkStats] = useState<NetworkStats>({
     solutionsPerHourCalculated: 0,
     networkHashRate: 0,
+    averageHashrate: 0,
+    averageApoolHashrate: 0,
     blockValueUSD: 0
   });
 
   const [blockValue, setBlockValue] = useState(0)
   const [apoolRatio, setApoolRatio] = useState<number>(0);
 
-  // 获取网络状态数据
   useEffect(() => {
     let isMounted = true;
 
@@ -241,17 +242,18 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
 
         setNetworkStats({
           networkHashRate: blockValueData.networkHashRate,
+          averageHashrate: blockValueData.averageHashrate,
+          averageApoolHashrate: blockValueData.averageApoolHashrate,
           solutionsPerHourCalculated: blockValueData.solutionsPerHourCalculated,
           blockValueUSD: blockValueData.blockValueUSD
         });
 
-        // 计算 Apool 的 solutions/shares 比例
         const ratio = apoolStatsData.accepted_solution / apoolStatsData.total_share;
         setApoolRatio(ratio || 0);
         setBlockValue(blockValueData.blockValueUSD);
       } catch {
         if (!isMounted) return;
-        setNetworkStats({ networkHashRate: 0, solutionsPerHourCalculated: 0, blockValueUSD: 0 });
+        setNetworkStats({ networkHashRate: 0, averageHashrate: 0, averageApoolHashrate: 0, solutionsPerHourCalculated: 0, blockValueUSD: 0 });
         setApoolRatio(0);
         setBlockValue(0);
       }
@@ -283,7 +285,6 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
   const [power, setPower] = useState(formData.power || 0);
   const [electricityPrice, setElectricityPrice] = useState(formData.electricityPrice || 0);
 
-  // 获取 Apool 数据
   useEffect(() => {
     if (formData.pool === "apool") {
       QubicAPI.getApoolStats().then((data) => {
@@ -295,54 +296,48 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
     }
   }, [formData.pool]);
 
-  // 计算每日预计出块数
   const expectedDailyBlocks = useMemo(() => {
     if (!hashRate || !networkStats.networkHashRate || !networkStats.solutionsPerHourCalculated) return 0;
     
+    const currentNetworkHashRate = getNetworkHashRate(networkStats, formData.pool);
     const blocks = calculateDailyBlocks(
       Number(hashRate),
-      networkStats.networkHashRate,
+      currentNetworkHashRate,
       networkStats.solutionsPerHourCalculated
     );
 
     return formData.pool === "apool" && apoolRatio > 0 ? blocks * apoolRatio : blocks;
   }, [hashRate, networkStats, formData.pool, apoolRatio]);
 
-  // 计算幸运度
-  const luck = calculateLuck(Number(blocks), expectedDailyBlocks);
+  const currentEpochBlocks = useMemo(() => {
+    return calculateCurrentEpochBlocks(expectedDailyBlocks);
+  }, [expectedDailyBlocks]);
 
-  // 直接使用 formData，因为属性名已经匹配
+  const luck = calculateLuck(Number(blocks), currentEpochBlocks);
+
   const baseStats = useProfitCalculator(formData);
 
-  // 格式化金额显示
   const { formatCurrency } = useExchangeRate()
   const formatUSD = useCallback((value: number) => {
     return formatCurrency(value)
   }, [formatCurrency]);
 
-  // 收益分析计算
   const profitStats = useMemo(() => {
-    // 计算基础收益
     const calculateBaseProfit = (blocks: number) => {
       let profit = 0;
       if (formData.pool === "qli") {
-        // QLi pool: 80% of block value
         profit = blocks * blockValue * 0.8;
       } else if (formData.pool === "apool" && apoolRatio > 0) {
-        // Apool: 一个 Share 的价值 = 块价值 / apoolRatio * 0.9 (90% 收益)
         const shareValue = blockValue / apoolRatio * 0.9;
         profit = blocks * shareValue;
       }
       return profit;
     };
 
-    // 1. 当前总收益 = 用户输入块数 * 每块收益
     const currentProfit = calculateBaseProfit(Number(blocks));
 
-    // 2. 每日预期收益 = 每日预计出块数 * 每块收益
     const dailyExpectedProfit = calculateBaseProfit(expectedDailyBlocks);
 
-    // 3. 每周和每月预期收益
     const weeklyExpectedProfit = dailyExpectedProfit * 7;
     const monthlyExpectedProfit = dailyExpectedProfit * 30;
 
@@ -359,17 +354,13 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
     };
   }, [baseStats, blocks, blockValue, expectedDailyBlocks, luck, formData.pool, apoolRatio, formatUSD]);
 
-  // 成本分析计算
   const costStats = useMemo(() => {
-    // 1. 更新功耗和电费单价显示
     const powerDisplay = `${power}W`;
     const rateDisplay = formatUSD(Number(electricityPrice));
 
-    // 2. 计算每日和每月电费支出（使用USD进行计算）
     const dailyPowerCost = (Number(power) * 24) / 1000 * Number(electricityPrice);
     const monthlyPowerCost = dailyPowerCost * 30;
 
-    // 3. 计算预计每日和每月净收入（使用USD进行计算）
     const dailyNetIncome = profitStats.rawDailyProfit - dailyPowerCost;
     const monthlyNetIncome = profitStats.rawMonthlyProfit - monthlyPowerCost;
 
@@ -383,13 +374,6 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
     };
   }, [power, electricityPrice, profitStats.rawDailyProfit, profitStats.rawMonthlyProfit, formatUSD]);
 
-  // 计算当前预计出块数
-  const currentEpochBlocks = useMemo(() => {
-    const blocks = calculateCurrentEpochBlocks(expectedDailyBlocks);
-    return blocks;
-  }, [expectedDailyBlocks]);
-
-  // 渲染组件
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="border-b py-4">

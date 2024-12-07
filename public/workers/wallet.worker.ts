@@ -6,9 +6,7 @@ const initHelper = async () => {
   if (helper) return;
   
   try {
-    // 等待加载加密模块
     await QubicLib.crypto;
-    // 创建 helper 实例
     helper = new QubicLib.QubicHelper();
   } catch (error) {
     console.error('Error initializing QubicHelper:', error);
@@ -16,7 +14,6 @@ const initHelper = async () => {
   }
 };
 
-// 清理函数
 const cleanup = () => {
   helper = null;
 };
@@ -33,13 +30,11 @@ self.onmessage = async (e: MessageEvent) => {
     await initHelper();
     const idPackage = await helper.createIdPackage(seed);
     
-    // 返回publicId和对应的seed
     self.postMessage({
       publicId: idPackage.publicId,
       seed: seed
     });
     
-    // 使用完立即清理idPackage
     idPackage.publicId = '';
     idPackage.privateKey = '';
     
@@ -49,7 +44,6 @@ self.onmessage = async (e: MessageEvent) => {
   }
 };
 
-// 监听worker终止事件
 self.addEventListener('unload', () => {
   cleanup();
 });

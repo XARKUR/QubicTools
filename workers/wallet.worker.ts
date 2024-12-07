@@ -6,9 +6,7 @@ const initHelper = async () => {
   if (helper) return;
   
   try {
-    // 等待加载加密模块
     await QubicLib.crypto;
-    // 创建 helper 实例
     helper = new QubicLib.QubicHelper();
   } catch (error) {
     console.error('Error initializing QubicHelper:', error);
@@ -16,9 +14,36 @@ const initHelper = async () => {
   }
 };
 
-// 清理函数
+// 安全清理函数
+function secureCleanup(obj: any) {
+  if (!obj) return;
+  
+  // 遍历对象的所有属性
+  for (const key in obj) {
+    if (typeof obj[key] === 'string') {
+      // 多次覆写字符串内容
+      const len = obj[key].length;
+      for (let i = 0; i < 3; i++) {
+        obj[key] = crypto.getRandomValues(new Uint8Array(len * 2))
+          .reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
+      }
+      obj[key] = '';
+    } else if (typeof obj[key] === 'object') {
+      secureCleanup(obj[key]);
+    }
+  }
+  
+  // 将对象的所有属性设置为 null
+  for (const key in obj) {
+    obj[key] = null;
+  }
+}
+
 const cleanup = () => {
-  helper = null;
+  if (helper) {
+    secureCleanup(helper);
+    helper = null;
+  }
 };
 
 self.onmessage = async (e: MessageEvent) => {
@@ -29,27 +54,33 @@ self.onmessage = async (e: MessageEvent) => {
     return;
   }
   
+  let idPackage: any = null;
   try {
     await initHelper();
-    const idPackage = await helper.createIdPackage(seed);
+    idPackage = await helper.createIdPackage(seed);
     
-    // 返回publicId和对应的seed
-    self.postMessage({
+    // 立即发送结果并清理
+    const result = {
       publicId: idPackage.publicId,
       seed: seed
-    });
+    };
     
-    // 使用完立即清理idPackage
-    idPackage.publicId = '';
-    idPackage.privateKey = '';
+    self.postMessage(result);
+    
+    // 安全清理所有敏感数据
+    secureCleanup(idPackage);
+    secureCleanup(result);
     
   } catch (error) {
     console.error('Error generating wallet:', error);
     self.postMessage({ error: 'Failed to generate wallet' });
+  } finally {
+    if (idPackage) {
+      secureCleanup(idPackage);
+    }
   }
 };
 
-// 监听worker终止事件
 self.addEventListener('unload', () => {
   cleanup();
 });

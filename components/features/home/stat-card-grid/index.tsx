@@ -8,7 +8,6 @@ import QubicAPI from '@/services/api';
 import { handleAPIError } from '@/utils/error-handler';
 import { useTranslation } from 'react-i18next';
 
-// 导出计算好的数据的hook
 export const useBlockValue = () => {
   const [blockValue, setBlockValue] = useState({
     blockValueUSD: 0,
@@ -28,31 +27,27 @@ export const useBlockValue = () => {
     try {
       const blockData = await QubicAPI.getBlockValue();
 
-      // 验证数据有效性
       if (!blockData || typeof blockData.price !== 'number' || blockData.price < 0) {
         throw new Error('Invalid block value data');
       }
 
-      // 保持当前价格，如果新价格无效
       if (blockData.price === 0 && blockValue.price > 0) {
         blockData.price = blockValue.price;
       }
 
       setBlockValue(blockData);
       setError(null);
-      setRetryCount(0); // 重置重试计数
+      setRetryCount(0); 
     } catch (error) {
       console.error('Error fetching block value:', error);
       
-      // 如果还没有达到最大重试次数，增加重试计数并继续
       if (retryCount < maxRetries) {
         setRetryCount(prev => prev + 1);
-        // 指数退避重试
         const delay = Math.pow(2, retryCount) * 1000;
         setTimeout(fetchBlockValue, delay);
       } else {
         setError(error instanceof Error ? error : new Error('Failed to fetch data'));
-        handleAPIError(error, '获取数据失败');
+        handleAPIError(error, 'Failed to fetch data');
       }
     }
   }, [retryCount, blockValue.price]);
@@ -75,7 +70,7 @@ export const useBlockValue = () => {
       if (mounted) {
         fetchBlockValue();
       }
-    }, 300000); // 5分钟更新一次
+    }, 300000); 
 
     return () => {
       mounted = false;
@@ -110,9 +105,7 @@ function StatCardGridComponent() {
     price,
   } = useBlockValue();
 
-  // 格式化美元金额的辅助函数
   const formatUSD = useCallback((value: number, decimals: number = 2) => {
-    // 将数字转换为下标数字的辅助函数
     const toSubscript = (num: number): string => {
       const subscriptDigits: { [key: string]: string } = {
         '0': '₀',
@@ -130,41 +123,32 @@ function StatCardGridComponent() {
     };
 
     if (decimals === 9) {
-      // 将数字转换为字符串，固定9位小数
       const numStr = value.toFixed(9);
       
-      // 找到小数点位置
       const dotIndex = numStr.indexOf('.');
       
       if (dotIndex === -1) {
         return `$${numStr}`;
       }
 
-      // 获取小数部分
       const decimal = numStr.substring(dotIndex + 1);
       
-      // 计算开头连续的零的个数
       let zeroCount = 0;
       while (zeroCount < decimal.length && decimal[zeroCount] === '0') {
         zeroCount++;
       }
 
-      // 如果有连续的零
       if (zeroCount > 0) {
-        // 获取非零部分
         const nonZeroPart = decimal.substring(zeroCount);
-        // 如果全是零，直接返回整数部分
         if (!nonZeroPart) {
           return `$${numStr.substring(0, dotIndex)}`;
         }
-        // 返回格式化后的字符串，使用下标表示零的个数
         return `$${numStr.substring(0, dotIndex)}.0${toSubscript(zeroCount)}${nonZeroPart}`;
       }
 
       return `$${numStr}`;
     }
 
-    // 其他情况使用标准格式化
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',

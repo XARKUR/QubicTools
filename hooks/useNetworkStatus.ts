@@ -10,10 +10,8 @@ export function useNetworkStatus() {
       setIsOffline(!navigator.onLine)
     }
 
-    // 初始状态
     setIsOffline(!navigator.onLine)
 
-    // 添加事件监听
     window.addEventListener("online", updateOnlineStatus)
     window.addEventListener("offline", updateOnlineStatus)
 
