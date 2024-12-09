@@ -1,6 +1,6 @@
 # Qubic Tools
 
-A professional Qubic blockchain toolkit providing secure address generation, and mining analysis capabilities.
+A Qubic blockchain tools providing secure address generation, and mining analysis capabilities.
 
 ## Features
 
