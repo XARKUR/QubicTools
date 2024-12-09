@@ -21,7 +21,7 @@ export function ActionButtons() {
   const toggleLanguage = React.useCallback(() => {
     try {
       const currentLang = i18n.language
-      const nextLang = currentLang === 'en' ? 'en' : 'zh'
+      const nextLang = currentLang === 'zh' ? 'en' : 'zh'
       console.log('Switching language from', currentLang, 'to', nextLang)
       i18n.changeLanguage(nextLang)
       localStorage.setItem('preferred-language', nextLang)
