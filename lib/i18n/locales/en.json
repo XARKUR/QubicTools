@@ -242,7 +242,7 @@
       "calculate": "Calculate",
       "miningInfo": "Mining Information",
       "expectedDailyBlocks": "Expected Daily Blocks",
-      "luck": "Luck Value",
+      "luck": "Epoch Luck Value",
       "profitAnalysis": "Profit Analysis",
       "currentProfit": "Current Total Profit",
       "dailyProfit": "Expected Daily Profit",
@@ -271,9 +271,9 @@
         "title": "Network Total Hash Rate",
         "description": "Estimated Network Total Hash Rate"
       },
-      "solutionsPerHour": {
-        "title": "Solutions Per Hour",
-        "description": "Current Solutions Per Hour"
+      "coinsPerSolution": {
+        "title": "Coin Per Solutions",
+        "description": "Estimated Coin Per Solutions"
       },
       "totalBlocks": {
         "title": "Total Network Solutions",

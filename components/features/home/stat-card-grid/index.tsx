@@ -12,11 +12,11 @@ export const useBlockValue = () => {
   const [blockValue, setBlockValue] = useState({
     blockValueUSD: 0,
     networkHashRate: 0,
-    solutionsPerHour: 0,
     solutionsPerHourCalculated: 0,
     totalBlocks: 0,
     currentEpoch: 0,
     price: 0,
+    coinsPerSolution: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -97,12 +97,12 @@ function StatCardGridComponent() {
   const { t } = useTranslation();
   const { 
     networkHashRate, 
-    solutionsPerHour,
     solutionsPerHourCalculated,
     totalBlocks,
     isLoading, 
     currentEpoch, 
     price,
+    coinsPerSolution,
   } = useBlockValue();
 
   const formatUSD = useCallback((value: number, decimals: number = 2) => {
@@ -189,12 +189,12 @@ function StatCardGridComponent() {
       icon: <Box className="h-4 w-4" />,
     },
     {
-      title: t('home.stats.solutionsPerHour.title'),
-      value: isLoading ? t('home.stats.loading') : (solutionsPerHour || 0).toString(),
-      description: t('home.stats.solutionsPerHour.description'),
+      title: t('home.stats.coinsPerSolution.title'),
+      value: isLoading ? t('home.stats.loading') : Math.floor(coinsPerSolution || 0).toString(),
+      description: t('home.stats.coinsPerSolution.description'),
       icon: <Box className="h-4 w-4" />,
     },
-  ], [t, formatUSD, isLoading, currentEpoch, price, networkHashRate, totalBlocks, solutionsPerHourCalculated, solutionsPerHour]);
+  ], [t, formatUSD, isLoading, currentEpoch, price, networkHashRate, totalBlocks, solutionsPerHourCalculated, coinsPerSolution]);
 
   return (
     <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">

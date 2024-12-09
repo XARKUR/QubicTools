@@ -242,7 +242,7 @@
       "calculate": "计算",
       "miningInfo": "挖矿信息",
       "expectedDailyBlocks": "每日预计出块数",
-      "luck": "幸运值",
+      "luck": "纪元幸运值",
       "profitAnalysis": "收益分析",
       "currentProfit": "当前总收益",
       "dailyProfit": "每日预期收益",
@@ -271,17 +271,17 @@
         "title": "全网总算力",
         "description": "预计全网总算力"
       },
-      "solutionsPerHour": {
-        "title": "每小时出块数",
-        "description": "当前每小时出块数"
+      "coinsPerSolution": {
+        "title": "每个块币数",
+        "description": "预计当前每个块币数"
       },
       "totalBlocks": {
         "title": "全网总块数",
         "description": "当前全网总块数"
       },
       "solutionsPerHourCalculated": {
-        "title": "纪元平均出块数",
-        "description": "当前平均出块数"
+        "title": "平均每小时出块数",
+        "description": "当前平均每小时出块数"
       },
       "loading": "加载中..."
     }
