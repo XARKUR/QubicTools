@@ -74,6 +74,10 @@ class PerformanceMonitor {
     }
   }
 
+  setBatchSize(size: number) {
+    this.batchSize = Math.max(100, Math.min(10000, size));
+  }
+
   getBatchSize() {
     return this.batchSize;
   }
@@ -192,8 +196,12 @@ self.onmessage = async (event) => {
     state.pattern = pattern.toUpperCase();
     state.type = type;
     state.workerId = id;
-    state.cpuUsage = cpuUsage;
+    state.cpuUsage = cpuUsage / 100;
     state.monitor.reset();
+    
+    // 设置初始批处理大小
+    const initialBatchSize = Math.floor(100 + (9900 * state.cpuUsage));
+    state.monitor.setBatchSize(initialBatchSize);
     
     try {
       await initHelper();
@@ -216,15 +224,24 @@ self.onmessage = async (event) => {
 async function runGeneration() {
   let totalAttempts = 0;
   let lastMetricsUpdate = 0;
-  
+
   while (state.running) {
+    const cycleStart = Date.now();
     const batchSize = state.monitor.getBatchSize();
-    const batchStart = Date.now();
+    let batchAttempts = 0;
     
-    for (let i = 0; i < batchSize && state.running; i++) {
+    // 工作时间窗口为 100ms
+    const timeWindow = 100;
+    // 根据 CPU 使用率计算实际工作时间
+    const workTime = Math.floor(timeWindow * state.cpuUsage);
+    const workDeadline = cycleStart + workTime;
+    
+    // 在分配的工作时间内执行计算
+    while (Date.now() < workDeadline && state.running) {
       try {
         const result = await generateAndCheck();
         totalAttempts++;
+        batchAttempts++;
         
         if (result) {
           self.postMessage({
@@ -258,12 +275,12 @@ async function runGeneration() {
       }
     }
     
-    const batchDuration = Date.now() - batchStart;
-    const targetDuration = batchSize / (50000 * state.cpuUsage);
-    if (batchDuration < targetDuration) {
-      await new Promise(resolve => 
-        setTimeout(resolve, targetDuration - batchDuration)
-      );
+    // 在时间窗口剩余时间内休眠
+    const elapsed = Date.now() - cycleStart;
+    const sleepTime = Math.max(0, timeWindow - elapsed);
+    
+    if (sleepTime > 0) {
+      await new Promise(resolve => setTimeout(resolve, sleepTime));
     }
   }
 }
