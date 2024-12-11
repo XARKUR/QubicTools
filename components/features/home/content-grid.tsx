@@ -33,11 +33,12 @@ interface ProposalData {
   published: string;
   url: string;
   totalVotes: number;
-  sumOption0: number;
-  sumOption1: number;
-  sumOption2: number;
-  sumOption3: number;
-  sumOption4: number;
+  options: Array<{
+    index: number;
+    label: string;
+    numberOfVotes: number;
+    value?: string;
+  }>;
 }
 
 /**
@@ -88,28 +89,17 @@ export const ContentGrid = React.memo(function ContentGrid() {
   }, []);
 
   const processProposalOptions = (proposal: ProposalData) => {
-    const options = [];
-    const votes = [
-      proposal.sumOption0,
-      proposal.sumOption1,
-      proposal.sumOption2,
-      proposal.sumOption3,
-      proposal.sumOption4
-    ];
-
-    for (let i = 0; i < votes.length; i++) {
-      if (votes[i] > 0) {
-        options.push({
-          label: `Options ${i}`,
-          votes: votes[i],
-          percentage: Math.round((votes[i] / proposal.totalVotes) * 100)
-        });
-      }
-    }
+    const options = proposal.options.map(option => ({
+      label: option.label,
+      votes: option.numberOfVotes,
+      percentage: proposal.totalVotes > 0 
+        ? Math.round((option.numberOfVotes / proposal.totalVotes) * 100)
+        : 0
+    }));
 
     return {
       title: proposal.title,
-      date: proposal.published.split('T')[0], 
+      date: proposal.published.split('T')[0],
       link: proposal.url,
       options: options,
       totalVotes: proposal.totalVotes
