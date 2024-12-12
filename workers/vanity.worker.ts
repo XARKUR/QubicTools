@@ -8,6 +8,8 @@ class PerformanceMonitor {
   private batchSize = 1000;
   private targetSpeed = 0;
   private lastAttempts = 0;
+  private readonly maxHistoryLength = 10;  // 限制历史记录长度
+  private gcCounter = 0;  // 用于追踪需要触发 GC 的时间
 
   constructor() {
     this.reset();
@@ -21,6 +23,7 @@ class PerformanceMonitor {
     this.lastUpdate = Date.now();
     this.batchSize = 1000;
     this.targetSpeed = 0;
+    this.gcCounter = 0;
   }
 
   updateMetrics(newAttempts: number) {
@@ -32,20 +35,30 @@ class PerformanceMonitor {
     const attemptsDiff = newAttempts - this.lastAttempts;
     const currentSpeed = Math.round(attemptsDiff / (duration / 1000));
     
-    this.speedHistory.push(currentSpeed);
-    if (this.speedHistory.length > 10) {
+    // 使用固定大小的循环缓冲区
+    if (this.speedHistory.length >= this.maxHistoryLength) {
       this.speedHistory.shift();
     }
+    this.speedHistory.push(currentSpeed);
     
     const averageSpeed = Math.round(
       this.speedHistory.reduce((a, b) => a + b, 0) / this.speedHistory.length
     );
     
-    this.adjustBatchSize(currentSpeed);
-    
     this.attempts = newAttempts;
     this.lastAttempts = newAttempts;
     this.lastUpdate = now;
+
+    // 每1000次更新触发一次主动清理
+    this.gcCounter++;
+    if (this.gcCounter >= 1000) {
+      this.gcCounter = 0;
+      // @ts-ignore
+      if (typeof global.gc === 'function') {
+        // @ts-ignore
+        global.gc();
+      }
+    }
     
     return {
       attempts: this.attempts,
@@ -192,6 +205,13 @@ self.onmessage = async (event) => {
   const { action, pattern, type, id, cpuUsage } = event.data;
 
   if (action === 'start') {
+    console.log('Worker received start command:', {
+      pattern,
+      type,
+      id,
+      originalCpuUsage: cpuUsage,
+    });
+
     state.running = true;
     state.pattern = pattern.toUpperCase();
     state.type = type;
@@ -202,6 +222,11 @@ self.onmessage = async (event) => {
     // 设置初始批处理大小
     const initialBatchSize = Math.floor(100 + (9900 * state.cpuUsage));
     state.monitor.setBatchSize(initialBatchSize);
+    
+    console.log('Worker initialized with:', {
+      convertedCpuUsage: state.cpuUsage,
+      initialBatchSize,
+    });
     
     try {
       await initHelper();
@@ -217,6 +242,7 @@ self.onmessage = async (event) => {
       });
     }
   } else if (action === 'stop') {
+    console.log('Worker received stop command');
     state.running = false;
   }
 };
@@ -224,14 +250,15 @@ self.onmessage = async (event) => {
 async function runGeneration() {
   let totalAttempts = 0;
   let lastMetricsUpdate = 0;
+  let lastPerformanceLog = 0;
+  let lastGC = Date.now();
 
   while (state.running) {
     const cycleStart = Date.now();
-    const batchSize = state.monitor.getBatchSize();
     let batchAttempts = 0;
     
-    // 工作时间窗口为 100ms
-    const timeWindow = 100;
+    // 工作时间窗口为 200ms
+    const timeWindow = 200;  // 增加时间窗口以减少上下文切换
     // 根据 CPU 使用率计算实际工作时间
     const workTime = Math.floor(timeWindow * state.cpuUsage);
     const workDeadline = cycleStart + workTime;
@@ -256,6 +283,14 @@ async function runGeneration() {
         }
         
         const now = Date.now();
+        
+        // 定期清理内存
+        if (now - lastGC >= 30000) { // 每30秒
+          // 强制清理内存
+          secureCleanup({ temp: generateRandomSeed() });
+          lastGC = now;
+        }
+        
         if (now - lastMetricsUpdate >= 500) {
           const metrics = state.monitor.updateMetrics(totalAttempts);
           if (metrics) {
@@ -269,6 +304,19 @@ async function runGeneration() {
             lastMetricsUpdate = now;
           }
         }
+
+        if (now - lastPerformanceLog >= 5000) {
+          console.log('Performance metrics:', {
+            cpuUsage: state.cpuUsage,
+            workTime,
+            totalAttempts,
+            batchAttempts,
+            elapsedTime: now - cycleStart,
+            attemptsPerSecond: batchAttempts / ((now - cycleStart) / 1000),
+            memoryUsage: self.performance?.memory?.usedJSHeapSize || 'N/A'
+          });
+          lastPerformanceLog = now;
+        }
       } catch (error) {
         console.error('Generation error:', error);
         continue;
@@ -278,6 +326,18 @@ async function runGeneration() {
     // 在时间窗口剩余时间内休眠
     const elapsed = Date.now() - cycleStart;
     const sleepTime = Math.max(0, timeWindow - elapsed);
+    
+    if (Date.now() - lastPerformanceLog >= 5000) {
+      console.log('Cycle stats:', {
+        cpuUsage: state.cpuUsage,
+        timeWindow,
+        workTime,
+        elapsed,
+        sleepTime,
+        memoryUsage: self.performance?.memory?.usedJSHeapSize || 'N/A'
+      });
+      lastPerformanceLog = Date.now();
+    }
     
     if (sleepTime > 0) {
       await new Promise(resolve => setTimeout(resolve, sleepTime));
