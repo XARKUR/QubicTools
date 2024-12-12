@@ -10,6 +10,7 @@ class PerformanceMonitor {
   private lastAttempts = 0;
   private readonly maxHistoryLength = 10;  // 限制历史记录长度
   private gcCounter = 0;  // 用于追踪需要触发 GC 的时间
+  private objectsCreated = 0;  // 追踪创建的对象数量
 
   constructor() {
     this.reset();
@@ -24,6 +25,18 @@ class PerformanceMonitor {
     this.batchSize = 1000;
     this.targetSpeed = 0;
     this.gcCounter = 0;
+    this.objectsCreated = 0;
+  }
+
+  trackObject() {
+    this.objectsCreated++;
+  }
+
+  getStats() {
+    return {
+      objectsCreated: this.objectsCreated,
+      uptime: Date.now() - this.startTime
+    };
   }
 
   updateMetrics(newAttempts: number) {
@@ -53,18 +66,15 @@ class PerformanceMonitor {
     this.gcCounter++;
     if (this.gcCounter >= 1000) {
       this.gcCounter = 0;
-      // @ts-ignore
-      if (typeof global.gc === 'function') {
-        // @ts-ignore
-        global.gc();
-      }
+      this.objectsCreated = 0;  // 重置对象计数
     }
     
     return {
       attempts: this.attempts,
       speed: currentSpeed,
       averageSpeed,
-      batchSize: this.batchSize
+      batchSize: this.batchSize,
+      ...this.getStats()
     };
   }
 
@@ -159,7 +169,10 @@ async function generateAndCheck(): Promise<{ publicId: string; privateKey: strin
   
   try {
     seed = generateRandomSeed();
+    state.monitor.trackObject();  // 追踪新创建的对象
+    
     idPackage = await state.helper.createIdPackage(seed);
+    state.monitor.trackObject();  // 追踪新创建的对象
     
     const matches = state.type === 'prefix'
       ? idPackage.publicId.startsWith(state.pattern)
@@ -170,6 +183,7 @@ async function generateAndCheck(): Promise<{ publicId: string; privateKey: strin
         publicId: idPackage.publicId, 
         privateKey: seed 
       };
+      state.monitor.trackObject();  // 追踪新创建的对象
       
       // 立即清理原始数据
       secureCleanup(idPackage);
@@ -312,8 +326,7 @@ async function runGeneration() {
             totalAttempts,
             batchAttempts,
             elapsedTime: now - cycleStart,
-            attemptsPerSecond: batchAttempts / ((now - cycleStart) / 1000),
-            memoryUsage: self.performance?.memory?.usedJSHeapSize || 'N/A'
+            attemptsPerSecond: batchAttempts / ((now - cycleStart) / 1000)
           });
           lastPerformanceLog = now;
         }
@@ -333,8 +346,7 @@ async function runGeneration() {
         timeWindow,
         workTime,
         elapsed,
-        sleepTime,
-        memoryUsage: self.performance?.memory?.usedJSHeapSize || 'N/A'
+        sleepTime
       });
       lastPerformanceLog = Date.now();
     }
