@@ -223,10 +223,10 @@
       "baseData": "Base Data",
       "pattern": {
         "hashRate": {
-          "tooltip": "Calculated based on the average computing power of each mining pool to statistics, and there may be some efficiency differences between CPU computing power and GPU computing power."
+          "tooltip": "Calculated based on the average Hashrate of each mining pool to statistics, and there may be some efficiency differences between CPU Hashrate and GPU Ha sh ra te."
         },
         "luck": {
-          "tooltip": "Epoch Luck Value refers to the ratio of the number of blocks you have mined since the start of the current epoch to the expected number of blocks."
+          "tooltip": "Performance efficiency refers to the ratio of the number of Solutions you have produced from the start of the current mining pool epoch to the expected number of Solutions."
         },
         "expectedCurrentCoins": {
           "tooltip": "The expected coins are calculated based on statistical data and mining pool fees, but do not represent final earnings; the operation status of the mining pool may also affect earnings."
@@ -258,7 +258,7 @@
       "calculate": "Calculate",
       "miningInfo": "Mining Information",
       "expectedDailyBlocks": "Expected Daily Blocks",
-      "luck": "Epoch Luck Value",
+      "luck": "Performance Effeciency",
       "epochProgress": "Epoch Progress",
       "profitAnalysis": "Profit Analysis",
       "currentProfit": "Current Total Profit",
@@ -292,7 +292,7 @@
         },
         "apool": {
           "name": "Apool",
-          "description": "Apool.io is a technology platform focusing on blockchain mining services, committed to providing users with efficient, safe, and stable pool solutions. Currently, the platform supports various cryptocurrency mining, including QUBIC, ALEO, etc., helping users maximize their computing power utilization and optimize earnings. Since its launch, Apool.io has been renowned for its stability, offering sustained and substantial income guarantees to users, as well as 24/7 technical support services, quickly responding to user needs and resolving issues encountered during the mining process."
+          "description": "Apool.io is a technology platform focusing on blockchain mining services, committed to providing users with efficient, safe, and stable pool solutions. Currently, the platform supports various cryptocurrency mining, including QUBIC, ALEO, etc., helping users maximize their Hashrate utilization and optimize earnings. Since its launch, Apool.io has been renowned for its stability, offering sustained and substantial income guarantees to users, as well as 24/7 technical support services, quickly responding to user needs and resolving issues encountered during the mining process."
         },
         "solutions": {
           "name": "Solutions",

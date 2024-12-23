@@ -226,7 +226,7 @@
           "tooltip": "根据统计的各矿池平均算力进行计算，CPU 算力和 GPU 算力之间可能存在一些效率差异"
         },
         "luck": {
-          "tooltip": "纪元幸运值是指您在当前纪元开始到现在已出块数和预计出块数的比例"
+          "tooltip": "性能效率是指您在当前矿池纪元开始到现在已出块数和预计出块数的比例"
         },
         "expectedCurrentCoins": {
           "tooltip": "根据统计的数据和各矿池费率进行计算，不代表最终收益，矿池运行状态也可能会影响收益"
@@ -257,7 +257,7 @@
       "calculate": "计算",
       "miningInfo": "挖矿信息",
       "expectedDailyBlocks": "预计每日出块数",
-      "luck": "纪元幸运值",
+      "luck": "性能效率",
       "epochProgress": "纪元进度",
       "profitAnalysis": "收益分析",
       "currentProfit": "预计当前总收益",

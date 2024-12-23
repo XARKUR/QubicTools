@@ -10,7 +10,7 @@ import {
   Coins,
   Pickaxe,
   Settings,
-  Heart,
+  Sparkles,
   HelpCircle,
   Hourglass,
   DollarSign,
@@ -496,7 +496,7 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Heart className="h-4 w-4" />
+                    <Sparkles className="h-4 w-4" />
                     <Label>{t('home.calculator.luck')}</Label>
                     <TooltipProvider>
                       <Tooltip>
