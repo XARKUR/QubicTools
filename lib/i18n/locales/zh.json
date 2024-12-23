@@ -231,6 +231,9 @@
         "expectedCurrentCoins": {
           "tooltip": "根据统计的数据和各矿池费率进行计算，不代表最终收益，矿池运行状态也可能会影响收益"
         },
+        "expectedCurrentBlocks": {
+          "tooltip": "预计当前出块数是指从纪元开始您在当前矿池纪元开始到现在的预计出块数"
+        },
         "profitAnalysis": {
           "tooltip": "收益分析仅为预估值，受各项数据影响，请以最终收益为准"
         }

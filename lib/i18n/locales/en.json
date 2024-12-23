@@ -226,11 +226,15 @@
           "tooltip": "Calculated based on the average Hashrate of each mining pool to statistics, and there may be some efficiency differences between CPU Hashrate and GPU Ha sh ra te."
         },
         "luck": {
-          "tooltip": "Performance efficiency refers to the ratio of the number of Solutions you have produced from the start of the current mining pool epoch to the expected number of Solutions."
+          "tooltip": "Performance efficiency refers to the ratio of the number of solutions you have produced from the start of the current mining pool epoch to the expected number of solutions."
         },
         "expectedCurrentCoins": {
           "tooltip": "The expected coins are calculated based on statistical data and mining pool fees, but do not represent final earnings; the operation status of the mining pool may also affect earnings."
         },
+        "expectedCurrentBlocks": {
+          "tooltip": "The expected current solutions count refers to the number of solutions you are expected to mine from the start of the epoch until now in your current mining pool epoch."
+        },
+
         "profitAnalysis": {
           "tooltip": "Profit analysis is only a preliminary estimate affected by various data factors. Please take the actual profit as the standard."
         }
