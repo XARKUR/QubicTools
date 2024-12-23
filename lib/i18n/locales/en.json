@@ -1,5 +1,8 @@
 {
   "common": {
+    "support": {
+      "title": "Support Project"
+    },
     "copy": {
       "success": "Address copied to clipboard",
       "error": "Unable to copy, please copy manually"
@@ -30,8 +33,8 @@
   "nav": {
     "home": "Home",
     "dashboard": "Profit Calculator",
-    "vanityAddress": "Vanity Address Generator",
-    "batchWallet": "Batch Address Generate",
+    "vanityAddress": "Vanity Address Generation",
+    "batchWallet": "Batch Address Generation",
     "batchBalance": "Batch Balance Query"
   },
   "sponsor": {
@@ -52,13 +55,6 @@
         "title": "🎉Congratulations! Batch Addresses Generated!🎉",
         "description": "If you find this batch address generator helpful, please consider supporting the project to help maintain and improve the website."
       }
-    },
-    "level": {
-      "spark": "Spark Sponsor",
-      "starlight": "Starlight Sponsor",
-      "meteor": "Meteor Sponsor",
-      "star": "Star Sponsor",
-      "supernova": "Supernova Sponsor"
     }
   },
   "vanityAddress": {
@@ -73,6 +69,7 @@
         "label": "Input custom uppercase letters you want to generate, e.g.: QUBIC",
         "placeholder": "Enter address prefix or suffix to generate"
       },
+      "example": "示例地址",
       "cpuUsage": {
         "label": "Performance",
         "tooltip": "Adjust performance to balance generation speed and system response"
@@ -82,8 +79,7 @@
         "tooltip": "Force start mode will ignore network connection status but may have security risks"
       },
       "offlineNotice": "Offline generation only ensures generation process security, please keep your seed safe",
-      "networkAlert": "For security reasons, it's recommended to use this tool offline",
-      "example": "Example Address"
+      "networkAlert": "For security reasons, it's recommended to use this tool offline"
     },
     "status": {
       "ready": "Ready",
@@ -164,7 +160,6 @@
     "title": "Batch Balance Query",
     "settings": {
       "title": "Batch Balance Query",
-      "description": "Query balances for multiple addresses",
       "addressList": {
         "label": "Address List (One per line)",
         "placeholder": "Enter addresses to query, one per line",
@@ -226,15 +221,36 @@
     "calculator": {
       "title": "Profit Calculator",
       "baseData": "Base Data",
+      "pattern": {
+        "hashRate": {
+          "tooltip": "Calculated based on the average computing power of each mining pool to statistics, and there may be some efficiency differences between CPU computing power and GPU computing power."
+        },
+        "luck": {
+          "tooltip": "Epoch Luck Value refers to the ratio of the number of blocks you have mined since the start of the current epoch to the expected number of blocks."
+        },
+        "expectedCurrentCoins": {
+          "tooltip": "The expected coins are calculated based on statistical data and mining pool fees, but do not represent final earnings; the operation status of the mining pool may also affect earnings."
+        },
+        "profitAnalysis": {
+          "tooltip": "Profit analysis is only a preliminary estimate affected by various data factors. Please take the actual profit as the standard."
+        }
+      },
       "tip": "For data accuracy, please query during non-idle time",
       "pool": "Mining Pool",
       "pool_placeholder": "Select Pool",
-      "pool_qli": "QLi (Reward 85%)",
-      "pool_apool": "Apool (PPS)",
+      "pool_qli": "QLI Pool",
+      "pool_apool": "APool",
+      "pool_solutions": "Solutions",
+      "pool_minerlab": "MinerLab",
+      "mode_solo": "Reward 85%",
+      "mode_pplns": "PPLNS",
+      "miningMode": "Mining Mode",
+      "poolRequired": "Select Pool",
       "hashRate": "Hash Rate",
       "hashRateUnit": "it/s",
       "blocks": "Blocks Mined",
-      "expectedCurrentBlocks": "Current Estimated Blocks",
+      "expectedCurrentBlocks": "Estimated Current Blocks",
+      "expectedCurrentCoins": "Estimated Current Coins",
       "power": "Power Consumption",
       "powerUnit": "W",
       "electricityPrice": "Electricity Rate",
@@ -243,6 +259,7 @@
       "miningInfo": "Mining Information",
       "expectedDailyBlocks": "Expected Daily Blocks",
       "luck": "Epoch Luck Value",
+      "epochProgress": "Epoch Progress",
       "profitAnalysis": "Profit Analysis",
       "currentProfit": "Current Total Profit",
       "dailyProfit": "Expected Daily Profit",
@@ -252,11 +269,40 @@
       "dailyPowerCost": "Daily Electricity Cost",
       "monthlyPowerCost": "Monthly Electricity Cost",
       "dailyNetIncome": "Expected Daily Net Income",
+      "mode_placeholder": "Select Pool",
       "monthlyNetIncome": "Expected Monthly Net Income"
     },
-    "sponsor": {
-      "title": "Sponsors",
-      "empty": "No sponsors yet"
+    "pool": {
+      "title": "Pools list",
+      "add": "Add Pool",
+      "website": "Website",
+      "tutorial": "Tutorial",
+      "community": "Community",
+      "fee": "Fee",
+      "description": "",
+      "pattern": {
+        "title": {
+          "tooltip": "Here is a list of available mining pools, you can choose one to join mining."
+        }
+      },
+      "pools": {
+        "qli": {
+          "name": "QLI Pool",
+          "description": "In the Qubic ecosystem, QLI Pool is currently the largest mining pool with the most users. It offers various income distribution methods and supports multiple mining modes; you can easily find answers to all kinds of questions. This pool is compatible with operating systems such as LINUX, WIN (Windows), and HIVEOS."
+        },
+        "apool": {
+          "name": "Apool",
+          "description": "Apool.io is a technology platform focusing on blockchain mining services, committed to providing users with efficient, safe, and stable pool solutions. Currently, the platform supports various cryptocurrency mining, including QUBIC, ALEO, etc., helping users maximize their computing power utilization and optimize earnings. Since its launch, Apool.io has been renowned for its stability, offering sustained and substantial income guarantees to users, as well as 24/7 technical support services, quickly responding to user needs and resolving issues encountered during the mining process."
+        },
+        "solutions": {
+          "name": "Solutions",
+          "description": "Whether you are a mining novice or have some experience, Solutions Pool can meet your needs. Solutions Pool provides PPLNS (pay per last N shares) and solo mining options suitable for CPU, GPU, and Android devices."
+        },
+        "minerlab": {
+          "name": "MinerLab",
+          "description": "Qubic Lab, managed by MinerLab.io, is a mining pool tailored for the Qubic blockchain, supporting both CPU and GPU mining. It offers high yields for mining operations and is designed to be compatible with various hardware configurations. The platform emphasizes scalability, efficiency, and community-driven innovation, simplifying blockchain accessibility while ensuring robust performance for miners and developers alike."
+        }
+      }
     },
     "stats": {
       "currentEpoch": {
@@ -271,17 +317,17 @@
         "title": "Network Total Hash Rate",
         "description": "Estimated Network Total Hash Rate"
       },
-      "coinsPerSolution": {
-        "title": "Coin Per Solutions",
-        "description": "Estimated Coin Per Solutions"
+      "solutionsPerHour": {
+        "title": "Current Solution Rate",
+        "description": "Current Solutions Per Hour"
       },
       "totalBlocks": {
         "title": "Total Network Solutions",
         "description": "Current Total Network Solutions"
       },
       "solutionsPerHourCalculated": {
-        "title": "Average Solutions Per Hour",
-        "description": "Current Average Solutions Per Hour"
+        "title": "Epoch Solution Rate",
+        "description": "Epoch Average Solutions Per Hour"
       },
       "loading": "Loading..."
     }

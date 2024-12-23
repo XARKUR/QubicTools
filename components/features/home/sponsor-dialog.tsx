@@ -40,8 +40,11 @@ export function SponsorDialog({ wallets }: SponsorDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <Heart className="h-4 w-4 text-red-500" />
+        <Button variant="outline" size="default" className="w-full h-10">
+          <div className="flex items-center gap-2">
+            <Heart className="h-5 w-5 text-red-500 flex-shrink-0" />
+            <span className="text-sm font-medium">{t('common.support.title')}</span>
+          </div>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

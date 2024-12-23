@@ -6,9 +6,11 @@ import {
   Group,
   Dices,
   ScanSearch,
+  Heart
 } from "lucide-react"
 import { OptimizedImage } from "@/components/ui/optimized-image"
 import { useTranslation } from 'react-i18next'
+import { SponsorDialog } from "@/components/features/home/sponsor-dialog"
 
 import { MainNav } from "./main-nav"
 import { UserNav } from "./user-nav"
@@ -84,7 +86,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent className="flex flex-col">
         <MainNav items={data.navMain} />
-        <div className="mt-auto">
+        <div className="mt-auto space-y-2">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                size="lg"
+                asChild
+                className="flex items-center justify-center"
+              >
+                <div className="flex items-center">
+                  <SponsorDialog wallets={[
+                    {
+                      title: "Qubic",
+                      address: "XARKUROFQOTNDDSGVGUZSWDEEYMBSXOEAAYGJMUTFDWDMASHMFQPKYIHTPHA",
+                      icon: <Heart className="h-4 w-4" />
+                    }
+                  ]} />
+                </div>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
           <UserNav className="mt-auto" />
         </div>
       </SidebarContent>

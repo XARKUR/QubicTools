@@ -1,5 +1,8 @@
 {
   "common": {
+    "support": {
+      "title": "支持项目"
+    },
     "copy": {
       "success": "地址已复制到剪贴板",
       "error": "复制失败，请手动复制"
@@ -42,23 +45,16 @@
       "supportMessage": "您的支持是项目持续改进的动力"
     },
     "success": {
-      "title": "🎉恭喜！生成成功！🎉",
+      "title": "恭喜！生成成功！",
       "description": "如果您觉得这个工具有帮助，请考虑支持项目，帮助维护和改进网站。",
       "vanityAddress": {
-        "title": "🎉恭喜！靓号地址生成成功🎉",
+        "title": "恭喜！靓号地址生成成功",
         "description": "如果您喜欢生成的靓号地址，请考虑支持项目，帮助维护和改进网站。"
       },
       "batchWallet": {
-        "title": "🎉恭喜！批量地址生成成功🎉",
+        "title": "恭喜！批量地址生成成功",
         "description": "如果您觉得这个批量地址生成有帮助，请考虑支持项目，帮助维护和改进网站。"
       }
-    },
-    "level": {
-      "spark": "火花赞助",
-      "starlight": "星光赞助",
-      "meteor": "流星赞助",
-      "star": "恒星赞助",
-      "supernova": "超新星赞助"
     }
   },
   "vanityAddress": {
@@ -225,38 +221,103 @@
     "calculator": {
       "title": "收益计算器",
       "baseData": "基础数据",
-      "tip": "为了数据准确，请在非 idle 时间进行查询",
+      "pattern": {
+        "hashRate": {
+          "tooltip": "根据统计的各矿池平均算力进行计算，CPU 算力和 GPU 算力之间可能存在一些效率差异"
+        },
+        "luck": {
+          "tooltip": "纪元幸运值是指您在当前纪元开始到现在已出块数和预计出块数的比例"
+        },
+        "expectedCurrentCoins": {
+          "tooltip": "根据统计的数据和各矿池费率进行计算，不代表最终收益，矿池运行状态也可能会影响收益"
+        },
+        "profitAnalysis": {
+          "tooltip": "收益分析仅为预估值，受各项数据影响，请以最终收益为准"
+        }
+      },
       "pool": "矿池",
       "pool_placeholder": "请选择矿池",
-      "pool_qli": "QLi (Reward 85%)",
-      "pool_apool": "APool (PPS)",
+      "pool_qli": "QLI Pool",
+      "pool_apool": "APool",
+      "pool_solutions": "Solutions",
+      "pool_minerlab": "MinerLab",
+      "mode_solo": "Reward 85%",
+      "mode_pplns": "PPLNS",
+      "miningMode": "矿池模式",
       "poolRequired": "请先选择矿池",
       "hashRate": "算力",
       "hashRateUnit": "it/s",
       "blocks": "已出块数",
-      "expectedCurrentBlocks": "当前预计出块数",
+      "expectedCurrentBlocks": "预计当前出块数",
+      "expectedCurrentCoins": "预计当前币数",
       "power": "功耗",
       "powerUnit": "W",
       "electricityPrice": "电价",
       "electricityPriceUnit": "￥/kWh",
       "calculate": "计算",
       "miningInfo": "挖矿信息",
-      "expectedDailyBlocks": "每日预计出块数",
+      "expectedDailyBlocks": "预计每日出块数",
       "luck": "纪元幸运值",
+      "epochProgress": "纪元进度",
       "profitAnalysis": "收益分析",
-      "currentProfit": "当前总收益",
-      "dailyProfit": "每日预期收益",
-      "weeklyProfit": "每周预期收益",
-      "monthlyProfit": "每月预期收益",
+      "currentProfit": "预计当前总收益",
+      "dailyProfit": "预计每日收益",
+      "weeklyProfit": "预计每周收益",
+      "monthlyProfit": "预计每月收益",
       "costAnalysis": "成本分析",
       "dailyPowerCost": "每日电费支出",
       "monthlyPowerCost": "每月电费支出",
       "dailyNetIncome": "预计每日净收入",
+      "mode_placeholder": "先选择矿池",
       "monthlyNetIncome": "预计每月净收入"
     },
-    "sponsor": {
-      "title": "赞助者",
-      "empty": "暂无赞助者"
+    "pool": {
+      "title": "矿池列表",
+      "add": "添加矿池",
+      "website": "网站",
+      "tutorial": "教程",
+      "community": "社区",
+      "fee": "费用",
+      "description": "如果你想添加新的矿池，请点击右上角的添加按钮。",
+      "pattern": {
+        "title": {
+          "tooltip": "这里列出了一些可用的矿池，您可以选择其中一个加入挖矿。"
+        }
+      },
+      "pools": {
+        "qli": {
+          "name": "QLI Pool",
+          "description": "在 Qubic 生态中，QLI Pool 是当前规模最大的矿池，拥有最多的用户数量。提供了不同的收益分配和支持多种挖矿模式，你可以轻松找到各种问题的解答。该池能够兼容 Linux、Windows 和 HiveOS 等操作系统环境。",
+          "features": {
+            "feature1": "Solo(Fixed Reward 85%) ",
+            "feature2": "Solo(Fixed+Bonus Reward)",
+            "feature3": "PPLNS"
+          }
+        },
+        "apool": {
+          "name": "Apool",
+          "description": "Apool.io 是一家专注于区块链挖矿服务的技术平台，致力于为用户提供高效、安全、稳定的矿池解决方案。目前，平台支持多种加密货币挖矿，包括 QUBIC、ALEO 等，帮助用户最大化利用算力并优化收益。自上线以来，Apool.io 始终以稳定性著称，为用户带来持久且丰厚的收益保障，并为用户提供24/7的技术支持服务，快速响应用户需求，为用户解决挖矿过程中的问题。",
+          "features": {
+            "feature1": "高效的收益分配系统"
+          }
+        },
+        "solutions": {
+          "name": "Solutions",
+          "description": "无论您是矿工新手还是有一定经验，Solutions Pool 都能满足您的需求。Solutions Pool 提供适用于 CPU、GPU 和 Android 设备的 PPLNS（pay per last N shares）和 Solo 挖矿选项。",
+          "features": {
+            "feature1": "多种挖矿模式选择",
+            "feature2": "灵活的收益分配"
+          }
+        },
+        "minerlab": {
+          "name": "MinerLab",
+          "description": "Qubic Lab 由 MinerLab.io 管理，是一个专为 Qubic 区块链设计的矿池，支持 CPU 和 GPU 挖矿。它提供高收益挖矿操作，并且设计兼容各种硬件配置。该平台强调可扩展性、效率和社区驱动的创新，简化了区块链的访问性，同时确保了对矿工和开发者的强大性能。",
+          "features": {
+            "feature1": "专业的矿池服务",
+            "feature2": "全天候技术支持"
+          }
+        }
+      }
     },
     "stats": {
       "currentEpoch": {
@@ -271,9 +332,9 @@
         "title": "全网总算力",
         "description": "预计全网总算力"
       },
-      "coinsPerSolution": {
-        "title": "每个块币数",
-        "description": "预计当前每个块币数"
+      "solutionsPerHour": {
+        "title": "每小时出块数",
+        "description": "当前每小时出块数"
       },
       "totalBlocks": {
         "title": "全网总块数",
@@ -281,7 +342,7 @@
       },
       "solutionsPerHourCalculated": {
         "title": "平均每小时出块数",
-        "description": "当前平均每小时出块数"
+        "description": "纪元平均每小时出块数"
       },
       "loading": "加载中..."
     }

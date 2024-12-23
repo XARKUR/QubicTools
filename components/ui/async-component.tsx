@@ -36,18 +36,13 @@ const ProposalCard = dynamic(
   { loading: () => <Skeleton className="w-full h-32" />, ssr: false }
 );
 
-const SponsorCard = dynamic(
-  () => import('@/components/features/home/sponsor-card').then((mod) => mod.SponsorCard),
-  { loading: () => <Skeleton className="w-full h-32" />, ssr: false }
-);
-
 const SponsorDialog = dynamic(
   () => import('@/components/features/home/sponsor-dialog').then((mod) => mod.SponsorDialog),
   { loading: () => <Skeleton className="w-full h-32" />, ssr: false }
 );
 
-const SponsorList = dynamic(
-  () => import('@/components/features/home/sponsor-list').then((mod) => mod.SponsorList),
+const PoolList = dynamic(
+  () => import('@/components/features/home/pool-list').then((mod) => mod.PoolList),
   { loading: () => <Skeleton className="w-full h-32" />, ssr: false }
 );
 
@@ -58,9 +53,8 @@ const componentMap = {
   'stat-card-grid': StatCardGrid,
   'content-grid': ContentGrid,
   'proposal-card': ProposalCard,
-  'sponsor-card': SponsorCard,
   'sponsor-dialog': SponsorDialog,
-  'sponsor-list': SponsorList,
+  'pool-list': PoolList,
 } as const;
 
 export function AsyncComponent({ componentName, ...props }: AsyncComponentProps) {

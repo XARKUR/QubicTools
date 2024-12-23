@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "sonner";
 import { WebVitalsReporter } from "@/components/web-vitals-reporter";
 import { I18nProvider } from './i18n/i18n-provider'
+import { QubicDataProvider } from "@/providers/qubic-data-provider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -15,10 +16,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
       disableTransitionOnChange
     >
       <I18nProvider>
-        {children}
-        <Toaster />
-        <Analytics />
-        <WebVitalsReporter />
+        <QubicDataProvider>
+          {children}
+          <Toaster />
+          <Analytics />
+          <WebVitalsReporter />
+        </QubicDataProvider>
       </I18nProvider>
     </ThemeProvider>
   );

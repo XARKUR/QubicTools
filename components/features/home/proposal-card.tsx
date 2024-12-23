@@ -97,24 +97,20 @@ const ProposalCard = memo<ProposalCardProps>(({
               </Button>
             </div>
 
-            {totalVotes > 0 ? (
-              <div className="space-y-3">
-                {options.map((option, index) => (
-                  <div key={index} className="space-y-1">
-                    <div className="flex items-center justify-between text-xs">
-                      <span>{option.label}</span>
-                      <span>{option.votes} {t('home.proposals.votes')} ({option.percentage}%)</span>
-                    </div>
-                    <Progress value={option.percentage} />
+            <div className="space-y-3">
+              {options.map((option, index) => (
+                <div key={index} className="space-y-1">
+                  <div className="flex items-center justify-between text-xs">
+                    <span>{option.label}</span>
+                    <span>{option.votes} {t('home.proposals.votes')} ({option.percentage}%)</span>
                   </div>
-                ))}
-                <div className="text-xs text-muted-foreground">
-                  {t('home.proposals.totalVotes')}: {totalVotes}
+                  <Progress value={option.percentage} />
                 </div>
+              ))}
+              <div className="text-xs text-muted-foreground">
+                {t('home.proposals.totalVotes')}: {totalVotes}
               </div>
-            ) : (
-              <div className="text-sm text-muted-foreground">{t('home.proposals.noVotes')}</div>
-            )}
+            </div>
           </>
         ) : (
           <div className="flex flex-col items-center justify-center py-6 space-y-4">
