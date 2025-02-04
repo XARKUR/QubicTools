@@ -111,7 +111,7 @@ export function ContentGrid() {
                   asChild
                 >
                   <a
-                    href="https://github.com/XARKUR/QubicTools?tab=readme-ov-file#add-new-pool"
+                    href="https://github.com/XARKUR/QubicTools/blob/main/docs/add-mining-pool.md"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2"

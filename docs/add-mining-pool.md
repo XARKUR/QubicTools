@@ -1,6 +1,6 @@
 # Apply to add a new mining pool
 
-Conditions:
+Application Requirements:
 1. The mining pool needs to be running stably for at least three months.
 2. The mining pool hashrate must reach at least 5% of the total network hashrate.
 
