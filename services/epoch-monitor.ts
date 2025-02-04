@@ -43,7 +43,7 @@ export class EpochMonitor {
       // 1. 获取当前纪元进度
       const epochProgress = await QubicAPI.getEpochProgress();
       console.log(`当前纪元进度: ${epochProgress.toFixed(2)}%`);
-      if (epochProgress < 99.99) {
+      if (epochProgress < 93.00) {
         console.log('进度未达到99.99%,跳过检查');
         return;
       }
