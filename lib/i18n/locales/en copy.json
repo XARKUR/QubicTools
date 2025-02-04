@@ -1,0 +1,487 @@
+{
+  "common": {
+    "support": {
+      "title": "Support Project"
+    },
+    "copy": {
+      "success": "Address copied to clipboard",
+      "error": "Unable to copy, please copy manually"
+    },
+    "buttons": {
+      "nextTime": "Next Time",
+      "copyAddress": "Copy Address",
+      "start": "Start",
+      "pause": "Pause",
+      "resume": "Resume"
+    },
+    "qubicTools": "QubicTools",
+    "qubicLogo": "LOGO",
+    "buildBy": "Build by {{author}}",
+    "toggle": "Toggle",
+    "userName": "XARKUR",
+    "userEmail": "https://x.com/iXARKUR",
+    "authorName": "XARKUR",
+    "language": {
+      "toggle": "Change language",
+      "switched": "Language changed to {{lang}}",
+      "switchFailed": "Failed to change language"
+    },
+    "theme": {
+      "toggle": "Switch theme"
+    },
+    "error": {
+      "invalidToolData": "Invalid Data",
+      "poolDataUnavailable": "Unable to Retrieve Pool Data Temporarily, Please Try Again Later",
+      "unknownError": "Unknown Error"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "profitCalculator": "Profit Calculator",
+    "vanityAddress": "Vanity Address Generation",
+    "batchAddress": "Batch Address Generation",
+    "batchBalance": "Batch Balance Query",
+    "officialLinks": {
+      "title": "Qubic Official Links",
+      "officialWebsite": "Qubic Official Website",
+      "officialWallet": "Qubic Web Wallet",
+      "officialExplorer": "Qubic Explorer",
+      "officialDocs": "Qubic Documentation",
+      "community": "Qubic Community"
+    },
+    "friendLinks": {
+      "title": "Friend Links",
+      "fattyDoge": {
+        "title": "FattyDoge Calculator",
+        "description": "A calculator developed by FattyDoge, providing more detailed pool data, Idle round time, and epoch earnings records"
+      }
+    }
+  },
+  "sponsor": {
+    "dialog": {
+      "title": "Support Project",
+      "description": "Thank you for using the website! If you find it helpful, please consider supporting the project to help maintain and improve the website.",
+      "scanQRCode": "Qubic Address QR Code",
+      "supportMessage": "Your support is the driving force for continuous project improvement"
+    },
+    "success": {
+      "title": "🎉Congratulations! Generation Successful!🎉",
+      "description": "If you find this tool helpful, please consider supporting the project to help maintain and improve the website.",
+      "vanityAddress": {
+        "title": "🎉Congratulations! Vanity Address Generated!🎉",
+        "description": "If you enjoy the generated vanity addresses, please consider supporting the project to help maintain and improve the site."
+      },
+      "batchAddress": {
+        "title": "🎉Congratulations! Batch Addresses Generated!🎉",
+        "description": "If you find this batch address generator helpful, please consider supporting the project to help maintain and improve the website."
+      }
+    }
+  },
+  "vanityAddress": {
+    "title": "Vanity Address Generation",
+    "pattern": {
+      "title": "Generation Settings",
+      "type": {
+        "prefix": "Prefix",
+        "suffix": "Suffix"
+      },
+      "input": {
+        "label": "Input custom uppercase letters you want to generate, e.g.: QUBIC",
+        "placeholder": "Enter address prefix or suffix to generate"
+      },
+      "example": "e.g.:",
+      "cpuUsage": {
+        "label": "Performance",
+        "tooltip": "Adjust performance to balance generation speed and system response"
+      },
+      "forceStart": {
+        "label": "Force Start",
+        "tooltip": "Force start mode will ignore network connection status but may have security risks"
+      },
+      "offlineNotice": "Offline generation only ensures generation process security, please keep your seed safe",
+      "networkAlert": "For security reasons, it's recommended to use this tool offline"
+    },
+    "status": {
+      "ready": "Ready",
+      "waiting": "Waiting to Start",
+      "generating": "Generating...",
+      "paused": "Paused",
+      "completed": "  ",
+      "error": "Generation Failed"
+    },
+    "info": {
+      "title": "Generation Information",
+      "difficulty": "Difficulty",
+      "difficultyValue": "Estimated generation difficulty: {{value}}",
+      "attempts": "Attempts",
+      "speed": "Speed",
+      "time": "Time",
+      "status": "Status",
+      "progress": "Progress",
+      "recommendedLength": "Recommended letter count should not exceed 5, generation time increases exponentially with difficulty"
+    },
+    "result": {
+      "title": "Generation Result",
+      "publicId": "Public Address",
+      "privateKey": "Seed",
+      "copyPublic": "Copy Public Address",
+      "warning": "Disclaimer: This tool is for learning and entertainment purposes only, please do not store large assets! For generation security, please check the project code yourself.",
+      "warningClipboard": "The seed information will not be saved. To prevent the seed from leaking through the clipboard, please promptly scan the QR code with the official Qubic mobile wallet for import.",
+      "scanQRCode": "Scan QR Code for Seed",
+      "googlePlay": "Google Play",
+      "appStore": "App Store"
+    }
+  },
+  "batchAddress": {
+    "title": "Batch Address Generation",
+    "settings": {
+      "title": "Batch Address Generation",
+      "offlineNotice": "Offline generation only ensures generation process security, please keep your seed safe",
+      "forceStart": {
+        "label": "Force Start",
+        "tooltip": "Force start mode will ignore network connection status but may have security risks"
+      },
+      "count": {
+        "label": "Generation Count",
+        "placeholder": "Please enter the number of wallets to generate"
+      },
+      "generating": "Generating... {{progress}}%",
+      "start": "Start Generation"
+    },
+    "mobile": {
+      "description": "The seed information will not be saved. Please promptly scan the QR code with the official Qubic mobile wallet for import."
+    },
+    "store": {
+      "googlePlay": "Google Play",
+      "appStore": "App Store"
+    },
+    "results": {
+      "title": "Generation Results",
+      "notice": "Disclaimer: This tool is for learning and entertainment purposes only, please do not store large assets! For generation security, please check the project code yourself.",
+      "wallet": "Address",
+      "scan": "Use Qubic official mobile wallet to scan QR code to import seed"
+    },
+    "export": {
+      "button": "Export CSV",
+      "headers": {
+        "index": "Index",
+        "address": "Address",
+        "privateKey": "Private Key"
+      }
+    },
+    "toast": {
+      "invalidCount": "Please enter a valid wallet count",
+      "networkError": "For security reasons, please generate addresses in offline environment",
+      "generateError": "Error occurred while generating addresses",
+      "generateSuccess": "Successfully generated {{count}} addresses"
+    }
+  },
+  "batchBalance": {
+    "title": "Batch Balance Query",
+    "settings": {
+      "title": "Batch Balance Query",
+      "addressList": {
+        "label": "Address List (One per line)",
+        "placeholder": "Enter addresses to query, one per line",
+        "import": "Import Address List"
+      },
+      "search": {
+        "button": "Start Query",
+        "loading": "Querying..."
+      }
+    },
+    "results": {
+      "title": "Query Results",
+      "totalBalance": "Total Balance: {{amount}} QUBIC",
+      "table": {
+        "index": "No.",
+        "address": "Address",
+        "balance": "Balance",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "success": "Success",
+        "error": "Failed"
+      },
+      "actions": {
+        "copyAddress": "Copy Full Address",
+        "delete": "Delete Result"
+      }
+    },
+    "toast": {
+      "error": {
+        "emptyAddresses": "Please enter addresses to query",
+        "queryFailed": "Query failed, please try again",
+        "copyFailed": "Failed to copy address",
+        "searchFailed": "Search failed",
+        "deleteFailed": "Failed to delete record"
+      },
+      "success": {
+        "copySuccess": "Address copied to clipboard",
+        "searchSuccess": "Query successful",
+        "deleteSuccess": "Record deleted"
+      }
+    }
+  },
+  "calculator": {
+    "title": "Profit Calculator",
+    "calculator": {
+      "title": "Profit Calculator",
+      "baseData": "Base Data",
+      "error": {
+        "poolDataUnavailable": "Pool data is currently unavailable, please try again later"
+      },
+      "pattern": {
+        "hashRate": {
+          "tooltip": "Calculated based on the average Hashrate of each mining pool to statistics, and there may be some efficiency differences between CPU Hashrate and GPU Hash rate."
+        },
+        "performance": {
+          "tooltip": "Performance efficiency refers to the ratio of the number of blocks mined from the specified mining start time to the current time and the expected number of blocks, with the default start time being the epoch start time."
+        },
+        "expectedCurrentCoins": {
+          "tooltip": "The expected coins are calculated based on statistical data and mining pool fees, but do not represent final earnings; the operation status of the mining pool may also affect earnings."
+        },
+        "expectedCurrentBlocks": {
+          "tooltip": "The expected current block count refers to the estimated number of blocks from the mining start time set in your current pool to now."
+        },
+        "profitAnalysis": {
+          "tooltip": "Profit analysis is only a preliminary estimate affected by various data factors. Please take the actual profit as the standard."
+        }
+      },
+      "pool": "Mining Pool",
+      "pool_placeholder": "Select Pool",
+      "pool_qli": "QLI Pool",
+      "pool_apool": "APool",
+      "pool_solutions": "Solutions",
+      "pool_minerlab": "MinerLab",
+      "pool_nevermine": "Nevermine",
+      "mode_solo": "Reward 85%",
+      "mode_pplns": "PPLNS",
+      "miningMode": "Mining Mode",
+      "hashRate": "Hash Rate",
+      "hashRateUnit": "it/s",
+      "blocks": "Blocks Mined",
+      "expectedCurrentBlocks": "Estimated Current Blocks",
+      "expectedCurrentCoins": "Estimated Current Coins",
+      "power": "Power Consumption",
+      "powerUnit": "W",
+      "electricityPrice": "Electricity Rate",
+      "electricityPriceUnit": "$/kWh",
+      "calculate": "Calculate",
+      "miningInfo": "Mining Information",
+      "expectedDailyBlocks": "Expected Daily Blocks",
+      "performance": "Performance Effeciency",
+      "profitAnalysis": "Profit Analysis",
+      "currentProfit": "Expected Current Profit",
+      "dailyProfit": "Expected Daily Profit",
+      "weeklyProfit": "Expected Weekly Profit",
+      "monthlyProfit": "Expected Monthly Profit",
+      "costAnalysis": "Cost Analysis",
+      "dailyPowerCost": "Daily Electricity Cost",
+      "monthlyPowerCost": "Monthly Electricity Cost",
+      "dailyNetIncome": "Expected Daily Net Income",
+      "mode_placeholder": "Select Pool",
+      "monthlyNetIncome": "Expected Monthly Net Income",
+      "startTime": "Start Time",
+      "weekDay": "Day Of the Week",
+      "hour": "Hour",
+      "minute": "Minute",
+      "weekDays": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      }
+    },
+    "pool": {
+      "title": "Pools list",
+      "add": "Add Pool",
+      "website": "Website",
+      "tutorial": "Tutorial",
+      "community": "Community",
+      "fee": "Fee",
+      "description": "",
+      "pattern": {
+        "title": {
+          "tooltip": "Here is a list of available mining pools, you can choose one to join mining."
+        }
+      },
+      "systems": {
+        "windows": "Windows",
+        "linux": "Linux",
+        "hiveos": "HiveOS",
+        "android": "Android",
+        "docker": "Docker"
+      },
+      "pools": {
+        "qli": {
+          "name": "QLI Pool",
+          "description": "In the Qubic ecosystem, QLI Pool is currently the largest mining pool with the most users. It offers various income distribution methods and supports multiple mining modes; you can easily find answers to all kinds of questions. This pool is compatible with operating systems such as LINUX, WIN (Windows), and HIVEOS."
+        },
+        "apool": {
+          "name": "Apool",
+          "description": "Apool.io is a technology platform focusing on blockchain mining services, committed to providing users with efficient, safe, and stable pool solutions. Currently, the platform supports various cryptocurrency mining, including QUBIC, ALEO, etc., helping users maximize their Hashrate utilization and optimize earnings. Since its launch, Apool.io has been renowned for its stability, offering sustained and substantial income guarantees to users, as well as 24/7 technical support services, quickly responding to user needs and resolving issues encountered during the mining process."
+        },
+        "solutions": {
+          "name": "Solutions",
+          "description": "Whether you are a mining novice or have some experience, Solutions Pool can meet your needs. Solutions Pool provides PPLNS (pay per last N shares) and solo mining options suitable for CPU, GPU, and Android devices."
+        },
+        "minerlab": {
+          "name": "MinerLab",
+          "description": "Qubic Lab, managed by MinerLab.io, is a mining pool tailored for the Qubic blockchain, supporting both CPU and GPU mining. It offers high yields for mining operations and is designed to be compatible with various hardware configurations. The platform emphasizes scalability, efficiency, and community-driven innovation, simplifying blockchain accessibility while ensuring robust performance for miners and developers alike."
+        },
+        "nevermine": {
+          "name": "Nevermine",
+          "description": "Nevermine.io is your trusted crypto mining pool, designed for miners who demand efficiency, transparency, and reliability. With industry-leading uptime, low fees, and a commitment to complete transparency, we ensure you get the most out of your mining efforts. Our dedicated support team is always ready to assist, making Nevermine.io the ultimate choice for miners who never settle for less.",
+          "features": {
+            "feature1": "",
+            "feature2": ""
+          }
+        }
+      }
+    },
+    "poolStats": {
+      "title": "Pool Data",
+      "epochData": "Epoch Data",
+      "epochProgress": "Epoch Progress",
+      "idle": {
+        "title": "Idle Status",
+        "yes": "Idle Time",
+        "no": "Mining Time"
+      },
+      "proposals": "Epoch Proposals",
+      "averageScore": "Average Score",
+      "poolHash": "Pool Hashrate",
+      "solutions": "Total Solutions",
+      "coinsPerBlock": "Coins per Solution",
+      "blockValue": "Solution Value",
+      "sharesPerSolution": "Shares per Solution",
+      "hashratePerSolution": {
+        "title": "Daily Hashrate for Solution",
+        "tooltip": "The hashrate required for one Solution per day based on pool data"
+      },
+      "corrected_hashrate": {"tooltip":"Adjusted Total Network Hashrate Based on Pool Data"},
+      "networkShare": "Total Hashrate Share"
+    },
+    "stats": {
+      "currentEpoch": {
+        "title": "Current Epoch",
+        "description": "Current Epoch Number"
+      },
+      "price": {
+        "title": "Qubic Price",
+        "description": "Current Qubic Price"
+      },
+      "networkHashRate": {
+        "title": "Network Total Hash Rate",
+        "description": "Network Total Hash Rate"
+      },
+      "solutionsPerHour": {
+        "title": "Current Solution Rate",
+        "description": "Current Solutions Per Hour"
+      },
+      "totalBlocks": {
+        "title": "Total Network Solutions",
+        "description": "Current Total Network Solutions"
+      },
+      "solutionsPerHourCalculated": {
+        "title": "Epoch Solution Rate",
+        "description": "Epoch Average Solutions Per Hour"
+      },
+      "loading": "Loading..."
+    },
+    "history": {
+      "title": "Mining History",
+      "currentEpoch": "Current Epoch",
+      "epochNumber": "Epoch #{{number}}",
+      "poolInformation": "Pool Information",
+      "poolName": "Pool Name",
+      "miningMode": "Mining Mode",
+      "sharesPerSolution": "Shares/Solution",
+      "estimateCoins": "Estimate Coins",
+      "actualCoins": "Actual Coins",
+      "accuracy": "Accuracy",
+      "profitTrend": "Profit Trend",
+      "epochRange": "Epoch {{start}} - {{end}}",
+      "trendingUp": "Trending up by {{value}}%",
+      "trendingDown": "Trending down by {{value}}%",
+      "profitTrendDescription": "Showing profit trend based on average pool earnings",
+      "epochNavigation": "Epoch Navigation",
+      "searchEpochPlaceholder": "Enter epoch number...",
+      "totalEpochs": "Total Epochs",
+      "activePools": "Active Pools"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "proposals": {
+      "title": "Current Epoch Proposals",
+      "empty": "No proposals available",
+      "viewDetails": "View Details",
+      "votes": "votes",
+      "totalVotes": "Total Votes",
+      "noVotes": "No votes yet",
+      "noProposal": {
+        "title": "No Proposals",
+        "description": "There are currently no proposals to vote on"
+      }
+    },
+    "stats": {
+      "currentEpoch": {
+        "title": "Current Epoch",
+        "description": "Current Epoch Number"
+      },
+      "price": {
+        "title": "Qubic Price",
+        "description": "Current Qubic Price"
+      },
+      "marketCap": {
+        "title": "Qubic Market Cap",
+        "description": "Qubic Current Market Cap"
+      },
+      "circulatingSupply": {
+        "title": "Qubic Circulating Supply",
+        "description": "Qubic Current Circulating Supply"
+      },
+      "burnedQus": {
+        "title": "Qubic Total Burned",
+        "description": "Current Total Burned Amount"
+      },
+      "totalLocked": {
+        "title": "Qearn Total Staking",
+        "description": "Current Total Staking Amount"
+      },
+      "loading": "Loading..."
+    },
+    "articles": {
+      "title": "Latest Articles",
+      "empty": "No articles available",
+      "viewDetails": "View Details",
+      "viewAll": "View All",
+      "loading": "Loading...",
+      "loadingMore": "Loading more...",
+      "retry": "Retry",
+      "empty": "Empty"
+    },
+    "assets": {
+      "title": "Assets",
+      "price": {
+        "title": "Price",
+        "tooltip": "average price of the latest transactions of assets"
+      },
+      "smartContract": "Smart Contract",
+      "tokens": "Tokens",
+      "name": "Name",
+      "tooltip": "On-chain assets in the Qubic ecosystem"
+    }
+  },
+  "networkStatus": {
+    "offline": "Network disconnected, please use incognito mode",
+    "online": "Please disconnect network and use incognito mode"
+  }
+}

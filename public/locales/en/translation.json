@@ -1,0 +1,14 @@
+{
+  "common": {
+    "qubicTools": "QubicTools",
+    "qubicLogo": "Qubic Logo",
+    "buildBy": "Build by {{author}}",
+    "toggle": "Toggle"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "vanityAddress": "Vanity Address Generator",
+    "batchAddress": "Batch Address Generate",
+    "batchBalance": "Batch Check Balance"
+  }
+}

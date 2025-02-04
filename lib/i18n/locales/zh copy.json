@@ -1,0 +1,515 @@
+{
+  "common": {
+    "support": {
+      "title": "支持项目"
+    },
+    "copy": {
+      "success": "地址已复制到剪贴板",
+      "error": "复制失败，请手动复制"
+    },
+    "buttons": {
+      "nextTime": "下次一定",
+      "copyAddress": "复制地址",
+      "start": "开始",
+      "pause": "暂停",
+      "resume": "继续",
+      "export": "导出"
+    },
+    "tools": "工具列表",
+    "toggle": "切换",
+    "language": {
+      "toggle": "切换语言",
+      "switched": "已切换到 {{lang}}",
+      "switchFailed": "切换语言失败"
+    },
+    "theme": {
+      "toggle": "切换主题"
+    },
+    "error": {
+      "invalidToolData": "无效的工具数据",
+      "poolDataUnavailable": "暂时无法获取矿池数据，请稍后再试",
+      "unknownError": "未知错误"
+    },
+    "search": {
+      "title": "快速搜索",
+      "placeholder": "搜索 tick、ID 或交易...",
+      "empty": "未找到相关结果",
+      "description": "通过 tick 编号、ID 或交易哈希搜索 Qubic 网络",
+      "categories": {
+        "tick": "刻度",
+        "id": "地址",
+        "tx": "交易"
+      },
+      "shortcuts": {
+        "open": "打开搜索",
+        "close": "关闭",
+        "navigate": "导航",
+        "select": "选择"
+      }
+    }
+  },
+  "nav": {
+    "home": "首页",
+    "dashboard": "仪表盘",
+    "profitCalculator": "收益计算器",
+    "vanityAddress": "靓号地址生成",
+    "batchAddress": "批量钱包生成",
+    "batchBalance": "批量余额查询",
+    "calculator": "计算器",
+    "history": "挖矿历史",
+    "officialLinks": {
+      "title": "Qubic 官方链接",
+      "officialWebsite": "Qubic 官网",
+      "officialWallet": "Qubic 网页钱包",
+      "officialExplorer": "Qubic 区块浏览器",
+      "officialDocs": "Qubic 文档",
+      "community": "Qubic 社区"
+    },
+    "friendLinks": {
+      "title": "友情链接",
+      "fattyDoge": {
+        "title": "肥肥Doge 计算器",
+        "description": "由肥肥Doge开发的计算器，提供更加详细的矿池数据、 Idle 回合时间和纪元收益记录"
+      }
+    }
+  },
+  "sponsor": {
+    "dialog": {
+      "title": "支持项目",
+      "description": "感谢使用网站！如果您觉得有帮助，请考虑支持项目，帮助维护和改进网站。",
+      "scanQRCode": "{{chain}} 地址二维码",
+      "supportMessage": "您的支持是项目持续改进的动力"
+    },
+    "success": {
+      "title": "恭喜！生成成功！",
+      "description": "如果您喜欢生成的地址，请考虑支持项目，帮助维护和改进网站。",
+      "batchAddress": {
+        "title": "恭喜！批量钱包生成成功！",
+        "description": "如果您觉得批量钱包生成工具有帮助，请考虑支持项目，帮助维护和改进网站。"
+      }
+    }
+  },
+  "vanityAddress": {
+    "title": "靓号地址生成",
+    "pattern": {
+      "title": "生成设置",
+      "type": {
+        "prefix": "前缀",
+        "suffix": "后缀"
+      },
+      "input": {
+        "label": "输入你要生成的自定义大写字母 比如: QUBIC",
+        "placeholder": "输入要生成的地址前缀或后缀"
+      },
+      "example": "示例地址",
+      "cpuUsage": {
+        "label": "性能",
+        "tooltip": "调整性能以平衡生成速度和系统响应"
+      },
+      "forceStart": {
+        "label": "强制开始",
+        "tooltip": "强制开始模式下将忽略网络连接状态，但可能存在安全风险"
+      },
+      "offlineNotice": "离线生成仅确保生成过程安全，请妥善保管您的种子",
+      "networkAlert": "为了安全起见，建议离线使用此工具"
+    },
+    "status": {
+      "ready": "就绪",
+      "waiting": "等待开始",
+      "generating": "生成中...",
+      "paused": "已暂停",
+      "completed": "生成完成",
+      "error": "生成失败"
+    },
+    "info": {
+      "title": "生成信息",
+      "difficulty": "难度",
+      "difficultyValue": "预计生成难度: {{value}}",
+      "attempts": "尝试次数",
+      "speed": "速度",
+      "time": "用时",
+      "status": "状态",
+      "progress": "进度",
+      "recommendedLength": "建议填写的字母不超过 5 个，生成时间会根据生成难度呈指数级增长"
+    },
+    "result": {
+      "title": "生成结果",
+      "publicId": "生成地址",
+      "privateKey": "种子",
+      "copyPublic": "复制公钥",
+      "warning": "免责声明：本工具仅供学习娱乐使用，请勿存放大额资产！关于生成安全性请自行查看项目代码。",
+      "warningClipboard": "种子信息不会进行保存，为防止种子从剪切板泄漏，请及时 Qubic 官方移动钱包扫描二维码导入",
+      "scanQRCode": "扫描二维码获取种子",
+      "googlePlay": "Google Play",
+      "appStore": "App Store"
+    }
+  },
+  "batchAddress": {
+    "title": "批量钱包生成",
+    "settings": {
+      "title": "批量钱包生成",
+      "offlineNotice": "离线生成仅确保生成过程安全，请妥善保管您的种子",
+      "forceStart": {
+        "label": "强制开始",
+        "tooltip": "强制开始模式下将忽略网络连接状态，但可能存在安全风险"
+      },
+      "count": {
+        "label": "生成数量",
+        "placeholder": "请输入要生成的钱包数量"
+      },
+      "generating": "正在生成... {{progress}}%",
+      "start": "开始生成"
+    },
+    "mobile": {
+      "description": "种子信息不会进行保存，请及时使用 Qubic 官方移动钱包扫描二维码导入或导出文档"
+    },
+    "store": {
+      "googlePlay": "Google Play",
+      "appStore": "App Store"
+    },
+    "results": {
+      "title": "生成结果",
+      "notice": "免责声明：本工具仅供学习娱乐使用，请勿存放大额资产！关于生成安全性请自行查看项目代码。",
+      "wallet": "地址",
+      "scan": "使用 Qubic 官方移动钱包扫描二维码导入种子"
+    },
+    "export": {
+      "button": "导出为 CSV",
+      "headers": {
+        "index": "序号",
+        "address": "地址",
+        "privateKey": "种子"
+      }
+    },
+    "toast": {
+      "invalidCount": "请输入有效的地址数量",
+      "networkError": "为了安全起见，请在离线环境下生成地址",
+      "generateError": "生成地址时发生错误",
+      "generateSuccess": "成功生成 {{count}} 个地址"
+    }
+  },
+  "batchBalance": {
+    "title": "批量余额查询",
+    "settings": {
+      "title": "查询设置",
+      "addressList": {
+        "label": "地址列表（每行一个）",
+        "placeholder": "输入要查询的地址，每行一个",
+        "import": "导入地址列表"
+      },
+      "search": {
+        "button": "开始查询",
+        "loading": "查询中..."
+      }
+    },
+    "results": {
+      "title": "查询结果",
+      "totalBalance": "总余额: {{amount}} QUBIC",
+      "table": {
+        "index": "序号",
+        "address": "地址",
+        "balance": "余额",
+        "status": "状态",
+        "actions": "操作"
+      },
+      "status": {
+        "success": "成功",
+        "error": "失败"
+      },
+      "actions": {
+        "copyAddress": "复制完整地址",
+        "delete": "删除记录"
+      }
+    },
+    "toast": {
+      "error": {
+        "emptyAddresses": "请输入要查询的地址",
+        "queryFailed": "查询失败，请重试",
+        "copyFailed": "复制地址失败",
+        "searchFailed": "搜索失败",
+        "deleteFailed": "删除记录失败"
+      },
+      "success": {
+        "copySuccess": "地址已复制到剪贴板",
+        "searchSuccess": "查询成功",
+        "deleteSuccess": "记录已删除"
+      }
+    }
+  },
+  "calculator": {
+    "title": "收益计算器",
+    "calculator": {
+      "title": "收益计算器",
+      "baseData": "基础数据",
+      "error": {
+        "poolDataUnavailable": "暂时无法获取矿池数据，请稍后再试"
+      },
+      "pattern": {
+        "hashRate": {
+          "tooltip": "根据统计的各矿池平均算力进行计算，CPU 算力和 GPU 算力之间可能存在一些效率差异"
+        },
+        "performance": {
+          "tooltip": "性能效率是指您设定的挖矿开始时间到现在已出块数和预计出块数的比例，默认时间为纪元开始时间"
+        },
+        "expectedCurrentCoins": {
+          "tooltip": "根据统计的数据和各矿池费率进行计算，不代表最终收益，矿池运行状态也可能会影响收益"
+        },
+        "expectedCurrentBlocks": {
+          "tooltip": "预计当前出块数是指您在当前矿池设定的挖矿开始时间到现在的预计出块数"
+        },
+        "profitAnalysis": {
+          "tooltip": "收益分析仅为预估值，受各项数据影响，请以最终收益为准"
+        }
+      },
+      "pool": "矿池",
+      "pool_placeholder": "请选择矿池",
+      "pool_qli": "QLI Pool",
+      "pool_apool": "APool",
+      "pool_solutions": "Solutions",
+      "pool_minerlab": "MinerLab",
+      "pool_nevermine": "Nevermine",
+      "mode_solo": "Reward 85%",
+      "mode_pplns": "PPLNS",
+      "miningMode": "矿池模式",
+      "hashRate": "算力",
+      "hashRateUnit": "it/s",
+      "blocks": "已出块数",
+      "expectedCurrentBlocks": "预计当前出块数",
+      "expectedCurrentCoins": "预计当前币数",
+      "power": "功耗",
+      "powerUnit": "W",
+      "electricityPrice": "电价",
+      "electricityPriceUnit": "￥/kWh",
+      "calculate": "计算",
+      "miningInfo": "挖矿信息",
+      "expectedDailyBlocks": "预计每日出块数",
+      "performance": "性能效率",
+      "profitAnalysis": "收益分析",
+      "currentProfit": "预计当前收益",
+      "dailyProfit": "预计每日收益",
+      "weeklyProfit": "预计每周收益",
+      "monthlyProfit": "预计每月收益",
+      "costAnalysis": "成本分析",
+      "dailyPowerCost": "每日电费支出",
+      "monthlyPowerCost": "每月电费支出",
+      "dailyNetIncome": "预计每日净收入",
+      "mode_placeholder": "先选择矿池",
+      "monthlyNetIncome": "预计每月净收入",
+      "startTime": "开始时间",
+      "weekDay": "星期",
+      "hour": "时",
+      "minute": "分",
+      "weekDays": {
+        "monday": "星期一",
+        "tuesday": "星期二",
+        "wednesday": "星期三",
+        "thursday": "星期四",
+        "friday": "星期五",
+        "saturday": "星期六",
+        "sunday": "星期日"
+      },
+      "history": {
+        "title": "挖矿历史",
+        "description": "查看历史挖矿数据和统计信息",
+        "epochHistory": "纪元历史",
+        "comingSoon": "历史数据可视化即将推出...",
+        "currentEpoch": "当前纪元",
+        "epochNumber": "第 {{number}} 纪元",
+        "poolInformation": "矿池信息",
+        "poolName": "矿池名称",
+        "miningMode": "挖矿模式",
+        "estimateCoins": "预估币数",
+        "actualCoins": "实际币数",
+        "accuracy": "准确率",
+        "sharesPerSolution": "每解份额",
+        "epochNavigation": "纪元导航",
+        "searchEpochPlaceholder": "输入纪元编号...",
+        "totalEpochs": "总纪元数",
+        "activePools": "活跃矿池"
+      }
+    },
+    "pool": {
+      "title": "矿池列表",
+      "history": "历史收益",
+      "add": "添加矿池",
+      "website": "网站",
+      "tutorial": "教程",
+      "community": "社区",
+      "fee": "费用",
+      "description": "如果你想添加新的矿池，请点击右上角的添加按钮。",
+      "pattern": {
+        "title": {
+          "tooltip": "这里列出了一些可用的矿池，您可以选择其中一个加入挖矿。"
+        }
+      },
+      "systems": {
+        "windows": "Windows",
+        "linux": "Linux",
+        "hiveos": "HiveOS",
+        "android": "Android",
+        "docker": "Docker"
+      },
+      "pools": {
+        "qli": {
+          "name": "QLI Pool",
+          "description": "在 Qubic 生态中，QLI Pool 是当前规模最大的矿池，拥有最多的用户数量。提供了不同的收益分配和支持多种挖矿模式，你可以轻松找到各种问题的解答。该池能够兼容 Linux、Windows 和 HiveOS 等操作系统环境。",
+          "features": {
+            "feature1": "Solo(Fixed Reward 85%) ",
+            "feature2": "Solo(Fixed+Bonus Reward)",
+            "feature3": "PPLNS"
+          }
+        },
+        "apool": {
+          "name": "Apool",
+          "description": "Apool.io 是一家专注于区块链挖矿服务的技术平台，致力于为用户提供高效、安全、稳定的矿池解决方案。目前，平台支持多种加密货币挖矿，包括 QUBIC、ALEO 等，帮助用户最大化利用算力并优化收益。自上线以来，Apool.io 始终以稳定性著称，为用户带来持久且丰厚的收益保障，并为用户提供 24/7 的技术支持服务，快速响应用户需求，为用户解决挖矿过程中的问题。",
+          "features": {
+            "feature1": "高效的收益分配系统"
+          }
+        },
+        "solutions": {
+          "name": "Solutions",
+          "description": "无论您是矿工新手还是有一定经验，Solutions Pool 都能满足您的需求。Solutions Pool 提供适用于 CPU、GPU 和 Android 设备的 PPLNS（pay per last N shares）和 Solo 挖矿选项。",
+          "features": {
+            "feature1": "多种挖矿模式选择",
+            "feature2": "灵活的收益分配"
+          }
+        },
+        "minerlab": {
+          "name": "MinerLab",
+          "description": "Qubic Lab 由 MinerLab.io 管理，是一个专为 Qubic 区块链设计的矿池，支持 CPU 和 GPU 挖矿。它提供高收益挖矿操作，并且设计兼容各种硬件配置。该平台强调可扩展性、效率和社区驱动的创新，简化了区块链的访问性，同时确保了对矿工和开发者的强大性能。",
+          "features": {
+            "feature1": "",
+            "feature2": ""
+          }
+        },
+        "nevermine": {
+          "name": "Nevermine",
+          "description": "Nevermine.io 是您的加密货币挖矿池，为追求效率、透明度和可靠性的矿工而设计。凭借行业领先的在线时间、低费用和对完全透明的承诺，我们确保您从挖矿工作中获得最大收益。我们的专属支持团队随时准备为您提供帮助，让 Nevermine.io 成为绝不妥协的最佳选择。",
+          "features": {
+            "feature1": "",
+            "feature2": ""
+          }
+        }
+      }
+    },
+    "poolStats": {
+      "title": "矿池数据",
+      "epochData": "纪元数据",
+      "epochProgress": "纪元进度",
+      "idle": {
+        "title": "闲置状态",
+        "yes": "闲置时间",
+        "no": "挖矿时间"
+      },
+      "proposals": "纪元提案",
+      "averageScore": "平均分数",
+      "poolHash": "矿池总算力",
+      "solutions": "矿池总块数",
+      "coinsPerBlock": "块币数",
+      "blockValue": "块价值",
+      "sharesPerSolution": "块份额",
+      "hashratePerSolution": {
+        "title": "每日块算力",
+        "tooltip": "根据矿池数据计算的每天出一个块所需要的算力"
+      },
+      "corrected_hashrate": {"tooltip":"根据矿池数据修正的全网总算力"},
+      "networkShare": "全网算力占比"
+    },
+    "stats": {
+      "currentEpoch": {
+        "title": "当前纪元",
+        "description": "当前纪元编号"
+      },
+      "price": {
+        "title": "Qubic 价格",
+        "description": "Qubic 当前价格"
+      },
+      "networkHashRate": {
+        "title": "全网总算力",
+        "description": "预计全网总算力"
+      },
+      "solutionsPerHour": {
+        "title": "每小时出块数",
+        "description": "当前每小时出块数"
+      },
+      "totalBlocks": {
+        "title": "全网总块数",
+        "description": "当前全网总块数"
+      },
+      "solutionsPerHourCalculated": {
+        "title": "平均每小时出块数",
+        "description": "纪元平均每小时出块数"
+      },
+      "loading": "加载中..."
+    }
+  },
+  "dashboard": {
+    "title": "仪表盘",
+    "proposals": {
+      "title": "纪元提案",
+      "history": "历史提案",
+      "empty": "暂无提案",
+      "viewDetails": "查看详情",
+      "votes": "票",
+      "totalVotes": "总投票数",
+      "noVotes": "暂无投票",
+      "noProposal": {
+        "title": "当前无提案",
+        "description": "暂时没有需要投票的提案"
+      }
+    },
+    "stats": {
+      "currentEpoch": {
+        "title": "当前纪元",
+        "description": "当前纪元编号"
+      },
+      "price": {
+        "title": "Qubic 价格",
+        "description": "Qubic 当前价格"
+      },
+      "marketCap": {
+        "title": "Qubic 市值",
+        "description": "Qubic 当前市值"
+      },
+      "circulatingSupply": {
+        "title": "Qubic 流通供应量",
+        "description": "Qubic 当前流通供应量"
+      },
+      "burnedQus": {
+        "title": "Qubic 燃烧总量",
+        "description": "Qubic 当前燃烧总量"
+      },
+      "totalLocked": {
+        "title": "Qearn 质押总量",
+        "description": "Qubic 当前质押总量"
+      },
+      "loading": "加载中..."
+    },
+    "articles": {
+      "title": "最新文章",
+      "empty": "暂无文章",
+      "viewDetails": "查看详情",
+      "viewAll": "查看全部",
+      "loading": "正在加载...",
+      "loadingMore": "加载更多...",
+      "retry": "重新加载",
+      "empty": "暂无文章"
+    },
+    "assets": {
+      "title": "链上资产",
+      "qx": "QX 交易所",
+      "price": {
+        "title": "价格",
+        "tooltip": "资产最新成交的平均价格"
+      },
+      "smartContract": "智能合约",
+      "tokens": "代币",
+      "name": "名称",
+      "tooltip": "Qubic 生态中的链上资产"
+    }
+  },
+  "networkStatus": {
+    "offline": "已断开网络，请使用无痕模式",
+    "online": "请断开网络并使用无痕模式"
+  }
+}

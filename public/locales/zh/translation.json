@@ -1,0 +1,14 @@
+{
+  "common": {
+    "qubicTools": "Qubic工具",
+    "qubicLogo": "Qubic标志",
+    "buildBy": "由{{author}}构建",
+    "toggle": "切换"
+  },
+  "nav": {
+    "dashboard": "仪表盘",
+    "vanityAddress": "靓号地址生成器",
+    "batchAddress": "批量钱包生成",
+    "batchBalance": "批量余额查询"
+  }
+}
