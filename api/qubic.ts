@@ -2,6 +2,10 @@ import { QubicToolResponse } from '../types/api';
 import QubicAPI from '../services/api';
 
 export class QubicAPIHelper {
+  static async fetchAPI<T>(endpoint: string): Promise<T> {
+    return await QubicAPI.fetchAPI(endpoint);
+  }
+
   static async getToolData(): Promise<QubicToolResponse> {
     return await QubicAPI.getToolData();
   }

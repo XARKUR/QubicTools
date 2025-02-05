@@ -1,6 +1,7 @@
 import { EpochMonitor } from '@/services/epoch-monitor';
 import { QubicAPI } from '@/api/qubic';
 import { NextResponse } from 'next/server';
+import type { QubicToolResponse } from '@/types/api';
 
 // 新的路由段配置
 export const runtime = 'edge';
@@ -10,7 +11,7 @@ export const maxDuration = 300; // 设置最大执行时间为 5 分钟
 export async function GET() {
   try {
     // 1. 获取当前纪元信息
-    const toolData = await QubicAPI.getToolData();
+    const toolData = await QubicAPI.fetchAPI<QubicToolResponse>('/tool');
     const currentEpoch = toolData.data.currentEpoch;
     const epochProgress = await QubicAPI.getEpochProgress();
     
