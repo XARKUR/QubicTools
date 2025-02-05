@@ -7,17 +7,21 @@ import React, { useMemo } from "react"
 import { useTranslation } from 'react-i18next';
 import { useQubicData } from "@/providers/qubic-data-provider";
 
-function formatLargeNumber(num: number): string {
+function formatLargeNumber(num: number, withDollarSign: boolean = false): string {
+  if (!num) return withDollarSign ? '$0' : '0';
+  
+  const prefix = withDollarSign ? '$' : '';
+  
   if (num >= 1_000_000_000_000) {
-    return `${(num / 1_000_000_000_000).toFixed(2)}T`;
+    return `${prefix}${(num / 1_000_000_000_000).toFixed(2)}T`;
   } else if (num >= 1_000_000_000) {
-    return `${(num / 1_000_000_000).toFixed(2)}B`;
+    return `${prefix}${(num / 1_000_000_000).toFixed(2)}B`;
   } else if (num >= 1_000_000) {
-    return `${(num / 1_000_000).toFixed(2)}M`;
+    return `${prefix}${(num / 1_000_000).toFixed(2)}M`;
   } else if (num >= 1_000) {
-    return `${(num / 1_000).toFixed(2)}K`;
+    return `${prefix}${(num / 1_000).toFixed(2)}K`;
   }
-  return num.toFixed(2);
+  return `${prefix}${num.toFixed(2)}`;
 }
 
 function formatUSD(value: number, decimals: number = 0) {
@@ -98,7 +102,7 @@ function StatCardGridComponent() {
     },
     {
       title: t('dashboard.stats.marketCap.title'),
-      value: formatUSD(parseNumber(data?.marketCap)),
+      value: formatLargeNumber(parseNumber(data?.marketCap), true),
       description: t('dashboard.stats.marketCap.description'),
       icon: <Landmark className="h-4 w-4" />,
     },
