@@ -191,13 +191,15 @@ class QubicAPI {
     return this.fetchWithRetry<T>(`${this.BASE_URL}${endpoint}`);
   }
 
-  static async getToolData(): Promise<QubicToolResponse> {
-    if (this.cache.toolData.data && this.isCacheValid(this.cache.toolData.timestamp, this.CACHE_DURATION)) {
+  static async getToolData(useCache: boolean = true): Promise<QubicToolResponse> {
+    if (useCache && this.cache.toolData.data && this.isCacheValid(this.cache.toolData.timestamp, this.CACHE_DURATION)) {
       return this.cache.toolData.data;
     }
 
     const data = await this.fetchAPI<QubicToolResponse>('/tool');
-    this.cache.toolData = { data, timestamp: Date.now() };
+    if (useCache) {
+      this.cache.toolData = { data, timestamp: Date.now() };
+    }
     return data;
   }
 
