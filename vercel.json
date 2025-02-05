@@ -6,6 +6,10 @@
     "github": {
       "silent": true
     },
+    "crons": [{
+      "path": "/api/epoch",
+      "schedule": "* * * * *"
+    }],
     "headers": [
       {
         "source": "/(.*)",
