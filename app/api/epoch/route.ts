@@ -10,7 +10,8 @@ export const maxDuration = 300; // 设置最大执行时间为 5 分钟
 export async function GET() {
   try {
     // 1. 获取当前纪元信息
-    const currentEpoch = await QubicAPI.getCurrentEpoch();
+    const toolData = await QubicAPI.getToolData();
+    const currentEpoch = toolData.data.currentEpoch;
     const epochProgress = await QubicAPI.getEpochProgress();
     
     // 2. 创建监控实例

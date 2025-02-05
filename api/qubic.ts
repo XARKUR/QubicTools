@@ -7,7 +7,7 @@ export class QubicAPIHelper {
   }
 
   static async getEpochProgress(): Promise<number> {
-    // 获取当前 UTC 时间
+    // 获取当剌 UTC 时间
     const now = new Date();
     const currentUtcDay = now.getUTCDay();
     const currentUtcHour = now.getUTCHours();
