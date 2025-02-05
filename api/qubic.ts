@@ -7,7 +7,7 @@ export class QubicAPIHelper {
   }
 
   static async getToolData(): Promise<QubicToolResponse> {
-    return await QubicAPI.getToolData();
+    return await QubicAPI.fetchAPI<QubicToolResponse>('/tool');
   }
 
   static async getEpochProgress(): Promise<number> {
