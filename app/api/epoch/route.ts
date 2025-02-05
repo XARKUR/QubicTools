@@ -22,7 +22,7 @@ export async function GET() {
       success: true,
       currentEpoch: result.currentEpoch,
       epochProgress: epochProgress.toFixed(2) + '%',
-      checkThreshold: '99.99%',
+      checkThreshold: '99.90%',
       timestamp: new Date().toISOString(),
       status: result.status
     });

@@ -142,7 +142,7 @@ interface QubicToolResponse {
 
 class QubicAPI {
   private static readonly BASE_URL = 'https://api-qubic.vercel.app/api/qubic';
-  private static readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  private static readonly CACHE_DURATION = 60 * 1000; // 1 minute
   private static cache: {
     toolData: { data: QubicToolResponse | null; timestamp: number };
   } = {
