@@ -21,15 +21,10 @@ export async function GET() {
     // 3. 检查并上传
     const result = await monitor.checkAndUpload();
     
-    // 4. 确保返回最新纪元号
-    if (currentEpoch > result.currentEpoch) {
-      result.currentEpoch = currentEpoch;
-    }
-    
     return new NextResponse(
       JSON.stringify({
         success: true,
-        currentEpoch: result.currentEpoch,
+        currentEpoch,
         epochProgress: epochProgress.toFixed(2) + '%',
         checkThreshold: '99.99%',
         timestamp: new Date().toISOString(),
