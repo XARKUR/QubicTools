@@ -187,7 +187,7 @@ class QubicAPI {
     throw lastError;
   }
 
-  static async fetchAPI<T>(endpoint: string): Promise<T> {
+  private static async fetchAPI<T>(endpoint: string): Promise<T> {
     return this.fetchWithRetry<T>(`${this.BASE_URL}${endpoint}`);
   }
 

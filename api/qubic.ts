@@ -2,16 +2,12 @@ import { QubicToolResponse } from '../types/api';
 import QubicAPI from '../services/api';
 
 export class QubicAPIHelper {
-  static async fetchAPI<T>(endpoint: string): Promise<T> {
-    return await QubicAPI.fetchAPI(endpoint);
-  }
-
   static async getToolData(): Promise<QubicToolResponse> {
-    return await QubicAPI.fetchAPI<QubicToolResponse>('/tool');
+    return await QubicAPI.getToolData();
   }
 
   static async getEpochProgress(): Promise<number> {
-    // 获取当剌 UTC 时间
+    // 获取当前 UTC 时间
     const now = new Date();
     const currentUtcDay = now.getUTCDay();
     const currentUtcHour = now.getUTCHours();
