@@ -49,9 +49,9 @@ export class EpochMonitor {
       console.log(`\n[纪元 ${currentEpoch}] 检查时间: ${new Date().toISOString()}`);
       console.log(`当前进度: ${epochProgress.toFixed(2)}%`);
       
-      if (epochProgress < 94.20) {
-        console.log('进度未达到99.99%, 等待下次检查');
-        return { currentEpoch, status: '等待进度达到99.99%' };
+      if (epochProgress < 94.40) {
+        console.log('进度未达到94.20%, 等待下次检查');
+        return { currentEpoch, status: '等待进度达到94.20%' };
       }
 
       // 2. 获取当前纪元数据
@@ -108,8 +108,8 @@ export class EpochMonitor {
         message: `Add epoch ${currentEpoch} data`,
         force: false
       });
-      console.log('\n数据已成功上传到 GitHub');
-      return { currentEpoch, status: '数据已成功上传' };
+      console.log(`\n纪元 ${currentEpoch} 的数据已成功上传到 GitHub`);
+      return { currentEpoch, status: `纪元 ${currentEpoch} 的数据已成功上传` };
     } catch (error) {
       console.error('\n处理纪元数据时出错:', error);
       return { currentEpoch: 0, status: `出错: ${error instanceof Error ? error.message : String(error)}` };
@@ -322,13 +322,8 @@ export class EpochMonitor {
         // 文件不存在，继续创建
       }
 
-      // 如果文件存在且不是强制模式，则跳过
-      if (sha && !force) {
-        console.log(`文件 ${path} 已存在，跳过上传`);
-        return;
-      }
-
       // 创建或更新文件
+      console.log(`正在上传文件到 ${path}${sha ? ' (更新)' : ' (新建)'}...`);
       await this.octokit.repos.createOrUpdateFileContents({
         owner,
         repo,
