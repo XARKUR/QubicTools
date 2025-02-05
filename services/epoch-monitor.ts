@@ -44,7 +44,8 @@ export class EpochMonitor {
       this.isProcessing = true;
       
       // 1. 获取当前纪元信息
-      const toolData = await QubicAPI.getToolData(false); // 不使用缓存，确保获取最新数据
+      QubicAPI.clearCache(); // 清除缓存，确保获取最新数据
+      const toolData = await QubicAPI.getToolData();
       const currentEpoch = toolData.data.currentEpoch;
       const epochProgress = await QubicAPI.getEpochProgress();
       console.log(`\n[纪元 ${currentEpoch}] 检查时间: ${new Date().toISOString()}`);

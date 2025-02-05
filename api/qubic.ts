@@ -2,8 +2,8 @@ import { QubicToolResponse } from '../types/api';
 import QubicAPI from '../services/api';
 
 export class QubicAPIHelper {
-  static async getToolData(): Promise<QubicToolResponse> {
-    return await QubicAPI.getToolData();
+  static async getToolData(useCache: boolean = true): Promise<QubicToolResponse> {
+    return await QubicAPI.getToolData(useCache);
   }
 
   static async getEpochProgress(): Promise<number> {
