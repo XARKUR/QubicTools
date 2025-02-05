@@ -10,25 +10,18 @@ export const maxDuration = 300; // 设置最大执行时间为 5 分钟
 
 export async function GET() {
   try {
-    // 1. 获取当前纪元信息
-    const toolData = await QubicAPI.fetchAPI<QubicToolResponse>('/tool');
-    const currentEpoch = toolData.data.currentEpoch;
-    const epochProgress = await QubicAPI.getEpochProgress();
-    
-    // 2. 创建监控实例
-    const monitor = new EpochMonitor(process.env.GITHUB_TOKEN!);
-    
-    // 3. 检查并上传
-    const result = await monitor.checkAndUpload();
+    // 直接从 API 获取数据
+    const response = await fetch('https://api-qubic.vercel.app/api/qubic/tool');
+    const data = await response.json();
     
     return new NextResponse(
       JSON.stringify({
         success: true,
-        currentEpoch,
-        epochProgress: epochProgress.toFixed(2) + '%',
+        currentEpoch: data.data.currentEpoch,
+        epochProgress: (data.data.solutionsPerHour / data.data.solutionsPerHourCalculated * 100).toFixed(2) + '%',
         checkThreshold: '99.90%',
         timestamp: new Date().toISOString(),
-        status: result.status
+        status: '等待进度达到99.90%'
       }),
       {
         headers: {
