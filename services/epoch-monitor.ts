@@ -49,9 +49,9 @@ export class EpochMonitor {
       console.log(`\n[纪元 ${currentEpoch}] 检查时间: ${new Date().toISOString()}`);
       console.log(`当前进度: ${epochProgress.toFixed(2)}%`);
       
-      if (epochProgress < 99.99) {
-        console.log('进度未达到99.99%, 等待下次检查');
-        return { currentEpoch, status: '等待进度达到99.99%' };
+      if (epochProgress < 99.90) {
+        console.log('进度未达到99.90%, 等待下次检查');
+        return { currentEpoch, status: '等待进度达到99.90%' };
       }
 
       // 2. 获取当前纪元数据
