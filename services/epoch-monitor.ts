@@ -34,22 +34,27 @@ export class EpochMonitor {
     });
   }
 
-  async checkAndUpload() {
-    if (this.isProcessing) return;
+  async checkAndUpload(): Promise<{ currentEpoch: number; status: string }> {
+    if (this.isProcessing) {
+      console.log('正在处理中，跳过本次检查');
+      return { currentEpoch: 0, status: '正在处理中' };
+    }
     
     try {
       this.isProcessing = true;
       
-      // 1. 获取当前纪元进度
+      // 1. 获取当前纪元信息
+      const currentEpoch = await QubicAPI.getCurrentEpoch();
       const epochProgress = await QubicAPI.getEpochProgress();
-      console.log(`当前纪元进度: ${epochProgress.toFixed(2)}%`);
-      if (epochProgress < 94.00) {
-        console.log('进度未达到99.99%,跳过检查');
-        return;
+      console.log(`\n[纪元 ${currentEpoch}] 检查时间: ${new Date().toISOString()}`);
+      console.log(`当前进度: ${epochProgress.toFixed(2)}%`);
+      
+      if (epochProgress < 94.20) {
+        console.log('进度未达到99.99%, 等待下次检查');
+        return { currentEpoch, status: '等待进度达到99.99%' };
       }
 
       // 2. 获取当前纪元数据
-      const currentEpoch = await QubicAPI.getCurrentEpoch();
       console.log(`\n正在收集第 ${currentEpoch} 纪元数据...`);
       const epochData = await this.collectEpochData(currentEpoch);
       
@@ -104,8 +109,10 @@ export class EpochMonitor {
         force: false
       });
       console.log('\n数据已成功上传到 GitHub');
+      return { currentEpoch, status: '数据已成功上传' };
     } catch (error) {
       console.error('\n处理纪元数据时出错:', error);
+      return { currentEpoch: 0, status: `出错: ${error instanceof Error ? error.message : String(error)}` };
     } finally {
       this.isProcessing = false;
     }

@@ -16,14 +16,15 @@ export async function GET() {
     const monitor = new EpochMonitor(process.env.GITHUB_TOKEN!);
     
     // 3. 检查并上传
-    await monitor.checkAndUpload();
+    const result = await monitor.checkAndUpload();
     
     return NextResponse.json({ 
       success: true,
+      currentEpoch: result.currentEpoch,
       epochProgress: epochProgress.toFixed(2) + '%',
-      checkThreshold: '94%',
+      checkThreshold: '99.99%',
       timestamp: new Date().toISOString(),
-      message: epochProgress >= 94 ? '已达到检查阈值，正在处理数据' : '未达到检查阈值，跳过处理'
+      status: result.status
     });
   } catch (error) {
     console.error('监控出错:', error);
