@@ -2,10 +2,6 @@ import { QubicToolResponse } from '../types/api';
 import QubicAPI from '../services/api';
 
 export class QubicAPIHelper {
-  static clearCache(): void {
-    QubicAPI.clearCache();
-  }
-
   static async getToolData(): Promise<QubicToolResponse> {
     return await QubicAPI.getToolData();
   }

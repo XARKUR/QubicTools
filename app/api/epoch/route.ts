@@ -10,10 +10,8 @@ export const maxDuration = 300; // 设置最大执行时间为 5 分钟
 export async function GET() {
   try {
     // 1. 获取当前纪元信息
-    QubicAPI.clearCache(); // 清除缓存，确保获取最新数据
-    const toolData = await QubicAPI.getToolData();
+    const currentEpoch = await QubicAPI.getCurrentEpoch();
     const epochProgress = await QubicAPI.getEpochProgress();
-    const currentEpoch = toolData.data.currentEpoch;
     
     // 2. 创建监控实例
     const monitor = new EpochMonitor(process.env.GITHUB_TOKEN!);
@@ -21,11 +19,16 @@ export async function GET() {
     // 3. 检查并上传
     const result = await monitor.checkAndUpload();
     
+    // 4. 确保返回最新纪元号
+    if (currentEpoch > result.currentEpoch) {
+      result.currentEpoch = currentEpoch;
+    }
+    
     return NextResponse.json({ 
       success: true,
-      currentEpoch,
+      currentEpoch: result.currentEpoch,
       epochProgress: epochProgress.toFixed(2) + '%',
-      checkThreshold: '99.90%',
+      checkThreshold: '99.99%',
       timestamp: new Date().toISOString(),
       status: result.status
     });

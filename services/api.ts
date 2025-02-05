@@ -191,10 +191,6 @@ class QubicAPI {
     return this.fetchWithRetry<T>(`${this.BASE_URL}${endpoint}`);
   }
 
-  static clearCache() {
-    this.cache.toolData = { data: null, timestamp: 0 };
-  }
-
   static async getToolData(): Promise<QubicToolResponse> {
     if (this.cache.toolData.data && this.isCacheValid(this.cache.toolData.timestamp, this.CACHE_DURATION)) {
       return this.cache.toolData.data;
