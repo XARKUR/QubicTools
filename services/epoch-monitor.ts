@@ -44,11 +44,19 @@ export class EpochMonitor {
       this.isProcessing = true;
       
       // 1. 获取当前纪元信息
+      console.log('\n[调试] 正在从 API 获取数据...');
       const toolData = await QubicAPI.getToolData();
+      console.log('[调试] API 返回数据:', JSON.stringify(toolData, null, 2));
       const currentEpoch = toolData.data.currentEpoch;
       const epochProgress = await QubicAPI.getEpochProgress();
+      
       console.log(`\n[纪元 ${currentEpoch}] 检查时间: ${new Date().toISOString()}`);
       console.log(`当前进度: ${epochProgress.toFixed(2)}%`);
+      console.log('[调试] 纪元数据:', {
+        currentEpoch,
+        epochProgress,
+        timestamp: new Date().toISOString()
+      });
       
       if (epochProgress < 99.90) {
         console.log('进度未达到99.90%, 等待下次检查');

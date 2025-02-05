@@ -188,7 +188,9 @@ class QubicAPI {
   }
 
   private static async fetchAPI<T>(endpoint: string): Promise<T> {
-    return this.fetchWithRetry<T>(`${this.BASE_URL}${endpoint}`);
+    return this.fetchWithRetry<T>(`${this.BASE_URL}${endpoint}`, {
+      cache: 'no-store'
+    });
   }
 
   static async getToolData(): Promise<QubicToolResponse> {
