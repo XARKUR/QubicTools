@@ -26,22 +26,40 @@ export async function GET() {
       result.currentEpoch = currentEpoch;
     }
     
-    return NextResponse.json({ 
-      success: true,
-      currentEpoch: result.currentEpoch,
-      epochProgress: epochProgress.toFixed(2) + '%',
-      checkThreshold: '99.99%',
-      timestamp: new Date().toISOString(),
-      status: result.status
-    });
+    return new NextResponse(
+      JSON.stringify({
+        success: true,
+        currentEpoch: result.currentEpoch,
+        epochProgress: epochProgress.toFixed(2) + '%',
+        checkThreshold: '99.99%',
+        timestamp: new Date().toISOString(),
+        status: result.status
+      }),
+      {
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'pragma': 'no-cache',
+          'expires': '0',
+        },
+      }
+    );
   } catch (error) {
     console.error('监控出错:', error);
-    return NextResponse.json(
-      { 
-        success: false, 
-        error: error instanceof Error ? error.message : String(error) 
-      },
-      { status: 500 }
+    return new NextResponse(
+      JSON.stringify({
+        success: false,
+        error: error instanceof Error ? error.message : String(error)
+      }),
+      {
+        status: 500,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'pragma': 'no-cache',
+          'expires': '0',
+        },
+      }
     );
   }
 }
