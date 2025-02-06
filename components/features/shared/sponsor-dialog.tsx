@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/tabs"
 import { QRCodeSVG } from "qrcode.react"
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface SponsorDialogProps {
   open?: boolean
@@ -68,6 +68,20 @@ export function SponsorDialog({
 }: SponsorDialogProps) {
   const { t } = useTranslation()
   const [selectedChain, setSelectedChain] = useState("qubic")
+  const [isOpen, setIsOpen] = useState(open || false)
+
+  // 同步外部状态
+  useEffect(() => {
+    if (open !== undefined) {
+      setIsOpen(open)
+    }
+  }, [open])
+
+  // 处理对话框状态变化
+  const handleOpenChange = (value: boolean) => {
+    setIsOpen(value)
+    onOpenChange?.(value)
+  }
   
   const copyToClipboard = async (text: string) => {
     try {
@@ -80,19 +94,19 @@ export function SponsorDialog({
 
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]" aria-describedby="sponsor-dialog-description" aria-labelledby="sponsor-dialog-title">
         <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
           <X className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </DialogClose>
         
         <DialogHeader>
-          <DialogTitle className="text-l font-semibold text-center flex items-center justify-center gap-2 mt-4">
+          <DialogTitle id="sponsor-dialog-title" className="text-l font-semibold text-center flex items-center justify-center gap-2 mt-4">
             {title || t('sponsor.dialog.title')}
           </DialogTitle>
-          <DialogDescription className="text-center pt-2 text-sm">
+          <DialogDescription id="sponsor-dialog-description" className="text-center pt-2 text-sm">
             {description || t('sponsor.dialog.description')}
           </DialogDescription>
         </DialogHeader>
@@ -146,19 +160,24 @@ export function SponsorDialog({
 
         <div className="flex flex-col gap-2 mt-2">
           <div className="grid grid-cols-2 gap-2 w-full">
-            <DialogClose asChild>
-              <Button variant="outline" className="w-full">
+            <div className="flex items-center gap-2 w-full">
+              <Button variant="outline" className="flex-1" onClick={() => handleOpenChange(false)}>
                 {t('common.buttons.nextTime')}
               </Button>
-            </DialogClose>
-            <Button onClick={() => {
-              const wallet = wallets.find(w => w.chain === selectedChain)
-              if (wallet) {
-                copyToClipboard(wallet.address)
-              }
-            }}>
-              {t('common.buttons.copyAddress')}
-            </Button>
+            </div>
+            <div className="flex items-center gap-2 w-full">
+              <Button 
+                className="flex-1" 
+                onClick={() => {
+                  const wallet = wallets.find(w => w.chain === selectedChain)
+                  if (wallet) {
+                    copyToClipboard(wallet.address)
+                  }
+                }}
+              >
+                {t('common.buttons.copyAddress')}
+              </Button>
+            </div>
           </div>
         </div>
       </DialogContent>

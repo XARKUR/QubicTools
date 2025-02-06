@@ -19,8 +19,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-const CARD_HEIGHT = "min-h-[calc(100vh-17rem)] lg:h-[calc(100vh-17rem)]"
-const SCROLL_HEIGHT = "min-h-[calc(100vh-21rem)] lg:h-[calc(100vh-21rem)]"
+const CARD_HEIGHT = "h-[41rem]"
+const SCROLL_HEIGHT = "h-[36rem]"
 
 export function ContentGrid() {
   const { data: qubicData, isLoading } = useQubicData()
@@ -36,10 +36,10 @@ export function ContentGrid() {
 
   return (
     <div className="space-y-4">
-      <div data-testid="content-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+      <div data-testid="content-grid" className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3">
         <ErrorBoundary>
           <Card data-testid="pool-stats-section" className={`col-span-1 ${CARD_HEIGHT} flex flex-col`}>
-            <CardHeader className="border-b py-3 sm:py-4">
+            <CardHeader className="border-b py-3 sm:py-4 px-4 sm:px-6">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base font-medium flex items-center gap-2">
                   <Activity className="h-4 w-4" />
@@ -65,7 +65,7 @@ export function ContentGrid() {
             </CardHeader>
             <CardContent className="flex-1 p-0 pt-0 overflow-hidden">
               <ScrollArea className={SCROLL_HEIGHT}>
-                <div className="space-y-3 sm:space-y-4 p-4 sm:p-6">
+                <div className="space-y-3 sm:space-y-4 p-3 sm:p-4 md:p-6">
                   <PoolStatsCard 
                     apool={qubicData?.apoolStats}
                     minerlab={qubicData?.minerlabStats}
@@ -86,7 +86,7 @@ export function ContentGrid() {
 
         <ErrorBoundary>
           <Card data-testid="pool-section" className={`col-span-1 ${CARD_HEIGHT} flex flex-col`}>
-            <CardHeader className="border-b py-3 sm:py-4">
+            <CardHeader className="border-b py-3 sm:py-4 px-4 sm:px-6">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base font-medium flex items-center gap-2">
                   <Users className="h-4 w-4" />
@@ -124,7 +124,7 @@ export function ContentGrid() {
             </CardHeader>
             <CardContent className="flex-1 p-0 pt-0 overflow-hidden">
               <ScrollArea className={SCROLL_HEIGHT}>
-                <div className="space-y-3 sm:space-y-4 p-4 sm:p-6">
+                <div className="space-y-3 sm:space-y-4 p-3 sm:p-4 md:p-6">
                   <PoolList />
                 </div>
               </ScrollArea>

@@ -18,14 +18,14 @@ import { ContentSkeleton } from "@/components/features/shared/content-skeleton"
  * 
  * @constant
  */
-const CARD_HEIGHT = "min-h-[calc(100vh-17rem)] lg:h-[calc(100vh-17rem)]"
+const CARD_HEIGHT = "h-[41rem]"
 
 /**
  * 
  * 
  * @constant
  */
-const SCROLL_HEIGHT = "min-h-[calc(100vh-21rem)] lg:h-[calc(100vh-21rem)]"
+const SCROLL_HEIGHT = "h-[36rem]"
 
 interface ProposalData {
   epoch: number;
@@ -87,7 +87,7 @@ export function ContentGrid() {
   };
 
   return (
-    <div data-testid="content-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+    <div data-testid="content-grid" className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3">
       <ErrorBoundary>
         <Card data-testid="proposal-section" className={`col-span-1 ${CARD_HEIGHT} flex flex-col`}>
           <CardHeader className="border-b py-3 sm:py-4">

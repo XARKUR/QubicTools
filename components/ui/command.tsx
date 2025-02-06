@@ -43,9 +43,10 @@ const CommandDialog = ({
     <Dialog {...props}>
       <DialogContent 
         aria-describedby={descriptionId}
+        aria-labelledby="command-dialog-title"
         className="overflow-hidden p-0 shadow-lg [&>button]:hidden"
       >
-        <DialogTitle asChild>
+        <DialogTitle id="command-dialog-title" asChild>
           <VisuallyHidden>{title}</VisuallyHidden>
         </DialogTitle>
         <DialogDescription id={descriptionId} className="sr-only">

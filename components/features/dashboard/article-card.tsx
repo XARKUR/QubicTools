@@ -19,8 +19,8 @@ export function ArticleCard({ title, date, link, image, isFirst = false }: Artic
 
   return (
     <Card className="overflow-hidden">
-      <div className="flex gap-6 p-4">
-        <div className="relative w-32 h-32 flex-shrink-0">
+      <div className="flex gap-4 p-4">
+        <div className="relative w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 flex-shrink-0">
           <Image
             src={image}
             alt={title}
@@ -31,13 +31,13 @@ export function ArticleCard({ title, date, link, image, isFirst = false }: Artic
           />
         </div>
         <div className="flex flex-col flex-1 min-w-0">
-          <h3 className="font-medium line-clamp-2 text-sm mb-2">{title}</h3>
+          <h3 className="font-medium line-clamp-2 text-sm mb-auto">{title}</h3>
           <div className="flex items-center justify-between mt-auto">
             <p className="text-sm text-muted-foreground">{date}</p>
             <Button
               variant="ghost"
               size="sm"
-              className="h-8"
+              className="h-8 hidden sm:inline-flex"
               onClick={() => window.open(link, '_blank')}
             >
               <ExternalLink className="h-4 w-4" />

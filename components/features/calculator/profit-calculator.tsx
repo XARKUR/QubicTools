@@ -342,7 +342,7 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
         </div>
       </CardHeader>
       <CardContent className="flex-1 p-0 overflow-hidden">
-        <ScrollArea className="h-[calc(100vh-21rem)]">
+        <ScrollArea className="h-[36rem]">
           <div className="p-6 space-y-6">
             <div className="space-y-4">
               <h4 className="text-sm font-medium flex items-center gap-2">

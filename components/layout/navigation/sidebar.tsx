@@ -16,7 +16,6 @@ import {
   Users
 } from "lucide-react"
 import { OptimizedImage } from "@/components/ui/optimized-image"
-import { Button } from "@/components/ui/button"
 import { useTranslation } from "react-i18next"
 import { SponsorDialog } from "@/components/features/shared/sponsor-dialog"
 
@@ -32,6 +31,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 
 const getNavData = (t: (key: string) => string) => ({
@@ -138,12 +138,13 @@ const getNavData = (t: (key: string) => string) => ({
   ],
 })
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+function AppSidebarContent({ className, ...props }: React.ComponentProps<typeof Sidebar>) {
+  useSidebar() // This ensures we're inside a SidebarProvider
   const { t } = useTranslation()
   const data = getNavData(t)
 
   return (
-    <Sidebar variant="inset" {...props}>
+    <Sidebar variant="inset" className={className} {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -175,17 +176,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <div className="mt-auto space-y-2">
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton
-                size="lg"
-                className="flex items-center justify-center"
-              >
-                <SponsorDialog trigger={
-                  <Button variant="outline" size="default" className="w-full h-10">
+              <SponsorDialog
+                onOpenChange={(open) => {
+                  // 当对话框关闭时，重置状态
+                  if (!open) {
+                    // 你可以在这里添加任何需要的清理逻辑
+                  }
+                }}
+                trigger={
+                  <SidebarMenuButton
+                    size="lg"
+                    className="flex items-center justify-center"
+                  >
                     <div className="flex items-center gap-2">
                       <Heart className="h-5 w-5 text-red-500 flex-shrink-0" />
                       <span className="text-sm font-medium">{t('common.support.title')}</span>
                     </div>
-                  </Button>
+                  </SidebarMenuButton>
                 } wallets={[
                   {
                     title: "Qubic",
@@ -208,7 +215,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     chain: "solana"
                   }
                 ]} />
-              </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
           <UserNav className="mt-auto" />
@@ -218,4 +224,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
     </Sidebar>
   )
+}
+
+export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
+  return <AppSidebarContent {...props} />
 }

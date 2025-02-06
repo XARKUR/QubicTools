@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import { WebVitalsReporter } from "@/components/web-vitals-reporter";
 import { I18nProvider } from './i18n/i18n-provider'
 import { QubicDataProvider } from "@/providers/qubic-data-provider";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -17,10 +18,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
     >
       <I18nProvider>
         <QubicDataProvider>
-          {children}
-          <Toaster />
-          <Analytics />
-          <WebVitalsReporter />
+          <SidebarProvider>
+            {children}
+            <Toaster />
+            <Analytics />
+            <WebVitalsReporter />
+          </SidebarProvider>
         </QubicDataProvider>
       </I18nProvider>
     </ThemeProvider>
