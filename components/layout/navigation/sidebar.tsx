@@ -186,9 +186,9 @@ function AppSidebarContent({ className, ...props }: React.ComponentProps<typeof 
                 trigger={
                   <SidebarMenuButton
                     size="lg"
-                    className="flex items-center justify-center"
+                    className="flex items-center justify-center border border-border/50 hover:border-border/80 transition-colors rounded-lg"
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 px-2 py-1">
                       <Heart className="h-5 w-5 text-red-500 flex-shrink-0" />
                       <span className="text-sm font-medium">{t('common.support.title')}</span>
                     </div>

@@ -18,7 +18,7 @@ import { ContentSkeleton } from "@/components/features/shared/content-skeleton"
  * 
  * @constant
  */
-const CARD_HEIGHT = "h-[41rem]"
+const CARD_HEIGHT = "h-[40rem]"
 
 /**
  * 

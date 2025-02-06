@@ -12,7 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-const CARD_HEIGHT = "h-[41rem]"
+const CARD_HEIGHT = "h-[40rem]"
 const SCROLL_HEIGHT = "h-[36rem]"
 
 interface AssetsCardProps {
