@@ -122,7 +122,7 @@ export const PoolStatsCard = memo(function PoolStatsCard({ apool, minerlab, neve
   const epochProgress = calculateEpochProgress();
 
   // 获取总提案数
-  const totalProposals = qubicData.proposal ? 1 : 0
+  const totalProposals = Array.isArray(qubicData.proposal) ? qubicData.proposal.length : 0
 
   const getValue = (stats: PoolStats, key: keyof PoolStats | string): number => {
     const value = stats[key as keyof PoolStats]
