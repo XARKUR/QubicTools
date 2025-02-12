@@ -244,12 +244,15 @@ export function ContentGrid() {
     let modeCount = 0
 
     pools.forEach(pool => {
-      pool.miningModes.forEach(mode => {
-        if (mode.weekProfit) {
-          totalProfit += parseFloat(mode.weekProfit)
-          modeCount++
-        }
-      })
+      // 排除 solutions 和 nevermine 矿池
+      if (pool.name.toLowerCase() !== 'solutions' && pool.name.toLowerCase() !== 'nevermine') {
+        pool.miningModes.forEach(mode => {
+          if (mode.weekProfit) {
+            totalProfit += parseFloat(mode.weekProfit)
+            modeCount++
+          }
+        })
+      }
     })
 
     return modeCount > 0 ? totalProfit / modeCount : 0
