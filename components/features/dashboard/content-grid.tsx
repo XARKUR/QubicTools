@@ -117,8 +117,10 @@ export function ContentGrid() {
           <CardContent className="flex-1 p-0 pt-0 overflow-hidden">
             <ScrollArea className={SCROLL_HEIGHT}>
               <div className="space-y-3 sm:space-y-4 p-4 sm:p-6">
-                {qubicData?.proposal ? (
-                  <ProposalCard {...processProposalOptions(qubicData.proposal)} />
+                {Array.isArray(qubicData?.proposal) && qubicData.proposal.length > 0 ? (
+                  qubicData.proposal.map((proposal, index) => (
+                    <ProposalCard key={`${proposal.title}-${proposal.published}`} {...processProposalOptions(proposal)} />
+                  ))
                 ) : (
                   <div className="text-center text-muted-foreground">
                     {t('dashboard.proposals.empty')}
