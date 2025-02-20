@@ -18,8 +18,8 @@ jobs:
         with:
           node-version: '18'
           
-      - name: Clean install dependencies
-        run: npm ci
+      - name: Install dependencies
+        run: npm install
         
       - name: Run epoch monitor
         run: npm run generate-history -- check -a
