@@ -10,10 +10,10 @@ import { MongoDB } from '../services/mongodb';
 // 加载环境变量
 config({ path: path.resolve(process.cwd(), '.env.local') });
 
-const githubToken = process.env.GITHUB_TOKEN;
+const githubToken = process.env.Epoch_TOKEN;
 
 if (!githubToken) {
-  console.error('错误: 未设置 GITHUB_TOKEN');
+  console.error('错误: 未设置 Epoch_TOKEN');
   process.exit(1);
 }
 
@@ -29,6 +29,7 @@ program
   .description('检查纪元进度并在需要时上传数据')
   .option('-f, --force', '强制检查并上传数据，忽略进度检查', false)
   .option('-e, --epoch <number>', '指定纪元号从 MongoDB 获取数据并上传到 GitHub')
+  .option('-a, --auto', '自动模式，用于 GitHub Actions')
   .action(async (options) => {
     try {
       const mongodb = MongoDB.getInstance();
@@ -92,6 +93,12 @@ program
           force: true
         });
         console.log('成功上传数据');
+      } else if (options.auto) {
+        // 自动模式，直接检查当前纪元
+        const currentEpoch = await QubicAPI.getCurrentEpoch();
+        console.log(`\n自动模式: 检查第 ${currentEpoch} 纪元数据`);
+        await monitor.checkAndUpload();
+        console.log('自动检查完成');
       } else {
         // 正常模式，使用 checkAndUpload
         await monitor.checkAndUpload();

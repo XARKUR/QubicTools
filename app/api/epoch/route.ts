@@ -32,10 +32,10 @@ export async function GET() {
     console.log('[API] 纪元进度:', epochProgress);
     
     // 2. 创建监控实例
-    if (!process.env.GITHUB_TOKEN) {
-      throw new Error('GITHUB_TOKEN not found');
+    if (!process.env.Epoch_TOKEN) {
+      throw new Error('Epoch_TOKEN not found');
     }
-    const monitor = new EpochMonitor(process.env.GITHUB_TOKEN);
+    const monitor = new EpochMonitor(process.env.Epoch_TOKEN);
     
     // 3. 检查并上传
     console.log('[API] 开始检查和上传...');
