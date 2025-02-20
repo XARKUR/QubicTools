@@ -4,9 +4,27 @@ import { EpochMonitor } from '@/services/epoch-monitor';
 import { QubicAPI } from '@/api/qubic';
 
 export async function GET() {
-  const mongodb = MongoDB.getInstance();
+  // 检查必要的环境变量
+  if (!process.env.MONGODB_URI) {
+    console.error('环境变量缺失: MONGODB_URI');
+    return NextResponse.json({ 
+      success: false, 
+      error: '服务器配置错误：数据库连接未配置' 
+    }, { status: 500 });
+  }
+
+  if (!process.env.GITHUB_TOKEN) {
+    console.error('环境变量缺失: GITHUB_TOKEN');
+    return NextResponse.json({ 
+      success: false, 
+      error: '服务器配置错误：GitHub Token 未配置' 
+    }, { status: 500 });
+  }
+
+  let mongodb: MongoDB | null = null;
   
   try {
+    mongodb = MongoDB.getInstance();
     console.log('\n[API] 开始处理请求:', new Date().toISOString());
     
     // 1. 获取当前纪元进度
@@ -44,11 +62,13 @@ export async function GET() {
       error: errorMessage
     }, { status: 500 });
   } finally {
-    try {
-      // 确保关闭 MongoDB 连接
-      await mongodb.disconnect();
-    } catch (closeError) {
-      console.error('关闭 MongoDB 连接出错:', closeError);
+    if (mongodb) {
+      try {
+        // 确保关闭 MongoDB 连接
+        await mongodb.disconnect();
+      } catch (closeError) {
+        console.error('关闭 MongoDB 连接出错:', closeError);
+      }
     }
   }
 }
