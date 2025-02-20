@@ -2,7 +2,8 @@ name: Epoch Monitor
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # 每5分钟运行一次
+    # 每周三 11:30-11:55 UTC 每 5 分钟运行一次
+    - cron: '30-55/5 11 * * 3'
   workflow_dispatch:        # 允许手动触发
 
 jobs:
