@@ -1,8 +1,9 @@
-import { Octokit } from '@octokit/rest';
 import { QubicAPI } from '../api/qubic';
 import { MiningCalculator } from './mining-calculator';
 import { PoolOption, MiningMode, POOL_CONFIGS } from './mining-calculator';
 import { MongoDB } from './mongodb';
+
+type Octokit = any; // 临时类型
 
 interface EpochData {
   epoch: number;
@@ -30,8 +31,13 @@ export class EpochMonitor {
   private isProcessing: boolean = false;
   
   constructor(githubToken: string) {
+    this.initOctokit(githubToken);
+  }
+
+  private async initOctokit(token: string) {
+    const { Octokit } = await import('@octokit/rest');
     this.octokit = new Octokit({
-      auth: githubToken
+      auth: token
     });
   }
 
@@ -116,6 +122,7 @@ export class EpochMonitor {
       };
       
       // 5. 上传到 GitHub
+      await this.ensureOctokit();
       await this.uploadToGithub({
         owner: 'XARKUR',
         repo: 'calculator-history',
