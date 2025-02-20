@@ -2,6 +2,7 @@ import { Octokit } from '@octokit/rest';
 import { QubicAPI } from '../api/qubic';
 import { MiningCalculator } from './mining-calculator';
 import { PoolOption, MiningMode, POOL_CONFIGS } from './mining-calculator';
+import { MongoDB } from './mongodb';
 
 interface EpochData {
   epoch: number;
@@ -39,6 +40,8 @@ export class EpochMonitor {
       console.log('正在处理中，跳过本次检查');
       return { currentEpoch: 0, status: '正在处理中' };
     }
+
+    const mongodb = MongoDB.getInstance();
     
     try {
       this.isProcessing = true;
@@ -58,9 +61,9 @@ export class EpochMonitor {
         timestamp: new Date().toISOString()
       });
       
-      if (epochProgress < 99.90) {
-        console.log('进度未达到99.90%, 等待下次检查');
-        return { currentEpoch, status: '等待进度达到99.90%' };
+      if (epochProgress < 9.10) {
+        console.log('进度未达到9.10%, 等待下次检查');
+        return { currentEpoch, status: '等待进度达到9.10%' };
       }
 
       // 2. 获取当前纪元数据
@@ -87,12 +90,16 @@ export class EpochMonitor {
         });
       });
       
-      // 3. 生成文件路径
+      // 3. 保存到 MongoDB
+      console.log('\n保存数据到 MongoDB...');
+      await mongodb.saveEpochData(epochData);
+      
+      // 4. 生成文件路径
       const year = new Date().getFullYear();
       const filePath = `${year}/${currentEpoch}.json`;
       console.log(`\n准备上传到 GitHub: ${filePath}`);
       
-      // 4. 格式化数据
+      // 5. 格式化数据
       const formattedData = {
         ...epochData,
         averageScore: Number(epochData.averageScore.toFixed(2)),

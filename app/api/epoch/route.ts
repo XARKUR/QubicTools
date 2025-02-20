@@ -1,13 +1,11 @@
+import { NextResponse } from 'next/server';
+import { MongoDB } from '@/services/mongodb';
 import { EpochMonitor } from '@/services/epoch-monitor';
 import { QubicAPI } from '@/api/qubic';
-import { NextResponse } from 'next/server';
-
-// 新的路由段配置
-export const runtime = 'edge';
-export const preferredRegion = 'sin1'; // 新加坡区域，离中国较近
-export const maxDuration = 300; // 设置最大执行时间为 5 分钟
 
 export async function GET() {
+  const mongodb = MongoDB.getInstance();
+  
   try {
     console.log('\n[API] 开始处理请求:', new Date().toISOString());
     
@@ -16,7 +14,10 @@ export async function GET() {
     console.log('[API] 纪元进度:', epochProgress);
     
     // 2. 创建监控实例
-    const monitor = new EpochMonitor(process.env.GITHUB_TOKEN!);
+    if (!process.env.GITHUB_TOKEN) {
+      throw new Error('GITHUB_TOKEN not found');
+    }
+    const monitor = new EpochMonitor(process.env.GITHUB_TOKEN);
     
     // 3. 检查并上传
     console.log('[API] 开始检查和上传...');
@@ -36,12 +37,18 @@ export async function GET() {
     return NextResponse.json(response);
   } catch (error) {
     console.error('监控出错:', error);
-    return NextResponse.json(
-      { 
-        success: false, 
-        error: error instanceof Error ? error.message : String(error) 
-      },
-      { status: 500 }
-    );
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error('错误详情:', errorMessage);
+    return NextResponse.json({ 
+      success: false, 
+      error: errorMessage
+    }, { status: 500 });
+  } finally {
+    try {
+      // 确保关闭 MongoDB 连接
+      await mongodb.disconnect();
+    } catch (closeError) {
+      console.error('关闭 MongoDB 连接出错:', closeError);
+    }
   }
 }
