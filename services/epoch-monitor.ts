@@ -65,9 +65,9 @@ export class EpochMonitor {
         timestamp: new Date().toISOString()
       });
       
-      if (epochProgress < 10.00) {
-        console.log('进度未达到10.00%, 等待下次检查');
-        return { currentEpoch, status: '等待进度达到10.00%' };
+      if (epochProgress < 99.90) {
+        console.log('进度未达到99.90%, 等待下次检查');
+        return { currentEpoch, status: '等待进度达到99.90%' };
       }
 
       // 2. 获取当前纪元数据

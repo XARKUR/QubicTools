@@ -258,6 +258,21 @@ export function ContentGrid() {
     return modeCount > 0 ? totalProfit / modeCount : 0
   }
 
+  // 获取下一个可用的纪元
+  const findNextAvailableEpoch = (currentEpoch: number, direction: 'prev' | 'next'): number | null => {
+    if (!epochsData.length) return null;
+    
+    const sortedEpochs = epochsData
+      .map(data => data.epoch)
+      .sort((a, b) => direction === 'prev' ? b - a : a - b);
+    
+    const targetEpoch = sortedEpochs.find(epoch => 
+      direction === 'prev' ? epoch < currentEpoch : epoch > currentEpoch
+    );
+    
+    return targetEpoch || null;
+  };
+
   // 获取指定纪元范围的数据
   const getEpochRangeData = (epoch: number) => {
     if (!epoch || !earliestAvailableEpoch) return []
@@ -401,7 +416,16 @@ export function ContentGrid() {
         setMiningData(data)
       } catch (error) {
         console.error('Error fetching epoch data:', error)
-        setError('Failed to load mining data')
+        // 如果当前纪元数据不可用，尝试获取上一个纪元的数据
+        if (selectedEpoch && latestAvailableEpoch && selectedEpoch < latestAvailableEpoch) {
+          console.log(`Trying next epoch ${selectedEpoch + 1}...`)
+          setSelectedEpoch(selectedEpoch + 1)
+        } else if (selectedEpoch && earliestAvailableEpoch && selectedEpoch > earliestAvailableEpoch) {
+          console.log(`Trying previous epoch ${selectedEpoch - 1}...`)
+          setSelectedEpoch(selectedEpoch - 1)
+        } else {
+          setError('No available epoch data')
+        }
       }
     }
 
@@ -464,8 +488,15 @@ export function ContentGrid() {
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={() => selectedEpoch && setSelectedEpoch(selectedEpoch - 1)}
-                    disabled={!selectedEpoch || earliestAvailableEpoch === null || selectedEpoch <= earliestAvailableEpoch}
+                    onClick={() => {
+                      if (selectedEpoch) {
+                        const prevEpoch = findNextAvailableEpoch(selectedEpoch, 'prev');
+                        if (prevEpoch !== null) {
+                          setSelectedEpoch(prevEpoch);
+                        }
+                      }
+                    }}
+                    disabled={!selectedEpoch || !findNextAvailableEpoch(selectedEpoch || 0, 'prev')}
                     className="flex-none"
                   >
                     <ChevronLeft className="h-4 w-4" />
@@ -473,8 +504,15 @@ export function ContentGrid() {
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={() => selectedEpoch && setSelectedEpoch(selectedEpoch + 1)}
-                    disabled={!selectedEpoch || latestAvailableEpoch === null || selectedEpoch >= latestAvailableEpoch}
+                    onClick={() => {
+                      if (selectedEpoch) {
+                        const nextEpoch = findNextAvailableEpoch(selectedEpoch, 'next');
+                        if (nextEpoch !== null) {
+                          setSelectedEpoch(nextEpoch);
+                        }
+                      }
+                    }}
+                    disabled={!selectedEpoch || !findNextAvailableEpoch(selectedEpoch || 0, 'next')}
                     className="flex-none"
                   >
                     <ChevronRight className="h-4 w-4" />
