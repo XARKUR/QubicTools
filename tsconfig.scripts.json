@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "noEmit": true,
@@ -10,7 +10,8 @@
   "include": ["scripts/**/*"],
   "ts-node": {
     "files": true,
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
   }
 }

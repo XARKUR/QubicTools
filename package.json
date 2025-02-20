@@ -2,13 +2,12 @@
   "name": "qubictools",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate-history": "NODE_OPTIONS='--loader ts-node/esm' ts-node --project tsconfig.scripts.json scripts/generate-history.ts check"
+    "generate-history": "ts-node --project tsconfig.scripts.json scripts/generate-history.ts check"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

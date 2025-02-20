@@ -22,7 +22,7 @@ jobs:
         run: npm install
         
       - name: Run epoch monitor
-        run: NODE_OPTIONS='--loader ts-node/esm' npm run generate-history -- check -a
+        run: npm run generate-history -- check -a
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           Epoch_TOKEN: ${{ secrets.Epoch_TOKEN }}

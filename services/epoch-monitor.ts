@@ -3,7 +3,10 @@ import { MiningCalculator } from './mining-calculator';
 import { PoolOption, MiningMode, POOL_CONFIGS } from './mining-calculator';
 import { MongoDB } from './mongodb';
 
-type Octokit = any; // 临时类型
+// @ts-ignore
+const { Octokit } = require('@octokit/rest');
+
+type OctokitType = typeof Octokit;
 
 interface EpochData {
   epoch: number;
@@ -27,17 +30,12 @@ interface EpochData {
 }
 
 export class EpochMonitor {
-  private octokit: Octokit;
+  private octokit: InstanceType<OctokitType>;
   private isProcessing: boolean = false;
   
   constructor(githubToken: string) {
-    this.initOctokit(githubToken);
-  }
-
-  private async initOctokit(token: string) {
-    const { Octokit } = await import('@octokit/rest');
     this.octokit = new Octokit({
-      auth: token
+      auth: githubToken
     });
   }
 
@@ -67,9 +65,9 @@ export class EpochMonitor {
         timestamp: new Date().toISOString()
       });
       
-      if (epochProgress < 9.50) {
-        console.log('进度未达到9.50%, 等待下次检查');
-        return { currentEpoch, status: '等待进度达到9.50%' };
+      if (epochProgress < 10.00) {
+        console.log('进度未达到10.00%, 等待下次检查');
+        return { currentEpoch, status: '等待进度达到10.00%' };
       }
 
       // 2. 获取当前纪元数据
@@ -122,7 +120,6 @@ export class EpochMonitor {
       };
       
       // 5. 上传到 GitHub
-      await this.ensureOctokit();
       await this.uploadToGithub({
         owner: 'XARKUR',
         repo: 'calculator-history',
