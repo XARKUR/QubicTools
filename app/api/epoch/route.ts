@@ -13,11 +13,11 @@ export async function GET() {
     }, { status: 500 });
   }
 
-  if (!process.env.GITHUB_TOKEN) {
-    console.error('环境变量缺失: GITHUB_TOKEN');
+  if (!process.env.Epoch_TOKEN) {
+    console.error('环境变量缺失: Epoch_TOKEN');
     return NextResponse.json({ 
       success: false, 
-      error: '服务器配置错误：GitHub Token 未配置' 
+      error: '服务器配置错误：Epoch Token 未配置' 
     }, { status: 500 });
   }
 
