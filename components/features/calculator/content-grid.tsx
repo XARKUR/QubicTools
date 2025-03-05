@@ -70,7 +70,6 @@ export function ContentGrid() {
                     apool={qubicData?.apoolStats}
                     minerlab={qubicData?.minerlabStats}
                     nevermine={qubicData?.nevermineStats}
-                    solutions={qubicData?.solutionsStats}
                   />
                 </div>
               </ScrollArea>

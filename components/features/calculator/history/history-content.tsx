@@ -430,7 +430,7 @@ export function ContentGrid() {
     }
 
     fetchEpochData()
-  }, [selectedEpoch])
+  }, [selectedEpoch, earliestAvailableEpoch, latestAvailableEpoch])
 
   if (isLoading && isInitialLoad) {
     return <ContentGridSkeleton />

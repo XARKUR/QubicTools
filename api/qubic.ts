@@ -51,7 +51,6 @@ export class QubicAPIHelper {
     apoolStats: any;
     minerlabStats: any;
     nevermineStats: any;
-    solutionsStats: any;
     pool_hashrate: any;
   }> {
     const toolData = await QubicAPI.getToolData();
@@ -60,7 +59,6 @@ export class QubicAPIHelper {
       apoolStats: toolData.data.apool,
       minerlabStats: toolData.data.minerlab,
       nevermineStats: toolData.data.nevermine,
-      solutionsStats: toolData.data.solutions,
       pool_hashrate: toolData.data.pool_hashrate
     };
   }

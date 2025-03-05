@@ -94,7 +94,6 @@ interface QubicToolResponse {
         average_minerlab_hashrate: number;
         average_nevermine_hashrate: number;
         average_qli_hashrate: number;
-        average_solutions_hashrate: number;
         record_count: number;
       };
       current: {
@@ -102,7 +101,6 @@ interface QubicToolResponse {
         minerlab_hashrate: number;
         nevermine_hashrate: number;
         qli_hashrate: number;
-        solutions_hashrate: number;
       };
     };
     price: string;
@@ -121,15 +119,6 @@ interface QubicToolResponse {
       title: string;
       totalVotes: number;
       url: string;
-    };
-    solutions: {
-      accepted_solution: number;
-      corrected_hashrate: number;
-      pool_hash: number;
-      pplns_solutions: number;
-      shares_per_solution: number;
-      solo_solutions: number;
-      total_share: number;
     };
     solutionsPerHour: number;
     solutionsPerHourCalculated: number;
@@ -210,7 +199,6 @@ class QubicAPI {
       networkHashRate: toolData.data.pool_hashrate.average.average_qli_hashrate,
       averageHashrate: toolData.data.pool_hashrate.average.average_qli_hashrate,
       averageApoolHashrate: toolData.data.pool_hashrate.average.average_apool_hashrate,
-      averageSolutionsHashrate: toolData.data.pool_hashrate.average.average_solutions_hashrate,
       averageMinerlabHashrate: toolData.data.pool_hashrate.average.average_minerlab_hashrate,
       averageNevermineHashrate: toolData.data.pool_hashrate.average.average_nevermine_hashrate,
       solutionsPerHour: toolData.data.solutionsPerHour,
@@ -226,12 +214,6 @@ class QubicAPI {
     const toolData = await this.getToolData();
     
     return toolData.data.apool;
-  }
-
-  static async getSolutionsStats(): Promise<any> {
-    const toolData = await this.getToolData();
-    
-    return toolData.data.solutions;
   }
 
   static async getMinerlabStats(): Promise<any> {

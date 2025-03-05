@@ -9,7 +9,7 @@ import { z } from 'zod';
  * - minerlab: MinerLab 矿池
  * - nevermine: NeverMine 矿池
  */
-export type PoolOption = "placeholder" | "qli" | "apool" | "solutions" | "minerlab" | "nevermine";
+export type PoolOption = "placeholder" | "qli" | "apool" | "minerlab" | "nevermine";
 
 /**
  * 挖矿模式
@@ -121,50 +121,6 @@ export const POOL_CONFIGS: Record<PoolOption, PoolConfig> = {
     },
     defaultMode: "pplns" as MiningMode
   },
-  solutions: {
-    name: "Solutions",
-    modes: {
-      solo: {
-        name: "Solo",
-        calculate: ({ blocks, solutionsPerHourCalculated, price, hashRate, networkData }) => {
-          // Solutions的solo模式计算
-          const dailyBlocks = calculateExpectedDailyBlocks(
-            hashRate,
-            networkData.averageSolutionsHashrate,
-            solutionsPerHourCalculated
-          );
-          const coinsPerBlock = MiningCalculator.calculateSolutionsBlockCoins(solutionsPerHourCalculated);
-          const totalCoins = coinsPerBlock * blocks;
-          return {
-            coinsPerBlock,
-            totalCoins,
-            fiatValue: totalCoins * price,
-            expectedDailyBlocks: dailyBlocks
-          };
-        }
-      },
-      pplns: {
-        name: "PPLNS",
-        calculate: ({ blocks, solutionsPerHourCalculated, price, hashRate, networkData }) => {
-          // Solutions的PPLNS模式计算
-          const dailyBlocks = calculateExpectedDailyBlocks(
-            hashRate,
-            networkData.averageSolutionsHashrate,
-            solutionsPerHourCalculated
-          );
-          const coinsPerBlock = MiningCalculator.calculateSolutionsBlockCoins(solutionsPerHourCalculated) * networkData.solutionsStats.pplns_solutions / networkData.solutionsStats.total_share;
-          const totalCoins = coinsPerBlock * blocks;
-          return {
-            coinsPerBlock,
-            totalCoins,
-            fiatValue: totalCoins * price,
-            expectedDailyBlocks: dailyBlocks * networkData.solutionsStats.shares_per_solution
-          };
-        }
-      }
-    },
-    defaultMode: "solo" as MiningMode
-  },
   minerlab: {
     name: "MinerLab",
     modes: {
@@ -231,7 +187,6 @@ export interface NetworkData {
   averageApoolHashrate: number;        // APool 全网平均算力
   averageMinerlabHashrate: number;
   averageNevermineHashrate: number;
-  averageSolutionsHashrate: number;
   apoolStats: {
     accepted_solution: number;
     corrected_hashrate: number;
@@ -250,15 +205,6 @@ export interface NetworkData {
     pool_hash: number;
     shares_per_solution: number;
     total_share: number;
-  };
-  solutionsStats: {
-    accepted_solution: number;
-    corrected_hashrate: number;
-    pool_hash: number;
-    shares_per_solution: number;
-    total_share: number;
-    pplns_solutions: number;
-    solo_solutions: number;
   };
 }
 
@@ -309,7 +255,7 @@ export const miningCalculatorFormSchema = z.object({
   power: z.string(),
   electricityPrice: z.string(),
   blocks: z.string(),
-  pool: z.enum(["placeholder", "qli", "apool", "solutions", "minerlab", "nevermine"]),
+  pool: z.enum(["placeholder", "qli", "apool", "minerlab", "nevermine"]),
   miningMode: z.enum(["solo", "pplns", "qlipplns"]).optional()
 });
 
@@ -327,7 +273,6 @@ export const MINING_CONSTANTS = {
   QLI_SOLO_POOL_FEE: 0.85,           // QLI Pool Solo模式矿池费率 (100% - 15%)
   QLI_PPLNS_POOL_FEE: 0.9,           // QLI Pool PPLNS模式矿池费率 (100% - 10%)
   APOOL_PPLNS_POOL_FEE: 0.9,           // APool PPLNS模式矿池费率 (100% - 10%)
-  SOLUTIONS_POOL_FEE: 0.9,           // Solutions 矿池费率 (100% - 10%)
   MINERLAB_POOL_OUTPUT: 984000000,           // Minerlab 产出
   MINERLAB_ADJUSTMENT: 1.06,          // Minerlab 矿池调整因子
   NEVERMINE_PPLNS_POOL_FEE: 0.9,           // Nevermine 矿池费率 (100% - 10%)
@@ -407,22 +352,6 @@ export class MiningCalculator {
     return (
       computorOutput *
       MINING_CONSTANTS.APOOL_PPLNS_POOL_FEE /
-      (solutionsPerHourCalculated *
-        MINING_CONSTANTS.HOURS_PER_EPOCH /
-        MINING_CONSTANTS.TOTAL_COMPUTORS)
-    );
-  }
-
-  /**
-   * Solutions 计算块币数
-   * @param solutionsPerHourCalculated - 纪元平均出块数（动态）
-   * @returns 预计产出的币数
-   */
-  public static calculateSolutionsBlockCoins(solutionsPerHourCalculated: number): number {
-    const computorOutput = this.calculateComputorBaseOutput();
-    return (
-      computorOutput *
-      MINING_CONSTANTS.SOLUTIONS_POOL_FEE /
       (solutionsPerHourCalculated *
         MINING_CONSTANTS.HOURS_PER_EPOCH /
         MINING_CONSTANTS.TOTAL_COMPUTORS)

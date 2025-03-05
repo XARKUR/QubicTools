@@ -10,7 +10,6 @@ interface QubicToolData {
   averageApoolHashrate: number;
   averageMinerlabHashrate: number;
   averageNevermineHashrate: number;
-  averageSolutionsHashrate: number;
   solutionsPerHour: number;
   correctedSolutionsPerHour: number;
   solutionsPerHourCalculated: number;
@@ -120,23 +119,12 @@ interface QubicToolData {
     shares_per_solution: number;
     total_share: number;
   };
-  solutionsStats: {
-    name: string;
-    accepted_solution: number;
-    corrected_hashrate: number;
-    pool_hash: number;
-    shares_per_solution: number;
-    total_share: number;
-    pplns_solutions: number;
-    solo_solutions: number;
-  };
   poolHashrate: {
     average: {
       average_apool_hashrate: number;
       average_minerlab_hashrate: number;
       average_nevermine_hashrate: number;
       average_qli_hashrate: number;
-      average_solutions_hashrate: number;
       record_count: number;
     };
     current: {
@@ -144,7 +132,6 @@ interface QubicToolData {
       minerlab_hashrate: number;
       nevermine_hashrate: number;
       qli_hashrate: number;
-      solutions_hashrate: number;
     };
   };
 }
@@ -188,7 +175,6 @@ export function QubicDataProvider({ children }: { children: React.ReactNode }) {
           averageApoolHashrate: toolData.data.pool_hashrate?.average?.average_apool_hashrate ?? 0,
           averageMinerlabHashrate: toolData.data.pool_hashrate?.average?.average_minerlab_hashrate ?? 0,
           averageNevermineHashrate: toolData.data.pool_hashrate?.average?.average_nevermine_hashrate ?? 0,
-          averageSolutionsHashrate: toolData.data.pool_hashrate?.average?.average_solutions_hashrate ?? 0,
           solutionsPerHour: toolData.data.solutionsPerHour ?? 0,
           correctedSolutionsPerHour: toolData.data.correctedSolutionsPerHour ?? 0,
           solutionsPerHourCalculated: toolData.data.solutionsPerHourCalculated ?? 0,
@@ -283,23 +269,12 @@ export function QubicDataProvider({ children }: { children: React.ReactNode }) {
             shares_per_solution: toolData.data.nevermine?.shares_per_solution ?? 0,
             total_share: toolData.data.nevermine?.total_share ?? 0,
           },
-          solutionsStats: {
-            name: 'Solutions',
-            accepted_solution: toolData.data.solutions?.accepted_solution ?? 0,
-            corrected_hashrate: toolData.data.solutions?.corrected_hashrate ?? 0,
-            pool_hash: toolData.data.solutions?.pool_hash ?? 0,
-            shares_per_solution: toolData.data.solutions?.shares_per_solution ?? 0,
-            total_share: toolData.data.solutions?.total_share ?? 0,
-            pplns_solutions: toolData.data.solutions?.pplns_solutions ?? 0,
-            solo_solutions: toolData.data.solutions?.solo_solutions ?? 0,
-          },
           poolHashrate: toolData.data.pool_hashrate ?? {
             average: {
               average_apool_hashrate: 0,
               average_minerlab_hashrate: 0,
               average_nevermine_hashrate: 0,
               average_qli_hashrate: 0,
-              average_solutions_hashrate: 0,
               record_count: 0,
             },
             current: {
@@ -307,7 +282,6 @@ export function QubicDataProvider({ children }: { children: React.ReactNode }) {
               minerlab_hashrate: 0,
               nevermine_hashrate: 0,
               qli_hashrate: 0,
-              solutions_hashrate: 0,
             },
           },
         };

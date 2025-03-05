@@ -198,7 +198,6 @@ export interface QubicToolResponse {
         average_minerlab_hashrate: number;
         average_nevermine_hashrate: number;
         average_qli_hashrate: number;
-        average_solutions_hashrate: number;
         record_count: number;
       };
       current: {
@@ -206,7 +205,6 @@ export interface QubicToolResponse {
         minerlab_hashrate: number;
         nevermine_hashrate: number;
         qli_hashrate: number;
-        solutions_hashrate: number;
       };
     };
     price: string;
@@ -225,15 +223,6 @@ export interface QubicToolResponse {
       title: string;
       totalVotes: number;
       url: string;
-    };
-    solutions: {
-      accepted_solution: number;
-      corrected_hashrate: number;
-      pool_hash: number;
-      pplns_solutions: number;
-      shares_per_solution: number;
-      solo_solutions: number;
-      total_share: number;
     };
     solutionsPerHour: number;
     solutionsPerHourCalculated: number;

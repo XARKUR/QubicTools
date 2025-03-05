@@ -197,8 +197,7 @@ export class EpochMonitor {
           averageQliHashrate: networkData.pool_hashrate?.average?.average_minerlab_hashrate,
           averageApoolHashrate: networkData.pool_hashrate?.average?.average_apool_hashrate,
           averageMinerlabHashrate: networkData.pool_hashrate?.average?.average_minerlab_hashrate,
-          averageNevermineHashrate: networkData.pool_hashrate?.average?.average_nevermine_hashrate,
-          averageSolutionsHashrate: networkData.pool_hashrate?.average?.average_solutions_hashrate
+          averageNevermineHashrate: networkData.pool_hashrate?.average?.average_nevermine_hashrate
         });
 
         const profitResult = MiningCalculator.calculateProfit({
@@ -212,11 +211,9 @@ export class EpochMonitor {
             averageApoolHashrate: networkData.pool_hashrate?.average?.average_apool_hashrate || 0,
             averageMinerlabHashrate: networkData.pool_hashrate?.average?.average_minerlab_hashrate || 0,
             averageNevermineHashrate: networkData.pool_hashrate?.average?.average_nevermine_hashrate || 0,
-            averageSolutionsHashrate: networkData.pool_hashrate?.average?.average_solutions_hashrate || 0,
             apoolStats: networkData.apoolStats || {},
             minerlabStats: networkData.minerlabStats || {},
-            nevermineStats: networkData.nevermineStats || {},
-            solutionsStats: networkData.solutionsStats || {}
+            nevermineStats: networkData.nevermineStats || {}
           },
           hashRate: hashRate,
           currency: 'usd'
@@ -271,18 +268,10 @@ export class EpochMonitor {
           return MiningCalculator.calculateMinerlabBlockCoins(solutionsPerHour);
         case 'nevermine':
           return MiningCalculator.calculateNeverminePplnsBlockCoins(solutionsPerHour);
-        case 'solutions':
-          return MiningCalculator.calculateSolutionsBlockCoins(solutionsPerHour);
         default:
           throw new Error(`Unsupported pool option ${poolOption}`);
       }
     })();
-
-    // 如果是 Solutions 的 PPLNS 模式，需要额外计算
-    if (poolOption.toLowerCase() === 'solutions' && mode.toLowerCase() === 'pplns') {
-      const networkData = await QubicAPI.getNetworkData();
-      return baseCoins * networkData.solutionsStats.pplns_solutions;
-    }
 
     return baseCoins;
   }

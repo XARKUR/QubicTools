@@ -65,15 +65,6 @@ const pools = [
     systems: ['windows', 'linux', 'hiveos'] as SystemType[]
   },
   {
-    id: "solutions",
-    fee: "10%",
-    website: "https://qubic.solutions/",
-    tutorial: "https://github.com/Qubic-Solutions/.github/tree/main/profile",
-    community: "https://discord.gg/2Cuc765D6N",
-    features: [],
-    systems: ['windows', 'linux', 'hiveos', 'android'] as SystemType[]
-  },
-  {
     id: "nevermine",
     fee: "10%",
     website: "https://nevermine.io/",
@@ -81,6 +72,15 @@ const pools = [
     community: "https://discord.com/invite/YVPzYhQ66N",
     features: [],
     systems: ['windows', 'linux', 'hiveos'] as SystemType[]
+  },
+  {
+    id: "solutions",
+    fee: "10%",
+    website: "https://qubic.solutions/",
+    tutorial: "https://github.com/Qubic-Solutions/.github/tree/main/profile",
+    community: "https://discord.gg/2Cuc765D6N",
+    features: [],
+    systems: ['windows', 'linux', 'hiveos', 'android'] as SystemType[]
   }
 ]
 

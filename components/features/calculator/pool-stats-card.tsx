@@ -47,15 +47,14 @@ interface PoolStatsCardProps {
   apool?: PoolStats
   minerlab?: PoolStats
   nevermine?: PoolStats
-  solutions?: PoolStats
 }
 
-export const PoolStatsCard = memo(function PoolStatsCard({ apool, minerlab, nevermine, solutions }: PoolStatsCardProps) {
+export const PoolStatsCard = memo(function PoolStatsCard({ apool, minerlab, nevermine }: PoolStatsCardProps) {
   const { t, i18n } = useTranslation()
   const { data: qubicData, isLoading } = useQubicData()
   const { formatUSD, formatCNY } = useExchangeRate()
 
-  if (isLoading || !apool || !minerlab || !nevermine || !solutions || !qubicData) {
+  if (isLoading || !apool || !minerlab || !nevermine || !qubicData) {
     return (
       <Card className="p-4">
         <div className="flex flex-col items-center justify-center py-6 space-y-4">
@@ -144,11 +143,6 @@ export const PoolStatsCard = memo(function PoolStatsCard({ apool, minerlab, neve
       case 'nevermine':
         averageHashrate = qubicData.averageNevermineHashrate
         break
-      case 'solutions':
-        averageHashrate = qubicData.averageSolutionsHashrate
-        // Solutions 池使用简单计算方法
-        const solutionsPerDay = qubicData.solutionsPerHourCalculated * 24
-        return solutionsPerDay > 0 ? averageHashrate / solutionsPerDay : 0
       default:
         return 0
     }
@@ -182,8 +176,6 @@ export const PoolStatsCard = memo(function PoolStatsCard({ apool, minerlab, neve
           return MiningCalculator.calculateApoolPplnsBlockCoins(qubicData.solutionsPerHourCalculated)
         case 'nevermine':
           return MiningCalculator.calculateNeverminePplnsBlockCoins(qubicData.solutionsPerHourCalculated)
-        case 'solutions':
-          return MiningCalculator.calculateSolutionsBlockCoins(qubicData.solutionsPerHourCalculated)
         default:
           return 0
       }
@@ -360,56 +352,6 @@ export const PoolStatsCard = memo(function PoolStatsCard({ apool, minerlab, neve
         }
       ]
     },
-    {
-      name: 'Solutions',
-      stats: solutions,
-      percentage: calculatePercentage(solutions),
-      icon: <Pickaxe className="h-4 w-4" />,
-      displayItems: [
-        {
-          key: 'pool_hash',
-          label: t('calculator.poolStats.poolHash'),
-          format: (value: number) => formatHashRate(value)
-        },
-        {
-          key: 'accepted_solution',
-          label: t('calculator.poolStats.solutions')
-        },
-        {
-          key: 'shares_per_solution',
-          label: t('calculator.poolStats.sharesPerSolution')
-        },
-        {
-          key: 'coins_per_block',
-          label: t('calculator.poolStats.coinsPerBlock'),
-          format: () => calculateCoinsPerBlock('solutions').toFixed(0)
-        },
-        {
-          key: 'block_value',
-          label: t('calculator.poolStats.blockValue'),
-          format: () => formatBlockValue(calculateCoinsPerBlock('solutions'))
-        },
-        {
-          key: 'hashrate_per_solution',
-          label: (
-            <div className="flex items-center gap-1">
-              <span>{t('calculator.poolStats.hashratePerSolution.title')}</span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <HelpCircle className="h-4 w-4" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t('calculator.poolStats.hashratePerSolution.tooltip')}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-          ),
-          format: (value: number) => formatHashRate(value)
-        }
-      ]
-    }
   ].sort((a, b) => b.percentage - a.percentage)) as PoolDisplay[]
 
   //const isIdle = qubicData.idle
