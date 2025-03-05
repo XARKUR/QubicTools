@@ -9,7 +9,7 @@ import { z } from 'zod';
  * - minerlab: MinerLab 矿池
  * - nevermine: NeverMine 矿池
  */
-export type PoolOption = "placeholder" | "qli" | "apool" | "minerlab" | "nevermine";
+export type PoolOption = "placeholder" | "qli" | "apool" | "minerlab";
 
 /**
  * 挖矿模式
@@ -146,30 +146,6 @@ export const POOL_CONFIGS: Record<PoolOption, PoolConfig> = {
     },
     defaultMode: "solo" as MiningMode
   },
-  nevermine: {
-    name: "Nevermine",
-    modes: {
-      pplns: {
-        name: "PPLNS",
-        calculate: ({ blocks, solutionsPerHourCalculated, price, hashRate, networkData }) => {
-          const dailyBlocks = calculateExpectedDailyBlocks(
-            hashRate,
-            networkData.averageNevermineHashrate,
-            solutionsPerHourCalculated
-          );
-          const coinsPerBlock = MiningCalculator.calculateNeverminePplnsBlockCoins(solutionsPerHourCalculated) * networkData.nevermineStats.accepted_solution / networkData.nevermineStats.total_share; ;
-          const totalCoins = coinsPerBlock * blocks;
-          return {
-            coinsPerBlock,
-            totalCoins,
-            fiatValue: totalCoins * price,
-            expectedDailyBlocks: dailyBlocks * networkData.nevermineStats.shares_per_solution
-          };
-        }
-      }
-    },
-    defaultMode: "pplns" as MiningMode
-  },
   placeholder: {
     name: "Select Pool",
     modes: {},
@@ -186,7 +162,6 @@ export interface NetworkData {
   averageQliHashrate: number;          // QLI Pool 全网平均算力
   averageApoolHashrate: number;        // APool 全网平均算力
   averageMinerlabHashrate: number;
-  averageNevermineHashrate: number;
   apoolStats: {
     accepted_solution: number;
     corrected_hashrate: number;
@@ -198,13 +173,6 @@ export interface NetworkData {
     accepted_solution: number;
     corrected_hashrate: number;
     pool_hash: number;
-  };
-  nevermineStats: {
-    accepted_solution: number;
-    corrected_hashrate: number;
-    pool_hash: number;
-    shares_per_solution: number;
-    total_share: number;
   };
 }
 
@@ -255,7 +223,7 @@ export const miningCalculatorFormSchema = z.object({
   power: z.string(),
   electricityPrice: z.string(),
   blocks: z.string(),
-  pool: z.enum(["placeholder", "qli", "apool", "minerlab", "nevermine"]),
+  pool: z.enum(["placeholder", "qli", "apool", "minerlab"]),
   miningMode: z.enum(["solo", "pplns", "qlipplns"]).optional()
 });
 
@@ -275,8 +243,6 @@ export const MINING_CONSTANTS = {
   APOOL_PPLNS_POOL_FEE: 0.9,           // APool PPLNS模式矿池费率 (100% - 10%)
   MINERLAB_POOL_OUTPUT: 984000000,           // Minerlab 产出
   MINERLAB_ADJUSTMENT: 1.06,          // Minerlab 矿池调整因子
-  NEVERMINE_PPLNS_POOL_FEE: 0.9,           // Nevermine 矿池费率 (100% - 10%)
-  NEVERMINE_ADJUSTMENT: 1.06,          // Nevermine 矿池调整因子
 } as const;
 
 /**
@@ -384,23 +350,6 @@ export class MiningCalculator {
       )
     );
   }
-
-    /**
-   * Nevermine 计算块币数
-   * @param solutionsPerHourCalculated - 纪元平均出块数（动态）
-   * @returns 预计产出的币数
-   */
-    public static calculateNeverminePplnsBlockCoins(solutionsPerHourCalculated: number): number {
-      const computorOutput = this.calculateComputorBaseOutput();
-      return (
-        computorOutput *
-        MINING_CONSTANTS.NEVERMINE_PPLNS_POOL_FEE /
-        (solutionsPerHourCalculated *
-          MINING_CONSTANTS.HOURS_PER_EPOCH /
-          MINING_CONSTANTS.TOTAL_COMPUTORS *
-          MINING_CONSTANTS.NEVERMINE_ADJUSTMENT)
-      );
-    }
 
 
   /**

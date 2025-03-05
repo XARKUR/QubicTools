@@ -44,6 +44,18 @@ export function ContentGrid() {
                 <CardTitle className="text-base font-medium flex items-center gap-2">
                   <Activity className="h-4 w-4" />
                   {t('calculator.poolStats.title')}
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help shrink-0" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="w-[200px] text-xs">
+                          {t('calculator.pool.tips.title.tooltip')}
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </CardTitle>
                 <Button 
                   variant="ghost" 
@@ -69,7 +81,6 @@ export function ContentGrid() {
                   <PoolStatsCard 
                     apool={qubicData?.apoolStats}
                     minerlab={qubicData?.minerlabStats}
-                    nevermine={qubicData?.nevermineStats}
                   />
                 </div>
               </ScrollArea>

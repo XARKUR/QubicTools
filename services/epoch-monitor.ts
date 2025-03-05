@@ -196,8 +196,7 @@ export class EpochMonitor {
           solutionsPerHourCalculated: networkData.solutionsPerHourCalculated,
           averageQliHashrate: networkData.pool_hashrate?.average?.average_minerlab_hashrate,
           averageApoolHashrate: networkData.pool_hashrate?.average?.average_apool_hashrate,
-          averageMinerlabHashrate: networkData.pool_hashrate?.average?.average_minerlab_hashrate,
-          averageNevermineHashrate: networkData.pool_hashrate?.average?.average_nevermine_hashrate
+          averageMinerlabHashrate: networkData.pool_hashrate?.average?.average_minerlab_hashrate
         });
 
         const profitResult = MiningCalculator.calculateProfit({
@@ -210,10 +209,8 @@ export class EpochMonitor {
             averageQliHashrate: networkData.pool_hashrate?.average?.average_qli_hashrate || 0,
             averageApoolHashrate: networkData.pool_hashrate?.average?.average_apool_hashrate || 0,
             averageMinerlabHashrate: networkData.pool_hashrate?.average?.average_minerlab_hashrate || 0,
-            averageNevermineHashrate: networkData.pool_hashrate?.average?.average_nevermine_hashrate || 0,
             apoolStats: networkData.apoolStats || {},
-            minerlabStats: networkData.minerlabStats || {},
-            nevermineStats: networkData.nevermineStats || {}
+            minerlabStats: networkData.minerlabStats || {}
           },
           hashRate: hashRate,
           currency: 'usd'
@@ -266,8 +263,6 @@ export class EpochMonitor {
           return MiningCalculator.calculateApoolPplnsBlockCoins(solutionsPerHour);
         case 'minerlab':
           return MiningCalculator.calculateMinerlabBlockCoins(solutionsPerHour);
-        case 'nevermine':
-          return MiningCalculator.calculateNeverminePplnsBlockCoins(solutionsPerHour);
         default:
           throw new Error(`Unsupported pool option ${poolOption}`);
       }

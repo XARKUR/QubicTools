@@ -371,6 +371,11 @@
           "tooltip": "Here is a list of available mining pools, you can choose one to join mining."
         }
       },
+      "tips": {
+        "title": {
+          "tooltip": "Since some mining pools are small and have significant data fluctuations, the current data only includes mining pools with total hash rate share of over 5%"
+        }
+      },
       "systems": {
         "windows": "Windows",
         "linux": "Linux",

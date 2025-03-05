@@ -58,13 +58,11 @@ interface NetworkStats {
   price: number;
   apoolStats: any;
   minerlabStats: any;
-  nevermineStats: any;
   poolHashrate: {
     average: {
       average_qli_hashrate: number;
       average_apool_hashrate: number;
       average_minerlab_hashrate: number;
-      average_nevermine_hashrate: number;
     }
   }
 }
@@ -90,13 +88,11 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
     price: 0,
     apoolStats: null,
     minerlabStats: null,
-    nevermineStats: null,
     poolHashrate: {
       average: {
         average_qli_hashrate: 0,
         average_apool_hashrate: 0,
-        average_minerlab_hashrate: 0,
-        average_nevermine_hashrate: 0,
+        average_minerlab_hashrate: 0
       }
     }
   });
@@ -132,13 +128,11 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
       price: qubicData.price,
       apoolStats: qubicData.apoolStats,
       minerlabStats: qubicData.minerlabStats,
-      nevermineStats: qubicData.nevermineStats,
       poolHashrate: {
         average: {
           average_qli_hashrate: qubicData.poolHashrate?.average?.average_qli_hashrate,
           average_apool_hashrate: qubicData.poolHashrate?.average?.average_apool_hashrate,
-          average_minerlab_hashrate: qubicData.poolHashrate?.average?.average_minerlab_hashrate,
-          average_nevermine_hashrate: qubicData.poolHashrate?.average?.average_nevermine_hashrate,
+          average_minerlab_hashrate: qubicData.poolHashrate?.average?.average_minerlab_hashrate
         }
       }
     });
@@ -179,8 +173,6 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
           return networkStats.apoolStats?.pool_hash > 0;
         case 'minerlab':
           return networkStats.minerlabStats?.pool_hash > 0;
-        case 'nevermine':
-          return networkStats.nevermineStats?.pool_hash > 0;
         default:
           return false;
       }
@@ -209,10 +201,8 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
       averageQliHashrate: networkStats.poolHashrate?.average?.average_qli_hashrate ?? 0,
       averageApoolHashrate: networkStats.poolHashrate?.average?.average_apool_hashrate ?? 0,
       averageMinerlabHashrate: networkStats.poolHashrate?.average?.average_minerlab_hashrate ?? 0,
-      averageNevermineHashrate: networkStats.poolHashrate?.average?.average_nevermine_hashrate ?? 0,
       apoolStats: networkStats.apoolStats,
       minerlabStats: networkStats.minerlabStats,
-      nevermineStats: networkStats.nevermineStats,
     };
 
     const result = MiningCalculator.calculateProfit({
@@ -290,6 +280,18 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
           <CardTitle className="text-base font-medium flex items-center gap-2">
             <Calculator className="h-4 w-4" />
             {t('calculator.calculator.title')}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help shrink-0" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="w-[200px] text-xs">
+                    {t('calculator.pool.tips.title.tooltip')}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </CardTitle>
           <div className="flex items-center gap-2">
             <Select
@@ -314,14 +316,11 @@ export const ProfitCalculator = memo(function ProfitCalculatorComponent() {
                 <SelectItem value="qli">
                   {t('calculator.calculator.pool_qli')}
                 </SelectItem>
-                <SelectItem value="minerlab">
-                  {t('calculator.calculator.pool_minerlab')}
-                </SelectItem>
                 <SelectItem value="apool">
                   {t('calculator.calculator.pool_apool')}
                 </SelectItem>
-                <SelectItem value="nevermine">
-                  {t('calculator.calculator.pool_nevermine')}
+                <SelectItem value="minerlab">
+                  {t('calculator.calculator.pool_minerlab')}
                 </SelectItem>
               </SelectContent>
             </Select>

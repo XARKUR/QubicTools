@@ -47,20 +47,20 @@ const pools = [
     systems: ['windows', 'linux', 'hiveos', 'docker'] as SystemType[]
   },
   {
-    id: "minerlab",
-    fee: "10%",
-    website: "https://qubic.minerlab.io/",
-    tutorial: "https://qubic.minerlab.io/overview",
-    community: "https://discord.com/invite/CtT3mtxSpY",
-    features: [],
-    systems: ['windows', 'linux', 'hiveos'] as SystemType[]
-  },
-  {
     id: "apool",
     fee: "10%",
     website: "https://www.apool.io/",
     tutorial: "https://apool.gitbook.io/help",
     community: "https://discord.com/invite/jpV4V2dUG6",
+    features: [],
+    systems: ['windows', 'linux', 'hiveos'] as SystemType[]
+  },
+  {
+    id: "minerlab",
+    fee: "10%",
+    website: "https://qubic.minerlab.io/",
+    tutorial: "https://qubic.minerlab.io/overview",
+    community: "https://discord.com/invite/CtT3mtxSpY",
     features: [],
     systems: ['windows', 'linux', 'hiveos'] as SystemType[]
   },

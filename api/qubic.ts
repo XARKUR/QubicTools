@@ -50,7 +50,6 @@ export class QubicAPIHelper {
     solutionsPerHourCalculated: number;
     apoolStats: any;
     minerlabStats: any;
-    nevermineStats: any;
     pool_hashrate: any;
   }> {
     const toolData = await QubicAPI.getToolData();
@@ -58,7 +57,6 @@ export class QubicAPIHelper {
       solutionsPerHourCalculated: toolData.data.solutionsPerHourCalculated,
       apoolStats: toolData.data.apool,
       minerlabStats: toolData.data.minerlab,
-      nevermineStats: toolData.data.nevermine,
       pool_hashrate: toolData.data.pool_hashrate
     };
   }

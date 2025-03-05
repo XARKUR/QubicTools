@@ -46,15 +46,14 @@ interface PoolDisplay {
 interface PoolStatsCardProps {
   apool?: PoolStats
   minerlab?: PoolStats
-  nevermine?: PoolStats
 }
 
-export const PoolStatsCard = memo(function PoolStatsCard({ apool, minerlab, nevermine }: PoolStatsCardProps) {
+export const PoolStatsCard = memo(function PoolStatsCard({ apool, minerlab }: PoolStatsCardProps) {
   const { t, i18n } = useTranslation()
   const { data: qubicData, isLoading } = useQubicData()
   const { formatUSD, formatCNY } = useExchangeRate()
 
-  if (isLoading || !apool || !minerlab || !nevermine || !qubicData) {
+  if (isLoading || !apool || !minerlab || !qubicData) {
     return (
       <Card className="p-4">
         <div className="flex flex-col items-center justify-center py-6 space-y-4">
@@ -140,9 +139,6 @@ export const PoolStatsCard = memo(function PoolStatsCard({ apool, minerlab, neve
       case 'minerlab':
         averageHashrate = qubicData.averageMinerlabHashrate
         break
-      case 'nevermine':
-        averageHashrate = qubicData.averageNevermineHashrate
-        break
       default:
         return 0
     }
@@ -174,8 +170,6 @@ export const PoolStatsCard = memo(function PoolStatsCard({ apool, minerlab, neve
           return MiningCalculator.calculateMinerlabBlockCoins(qubicData.solutionsPerHourCalculated)
         case 'apool':
           return MiningCalculator.calculateApoolPplnsBlockCoins(qubicData.solutionsPerHourCalculated)
-        case 'nevermine':
-          return MiningCalculator.calculateNeverminePplnsBlockCoins(qubicData.solutionsPerHourCalculated)
         default:
           return 0
       }
@@ -230,56 +224,6 @@ export const PoolStatsCard = memo(function PoolStatsCard({ apool, minerlab, neve
           key: 'block_value',
           label: t('calculator.poolStats.blockValue'),
           format: () => formatBlockValue(calculateCoinsPerBlock('minerlab'))
-        },
-        {
-          key: 'hashrate_per_solution',
-          label: (
-            <div className="flex items-center gap-1">
-              <span>{t('calculator.poolStats.hashratePerSolution.title')}</span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <HelpCircle className="h-4 w-4" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t('calculator.poolStats.hashratePerSolution.tooltip')}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-          ),
-          format: (value: number) => formatHashRate(value)
-        }
-      ]
-    },
-    {
-      name: 'Nevermine',
-      stats: nevermine,
-      percentage: calculatePercentage(nevermine),
-      icon: <FileCheck className="h-4 w-4" />,
-      displayItems: [
-        {
-          key: 'pool_hash',
-          label: t('calculator.poolStats.poolHash'),
-          format: (value: number) => formatHashRate(value)
-        },
-        {
-          key: 'accepted_solution',
-          label: t('calculator.poolStats.solutions')
-        },
-        {
-          key: 'shares_per_solution',
-          label: t('calculator.poolStats.sharesPerSolution')
-        },
-        {
-          key: 'coins_per_block',
-          label: t('calculator.poolStats.coinsPerBlock'),
-          format: () => calculateCoinsPerBlock('nevermine').toFixed(0)
-        },
-        {
-          key: 'block_value',
-          label: t('calculator.poolStats.blockValue'),
-          format: () => formatBlockValue(calculateCoinsPerBlock('nevermine'))
         },
         {
           key: 'hashrate_per_solution',

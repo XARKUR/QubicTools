@@ -188,7 +188,6 @@ export interface QubicToolResponse {
       corrected_hashrate: number;
       pool_hash: number;
     };
-    nevermine: ApoolStats;
     currentEpoch: number;
     estimatedIts: number;
     idle: boolean;
@@ -196,14 +195,12 @@ export interface QubicToolResponse {
       average: {
         average_apool_hashrate: number;
         average_minerlab_hashrate: number;
-        average_nevermine_hashrate: number;
         average_qli_hashrate: number;
         record_count: number;
       };
       current: {
         apool_hashrate: number;
         minerlab_hashrate: number;
-        nevermine_hashrate: number;
         qli_hashrate: number;
       };
     };

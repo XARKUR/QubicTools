@@ -9,7 +9,6 @@ interface QubicToolData {
   averageHashrate: number;
   averageApoolHashrate: number;
   averageMinerlabHashrate: number;
-  averageNevermineHashrate: number;
   solutionsPerHour: number;
   correctedSolutionsPerHour: number;
   solutionsPerHourCalculated: number;
@@ -111,26 +110,16 @@ interface QubicToolData {
     corrected_hashrate: number;
     pool_hash: number;
   };
-  nevermineStats: {
-    name: string;
-    accepted_solution: number;
-    corrected_hashrate: number;
-    pool_hash: number;
-    shares_per_solution: number;
-    total_share: number;
-  };
   poolHashrate: {
     average: {
       average_apool_hashrate: number;
       average_minerlab_hashrate: number;
-      average_nevermine_hashrate: number;
       average_qli_hashrate: number;
       record_count: number;
     };
     current: {
       apool_hashrate: number;
       minerlab_hashrate: number;
-      nevermine_hashrate: number;
       qli_hashrate: number;
     };
   };
@@ -174,7 +163,6 @@ export function QubicDataProvider({ children }: { children: React.ReactNode }) {
           averageHashrate: toolData.data.pool_hashrate?.average?.average_minerlab_hashrate ?? 0,
           averageApoolHashrate: toolData.data.pool_hashrate?.average?.average_apool_hashrate ?? 0,
           averageMinerlabHashrate: toolData.data.pool_hashrate?.average?.average_minerlab_hashrate ?? 0,
-          averageNevermineHashrate: toolData.data.pool_hashrate?.average?.average_nevermine_hashrate ?? 0,
           solutionsPerHour: toolData.data.solutionsPerHour ?? 0,
           correctedSolutionsPerHour: toolData.data.correctedSolutionsPerHour ?? 0,
           solutionsPerHourCalculated: toolData.data.solutionsPerHourCalculated ?? 0,
@@ -261,26 +249,16 @@ export function QubicDataProvider({ children }: { children: React.ReactNode }) {
             corrected_hashrate: toolData.data.minerlab?.corrected_hashrate ?? 0,
             pool_hash: toolData.data.minerlab?.pool_hash ?? 0,
           },
-          nevermineStats: {
-            name: 'Nevermine',
-            accepted_solution: toolData.data.nevermine?.accepted_solution ?? 0,
-            corrected_hashrate: toolData.data.nevermine?.corrected_hashrate ?? 0,
-            pool_hash: toolData.data.nevermine?.pool_hash ?? 0,
-            shares_per_solution: toolData.data.nevermine?.shares_per_solution ?? 0,
-            total_share: toolData.data.nevermine?.total_share ?? 0,
-          },
           poolHashrate: toolData.data.pool_hashrate ?? {
             average: {
               average_apool_hashrate: 0,
               average_minerlab_hashrate: 0,
-              average_nevermine_hashrate: 0,
               average_qli_hashrate: 0,
               record_count: 0,
             },
             current: {
               apool_hashrate: 0,
               minerlab_hashrate: 0,
-              nevermine_hashrate: 0,
               qli_hashrate: 0,
             },
           },
