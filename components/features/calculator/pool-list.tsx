@@ -75,7 +75,7 @@ const pools = [
   },
   {
     id: "solutions",
-    fee: "10%",
+    fee: "6%",
     website: "https://qubic.solutions/",
     tutorial: "https://github.com/Qubic-Solutions/.github/tree/main/profile",
     community: "https://discord.gg/2Cuc765D6N",
