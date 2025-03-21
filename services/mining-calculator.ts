@@ -241,7 +241,7 @@ export const MINING_CONSTANTS = {
   QLI_SOLO_POOL_FEE: 0.85,           // QLI Pool Solo模式矿池费率 (100% - 15%)
   QLI_PPLNS_POOL_FEE: 0.9,           // QLI Pool PPLNS模式矿池费率 (100% - 10%)
   APOOL_PPLNS_POOL_FEE: 0.9,           // APool PPLNS模式矿池费率 (100% - 10%)
-  MINERLAB_POOL_OUTPUT: 984000000,           // Minerlab 产出
+  MINERLAB_POOL_OUTPUT: 954000000,           // Minerlab 产出
   MINERLAB_ADJUSTMENT: 1.06,          // Minerlab 矿池调整因子
 } as const;
 
