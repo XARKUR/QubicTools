@@ -381,7 +381,7 @@
         "windows": "Windows",
         "linux": "Linux",
         "hiveos": "HiveOS",
-        "android": "Android",
+        "mmpos": "MMPOS",
         "docker": "Docker"
       },
       "pools": {
@@ -395,7 +395,7 @@
         },
         "solutions": {
           "name": "Solutions",
-          "description": "无论您是矿工新手还是有一定经验，Solutions Pool 都能满足您的需求。Solutions Pool 提供适用于 CPU、GPU 和 Android 设备的 PPLNS（pay per last N shares）和 Solo 挖矿选项。"
+          "description": "Qubic.Solutions 是 Qubic 的第二个矿池，自 2023 年起运营。我们为希望参与网络的矿工提供可靠、高效的挖矿体验。我们的矿池确保公平的奖励、稳定的性能和实时监控，以最大限度地提高您的挖矿效率。"
         },
         "minerlab": {
           "name": "MinerLab",

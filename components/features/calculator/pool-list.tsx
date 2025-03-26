@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
-type SystemType = 'windows' | 'linux' | 'macos' | 'hiveos' | 'docker' | 'android'
+type SystemType = 'windows' | 'linux' | 'macos' | 'hiveos' | 'docker' | 'mmpos'
 
 interface SystemBadgeProps {
   type: SystemType
@@ -23,7 +23,7 @@ const SystemBadge = React.memo(function SystemBadgeComponent({ type, className }
         "mr-2 text-xs",
         type === 'windows' && "border-blue-400 text-blue-400",
         type === 'linux' && "border-orange-400 text-orange-400",
-        type === 'android' && "border-green-400 text-green-400",
+        type === 'mmpos' && "border-green-400 text-green-400",
         type === 'hiveos' && "border-yellow-400 text-yellow-400",
         type === 'docker' && "border-teal-400 text-teal-400",
         className
@@ -75,12 +75,12 @@ const pools = [
   },
   {
     id: "solutions",
-    fee: "6%",
+    fee: "10%",
     website: "https://qubic.solutions/",
     tutorial: "https://github.com/Qubic-Solutions/.github/tree/main/profile",
     community: "https://discord.gg/2Cuc765D6N",
     features: [],
-    systems: ['windows', 'linux', 'hiveos', 'android'] as SystemType[]
+    systems: ['windows', 'linux', 'hiveos', 'mmpos'] as SystemType[]
   }
 ]
 

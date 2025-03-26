@@ -380,7 +380,7 @@
         "windows": "Windows",
         "linux": "Linux",
         "hiveos": "HiveOS",
-        "android": "Android",
+        "mmpos": "MMPOS",
         "docker": "Docker"
       },
       "pools": {
@@ -394,7 +394,7 @@
         },
         "solutions": {
           "name": "Solutions",
-          "description": "Whether you are a mining novice or have some experience, Solutions Pool can meet your needs. Solutions Pool provides PPLNS (pay per last N shares) and solo mining options suitable for CPU, GPU, and Android devices."
+          "description": "Qubic.Solutions is the second-ever mining pool for Qubic, operating since 2023. We provide a reliable and efficient mining experience for miners looking to participate in the network. Our pool ensures fair rewards, stable performance, and real-time monitoring to maximize your mining efficiency."
         },
         "minerlab": {
           "name": "MinerLab",
