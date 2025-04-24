@@ -59,7 +59,7 @@ export const POOL_CONFIGS: Record<PoolOption, PoolConfig> = {
     name: "QLI Pool",
     modes: {
       solo: {
-        name: "Reward 85%",
+        name: "Solo",
         calculate: ({ blocks, solutionsPerHourCalculated, price, hashRate, networkData }) => {
           const dailyBlocks = calculateExpectedDailyBlocks(
             hashRate,
@@ -237,8 +237,10 @@ export const MINING_CONSTANTS = {
   CCF_RATE_2: 0.8775,                 // CCF基金分配率2 (100% - 12.25%)
   TOTAL_COMPUTORS: 676,               // 计算机总数
   HOURS_PER_EPOCH: 168,               // 一星期小时数
-  QLI_ADJUSTMENT: 1.06,          // qli 矿池调整因子
-  QLI_SOLO_POOL_FEE: 0.85,           // QLI Pool Solo模式矿池费率 (100% - 15%)
+  //QLI_ADJUSTMENT: 1.06,          // qli 矿池调整因子
+  //QLI_SOLO_POOL_FEE: 0.85,           // QLI Pool Solo模式矿池费率 (100% - 15%)
+  //QLI_PPLNS_POOL_FEE: 0.9,           // QLI Pool PPLNS模式矿池费率 (100% - 10%)
+  QLI_SOLO_POOL_FEE: 0.9,           // QLI Pool Solo模式矿池费率 (100% - 10%)
   QLI_PPLNS_POOL_FEE: 0.9,           // QLI Pool PPLNS模式矿池费率 (100% - 10%)
   APOOL_PPLNS_POOL_FEE: 0.9,           // APool PPLNS模式矿池费率 (100% - 10%)
   MINERLAB_POOL_OUTPUT: 954000000,           // Minerlab 产出
@@ -286,8 +288,7 @@ export class MiningCalculator {
       MINING_CONSTANTS.QLI_SOLO_POOL_FEE /
       (solutionsPerHourCalculated *
         MINING_CONSTANTS.HOURS_PER_EPOCH /
-        MINING_CONSTANTS.TOTAL_COMPUTORS *
-        MINING_CONSTANTS.QLI_ADJUSTMENT)
+        MINING_CONSTANTS.TOTAL_COMPUTORS)
     );
   }
 
@@ -303,8 +304,7 @@ export class MiningCalculator {
       MINING_CONSTANTS.QLI_PPLNS_POOL_FEE /
       (solutionsPerHourCalculated *
         MINING_CONSTANTS.HOURS_PER_EPOCH /
-        MINING_CONSTANTS.TOTAL_COMPUTORS *
-        MINING_CONSTANTS.QLI_ADJUSTMENT)
+        MINING_CONSTANTS.TOTAL_COMPUTORS)
     );
   }
 
