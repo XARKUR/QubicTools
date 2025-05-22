@@ -245,6 +245,7 @@ export const MINING_CONSTANTS = {
   APOOL_PPLNS_POOL_FEE: 0.9,           // APool PPLNS模式矿池费率 (100% - 10%)
   MINERLAB_POOL_OUTPUT: 954000000,           // Minerlab 产出
   MINERLAB_ADJUSTMENT: 1.06,          // Minerlab 矿池调整因子
+  XMR_ADJUSTMENT: 0.7,          // XMR 矿池调整因子
 } as const;
 
 /**
@@ -288,7 +289,8 @@ export class MiningCalculator {
       MINING_CONSTANTS.QLI_SOLO_POOL_FEE /
       (solutionsPerHourCalculated *
         MINING_CONSTANTS.HOURS_PER_EPOCH /
-        MINING_CONSTANTS.TOTAL_COMPUTORS)
+        MINING_CONSTANTS.TOTAL_COMPUTORS)*
+        MINING_CONSTANTS.XMR_ADJUSTMENT
     );
   }
 
@@ -304,7 +306,8 @@ export class MiningCalculator {
       MINING_CONSTANTS.QLI_PPLNS_POOL_FEE /
       (solutionsPerHourCalculated *
         MINING_CONSTANTS.HOURS_PER_EPOCH /
-        MINING_CONSTANTS.TOTAL_COMPUTORS)
+        MINING_CONSTANTS.TOTAL_COMPUTORS)*
+        MINING_CONSTANTS.XMR_ADJUSTMENT
     );
   }
 
@@ -320,7 +323,8 @@ export class MiningCalculator {
       MINING_CONSTANTS.APOOL_PPLNS_POOL_FEE /
       (solutionsPerHourCalculated *
         MINING_CONSTANTS.HOURS_PER_EPOCH /
-        MINING_CONSTANTS.TOTAL_COMPUTORS)
+        MINING_CONSTANTS.TOTAL_COMPUTORS)*
+        MINING_CONSTANTS.XMR_ADJUSTMENT
     );
   }
 
@@ -347,7 +351,8 @@ export class MiningCalculator {
         MINING_CONSTANTS.HOURS_PER_EPOCH /
         MINING_CONSTANTS.TOTAL_COMPUTORS *
         MINING_CONSTANTS.MINERLAB_ADJUSTMENT
-      )
+      )*
+      MINING_CONSTANTS.XMR_ADJUSTMENT
     );
   }
 
